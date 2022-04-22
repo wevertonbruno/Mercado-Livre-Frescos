@@ -7,32 +7,30 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.List;
+import java.time.LocalDateTime;
 
 /**
  * @author Nayara Coca
- * Criação da entidade Inbound Order
+ * Criação da entidade Batch Stock
  * Gerando getters e setters
  */
 
 @Entity
-@Table(name = "inbound_orders")
+@Table(name = "batch_stocks")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
 
-public class InboundOrder {
+public class BatchStock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //validar se será gerado pelo banco de dados
-    private Integer orderNumber;
-    private LocalDate orderDate;
-    @ManyToOne
-    @JoinColumn(name = "section_id")
-    private Section section;
-    @OneToMany(mappedBy = "inboundOrder")
-    private List<BatchStock> batchStock;
-
+    private Integer batchNumber;
+    private Float currentTemperature;
+    private Float minimumTemperature;
+    private Integer initialQuantity;
+    private Integer currentQuantity;
+    private LocalDateTime manufacturingDateTime;
+    private LocalDate dueDate;
 }
