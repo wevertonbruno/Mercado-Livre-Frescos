@@ -8,8 +8,10 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.util.Set;
 
-// Entidade responsável pelo Warehouse
-// @author Ederson Rodrigues Araujo
+/**
+ * @author Ederson Rodrigues Araujo
+ * Entidade responsável pelo Warehouse
+ */
 
 @Entity
 @Getter @Setter

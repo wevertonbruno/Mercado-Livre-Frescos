@@ -7,8 +7,10 @@ import lombok.Setter;
 
 import javax.persistence.*;
 
-// Entidade responsável pela Section
-// @author Ederson Rodrigues Araujo
+/**
+ * @author Ederson Rodrigues Araujo
+ * Entidade responsável pela Section
+ */
 
 @Entity
 @Getter @Setter
