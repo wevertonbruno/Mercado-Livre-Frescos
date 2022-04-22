@@ -8,6 +8,11 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+/**
+ * Entidade que mapeia a tabela de usuarios (users).
+ * @author Weverton Bruno
+ */
+
 @Getter
 @Setter
 @SuperBuilder

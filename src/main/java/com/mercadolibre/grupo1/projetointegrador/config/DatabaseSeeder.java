@@ -13,6 +13,11 @@ import org.springframework.stereotype.Component;
 
 import java.util.Set;
 
+
+/**
+ * Classe responsável por popular o banco de dados com dados de teste.
+ * @author Grupo 1
+ */
 @Component
 @RequiredArgsConstructor
 public class DatabaseSeeder {

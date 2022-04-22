@@ -4,6 +4,11 @@ import lombok.*;
 
 import javax.persistence.*;
 
+/**
+ * Entidade que mapeia a tabela de cargos para autorizacao (roles).
+ * @author Weverton Bruno
+ */
+
 @Getter
 @Setter
 @Builder
