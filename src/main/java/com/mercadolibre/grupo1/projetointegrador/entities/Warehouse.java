@@ -8,6 +8,9 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+// Entidade responsável pelo Warehouse
+// @author Ederson Rodrigues Araujo
+
 @Entity
 @Getter @Setter
 public class Warehouse {
