@@ -5,9 +5,13 @@ package com.mercadolibre.grupo1.projetointegrador.dtos;
 
 import lombok.Data;
 
+import javax.validation.constraints.NotNull;
+
 @Data
 public class SectionDTO {
 
+    @NotNull
     private Long sectionCode;
+    @NotNull
     private Long warehouseCode;
 }
