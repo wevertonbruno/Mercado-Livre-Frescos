@@ -5,10 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 // Entidade responsável pelo Warehouse
 // @author Ederson Rodrigues Araujo
@@ -17,6 +15,7 @@ import javax.persistence.Id;
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "warehouses")
 public class Warehouse {
 
     @Id
@@ -25,4 +24,6 @@ public class Warehouse {
     private String address;
     private String name;
 
+    @OneToMany(mappedBy = "warehouse")
+    private Set<Section> sections;
 }
