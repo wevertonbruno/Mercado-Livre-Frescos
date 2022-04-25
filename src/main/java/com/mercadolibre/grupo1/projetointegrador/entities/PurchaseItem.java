@@ -30,6 +30,6 @@ public class PurchaseItem {
     private Integer quantity;
 
     public BigDecimal subTotal() {
-        return product.getPrice() * BigDecimal.valueOf(quantity);
+        return product.getPrice().multiply(BigDecimal.valueOf(quantity));
     }
 }
