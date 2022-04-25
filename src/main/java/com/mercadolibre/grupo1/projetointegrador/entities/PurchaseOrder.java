@@ -14,6 +14,7 @@ import java.util.List;
  * classe responsavel por registrar os informacoes de uma compra do cliente, sendo utilizada
  * desde o momento que o cliente abre o carrinho de compra (com StatusOrder de "OPENED") até
  * o fechamento da depois que o produto é entregue
+ *
  * @Author: Rogerio Lambert
  */
 
@@ -28,9 +29,11 @@ public class PurchaseOrder {
     @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL)
     private List<PurchaseItem> products;
     private LocalDateTime createdDate;
-    private  LocalDateTime updatedDate;
+    private LocalDateTime updatedDate;
     @ManyToOne
+    @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
+    @Enumerated(EnumType.STRING)
     private OrderStatus orderStatus;
 
     public BigDecimal totalPrice() {

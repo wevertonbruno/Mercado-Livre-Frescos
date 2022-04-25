@@ -16,13 +16,16 @@ import java.math.BigDecimal;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "purchase_items")
 public class PurchaseItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
+    @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
     @ManyToOne
+    @JoinColumn(name = "purchase_order_id", referencedColumnName = "id")
     private PurchaseOrder purchaseOrder;
     private Integer quantity;
 

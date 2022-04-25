@@ -17,10 +17,8 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "customers")
 public class Customer extends AuthenticableUser {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
     private String cpf;
     @OneToMany
     private List<PurchaseOrder> orders;
