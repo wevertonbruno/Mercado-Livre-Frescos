@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.net.URI;
 /*
     @author Gabriel Essenio
@@ -24,14 +25,14 @@ public class InboundOrderController {
 
     // Endpoint para fazer o cadastro de uma entrada de Ordem de Serviço
     @PostMapping("/")
-    public ResponseEntity<BatchStockDTO> createInboundOrder(@RequestBody InboundOrderDTO inboundOrder, HttpServletRequest http){
+    public ResponseEntity<BatchStockDTO> createInboundOrder(@Valid @RequestBody InboundOrderDTO inboundOrder, HttpServletRequest http){
         BatchStockDTO newInboundOrder = inboundOrderService.createInboundOrder(inboundOrder);
         return ResponseEntity.created(URI.create(http.getRequestURI())).body(newInboundOrder);
     }
 
     // Endpoint para fazer a atualizaçao do Estoque pelo numero da Ordem de Serviço
     @PutMapping("/")
-    public ResponseEntity<BatchStockDTO> updateInboundOrder(@RequestBody InboundOrderDTO inboundOrder, HttpServletRequest http){
+    public ResponseEntity<BatchStockDTO> updateInboundOrder(@Valid @RequestBody InboundOrderDTO inboundOrder, HttpServletRequest http){
         BatchStockDTO newInboundOrder = inboundOrderService.updateOrder(inboundOrder);
         return ResponseEntity.created(URI.create(http.getRequestURI())).body(newInboundOrder);
     }
