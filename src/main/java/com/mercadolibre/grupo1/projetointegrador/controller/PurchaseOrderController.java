@@ -18,7 +18,7 @@ public class PurchaseOrderController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<ProductDTO>> listProductForCategory(@RequestParam(required = false, name = "querytype") PurchaseOrder orderStatus) {
+    public ResponseEntity<List<ProductDTO>> listProductForCategory(@RequestParam(required = false, name = "status") PurchaseOrder orderStatus) {
         return null;
     }
 
@@ -36,15 +36,15 @@ public class PurchaseOrderController {
         return null;
     }
 
-    @GetMapping("/querytype/{idOrder}")
+    @GetMapping("/{idOrder}")
     public ResponseEntity<PurchaseOrder> showProductsOrder(@PathVariable("idOrder") Long idOrder) {
 
         return null;
     }
 
-    @PutMapping("/orders/query-param/{idOrder}")
+    @PutMapping("/orders/{idOrder}")
     public ResponseEntity<PurchaseOrder> modifyOrderStatusByOpenedOrClosed(@PathVariable Long idOrder,
-                                                                           @RequestBody PurchaseOrder statusOrder) {
+                                                                           @RequestBody PurchaseOrderStatusDTO statusOrder) {
 
         return null;
     }
