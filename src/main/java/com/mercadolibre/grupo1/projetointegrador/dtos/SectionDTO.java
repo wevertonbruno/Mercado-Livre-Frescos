@@ -12,8 +12,8 @@ import javax.validation.constraints.NotNull;
 @Data
 public class SectionDTO {
 
-    @NotNull
+    @NotNull(message = "Código da sessão não pode ser nulo")
     private Long sectionCode;
-    @NotNull
+    @NotNull(message = "Código da sessão não pode ser nulo")
     private Long warehouseCode;
 }
