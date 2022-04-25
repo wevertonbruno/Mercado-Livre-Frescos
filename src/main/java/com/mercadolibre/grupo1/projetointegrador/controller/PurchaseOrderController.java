@@ -1,5 +1,7 @@
 package com.mercadolibre.grupo1.projetointegrador.controller;
 
+import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
+import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,7 +38,7 @@ public class PurchaseOrderController {
 
         URI uri =  uriBuilder
                 .path("/{idOrder}")
-                .buildAndExpand(purchaseOrder.getIdOrder())
+                .buildAndExpand(purchaseOrder.getId())
                 .toUri();
 
         //...
