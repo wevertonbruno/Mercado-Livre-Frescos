@@ -26,13 +26,10 @@ public class InboundOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    //validar se será gerado pelo banco de dados
-    private Integer orderNumber;
     private LocalDate orderDate;
     @ManyToOne
     @JoinColumn(name = "section_id")
     private Section section;
     @OneToMany(mappedBy = "inboundOrder")
     private List<BatchStock> batchStock;
-
 }

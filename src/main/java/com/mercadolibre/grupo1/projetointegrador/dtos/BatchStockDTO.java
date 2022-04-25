@@ -16,20 +16,20 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class BatchStock {
+public class BatchStockDTO {
     private Long id;
-    @NotNull
+    @NotNull (message = "O número do lote não pode estar vazio")
     private Integer batchNumber;
-    @NotNull
+    @NotNull (message = "A temperatura atual não pode estar vazia")
     private Float currentTemperature;
-    @NotNull
+    @NotNull(message = "A temperatura mínima não pode estar vazia")
     private Float minimumTemperature;
-    @NotNull
+    @NotNull(message = "A quantidade inicial não pode estar vazia")
     private Integer initialQuantity;
-    @NotNull
+    @NotNull(message = "A quantidade atual não pode estar vazia")
     private Integer currentQuantity;
-    @NotNull
+    @NotNull(message = "A data de fabricação não pode estar vazia")
     private LocalDateTime manufacturingDateTime;
-    @NotNull
+    @NotNull(message = "A data de validade não pode estar vazia")
     private LocalDate dueDate;
 }

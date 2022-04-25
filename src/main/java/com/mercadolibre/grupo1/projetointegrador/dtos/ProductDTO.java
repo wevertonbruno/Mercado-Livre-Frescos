@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
@@ -18,12 +20,13 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 public class ProductDTO {
     private Long productId;
-    @NotNull
+    @NotNull(message = "O nome do produto não pode estar vazio")
     private String nome;
-    @NotNull
+    @NotNull(message = "O volume do produto não pode estar vazio")
     private Double volume;
-    @NotNull
+    @NotNull(message = "A preço não pode estar vazio")
+    @DecimalMin("0.00")
     private BigDecimal price;
-    @NotNull
+    @NotNull(message = "A categoria não pode estar vazia")
     private ProductCategory category;
 }

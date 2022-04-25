@@ -26,11 +26,17 @@ public class BatchStock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Integer batchNumber;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
     private Float currentTemperature;
     private Float minimumTemperature;
     private Integer initialQuantity;
     private Integer currentQuantity;
     private LocalDateTime manufacturingDateTime;
     private LocalDate dueDate;
+
+    public Double volume() {
+        return product.getVolume() * currentQuantity;
+    }
 }

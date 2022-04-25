@@ -8,6 +8,7 @@ import org.hibernate.annotations.Tables;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.util.Set;
 
 /**
  * @author Nayara Coca
@@ -25,10 +26,13 @@ import java.math.BigDecimal;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long productId;
+    private Long id;
+    @OneToMany(mappedBy = "product")
+    private Set<BatchStock> batchStock;
     private String nome;
     private Double volume;
     private BigDecimal price;
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
+
 }
