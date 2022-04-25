@@ -15,6 +15,13 @@ import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 
+/**
+ * Adicionados os EndPoints para realizacao do crud (exceto delete) da API
+ *
+ * @author  Jefferson Botelho
+ * @since   2022-03-22
+ */
+
 @RestController
 @RequestMapping("/api/v1/fresh-products/")
 public class PurchaseOrderController {
@@ -50,7 +57,7 @@ public class PurchaseOrderController {
                 .body(response);
     }
 
-    @GetMapping("/{idOrder}")
+    @GetMapping("/orders/{idOrder}")
     public ResponseEntity<PurchaseOrder> showProductsOrder(@PathVariable("idOrder") Long idOrder) {
 
         return null;
