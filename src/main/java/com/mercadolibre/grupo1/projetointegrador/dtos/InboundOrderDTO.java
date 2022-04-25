@@ -27,4 +27,5 @@ public class InboundOrderDTO {
     @Valid
     @NotEmpty(message = "A ordem de entrada precisa de um lote")
     private Set<BatchStockDTO> batchStock;
+
 }
