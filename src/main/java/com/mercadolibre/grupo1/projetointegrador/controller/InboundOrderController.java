@@ -30,10 +30,10 @@ public class InboundOrderController {
         return ResponseEntity.created(URI.create(http.getRequestURI())).body(newInboundOrder);
     }
 
-    // Endpoint para fazer a atualizaçao do Estoque pelo numero da Ordem de Serviço
-    @PutMapping("/")
-    public ResponseEntity<BatchStockDTO> updateInboundOrder(@Valid @RequestBody InboundOrderDTO inboundOrder, HttpServletRequest http){
-        BatchStockDTO newInboundOrder = inboundOrderService.updateOrder(inboundOrder);
+    // Endpoint para fazer a atualizaçao do Estoque pelo numero da Ordem de Serviço, pegando por parametro o Id que vai ser alterado
+    @PutMapping("/{id}")
+    public ResponseEntity<BatchStockDTO> updateInboundOrder(@PathVariable Long id ,@Valid @RequestBody InboundOrderDTO inboundOrder, HttpServletRequest http){
+        BatchStockDTO newInboundOrder = inboundOrderService.updateOrder(id, inboundOrder);
         return ResponseEntity.created(URI.create(http.getRequestURI())).body(newInboundOrder);
     }
 }
