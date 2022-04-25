@@ -28,7 +28,7 @@ public class InboundOrder {
     private Long id;
     private LocalDate orderDate;
     @ManyToOne
-    @JoinColumn(name = "section_id")
+    @JoinColumn(name = "section_id", referencedColumnName = "id")
     private Section section;
     @OneToMany(mappedBy = "inboundOrder")
     private List<BatchStock> batchStock;
