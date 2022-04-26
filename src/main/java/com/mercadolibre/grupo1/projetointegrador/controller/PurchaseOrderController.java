@@ -1,6 +1,7 @@
 package com.mercadolibre.grupo1.projetointegrador.controller;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
+import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import com.mercadolibre.grupo1.projetointegrador.services.ProductService;
@@ -61,10 +62,9 @@ public class PurchaseOrderController {
     }
 
     @PutMapping("/orders/{idOrder}")
-    public ResponseEntity<PurchaseOrder> modifyOrderStatusByOpenedOrClosed(@PathVariable Long idOrder,
-                                                                           @RequestBody PurchaseOrder statusOrder) {
-
-        PurchaseOrder purchaseOrder = purchaseOrderService.editExistentOrder(idOrder, statusOrder);
+    public ResponseEntity<PurchaseOrderStatusDTO> modifyOrderStatusByOpenedOrPreparing(@PathVariable Long idOrder,
+                                                                           @RequestBody PurchaseOrderStatusDTO statusOrder) {
+        PurchaseOrderStatusDTO purchaseOrder = purchaseOrderService.editExistentOrder(idOrder, statusOrder);
         return ResponseEntity.ok(purchaseOrder);
     }
 
