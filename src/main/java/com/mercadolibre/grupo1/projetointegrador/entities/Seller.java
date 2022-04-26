@@ -4,7 +4,9 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 import javax.persistence.Entity;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import java.util.Set;
 
 /**
  * Entidade que mapeia a tabela de vendedores (sellers).
@@ -16,4 +18,6 @@ import javax.persistence.Table;
 @NoArgsConstructor
 @Table(name = "sellers")
 public class Seller extends AuthenticableUser{
+    @OneToMany(mappedBy = "seller")
+    private Set<Product> products;
 }
