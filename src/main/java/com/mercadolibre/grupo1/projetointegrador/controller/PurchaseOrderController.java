@@ -1,7 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.controller;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
-import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import com.mercadolibre.grupo1.projetointegrador.services.ProductService;
@@ -54,6 +53,7 @@ public class PurchaseOrderController {
         return null;
     }
 
+    // sera retornado uma lista com todos os produtos contidos no carrinho.
     @GetMapping("/{idOrder}")
     public ResponseEntity<PurchaseOrder> showProductsOrder(@PathVariable("idOrder") Long idOrder) {
 
