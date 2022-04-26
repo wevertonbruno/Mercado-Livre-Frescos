@@ -1,17 +1,16 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
-import com.mercadolibre.grupo1.projetointegrador.entities.Agent;
-import com.mercadolibre.grupo1.projetointegrador.entities.Role;
-import com.mercadolibre.grupo1.projetointegrador.entities.Seller;
-import com.mercadolibre.grupo1.projetointegrador.repositories.AgentRepository;
-import com.mercadolibre.grupo1.projetointegrador.repositories.RoleRepository;
-import com.mercadolibre.grupo1.projetointegrador.repositories.SellerRepository;
-import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
+        import com.mercadolibre.grupo1.projetointegrador.entities.*;
+        import com.mercadolibre.grupo1.projetointegrador.entities.enums.OrderStatus;
+        import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
+        import com.mercadolibre.grupo1.projetointegrador.repositories.*;
+        import lombok.RequiredArgsConstructor;
+        import org.slf4j.Logger;
+        import org.slf4j.LoggerFactory;
+        import org.springframework.stereotype.Component;
 
-import java.util.Set;
+        import java.math.BigDecimal;
+        import java.util.Set;
 
 
 /**
@@ -26,20 +25,57 @@ public class DatabaseSeeder {
     private final SellerRepository sellerRepository;
     private final AgentRepository agentRepository;
     private final RoleRepository roleRepository;
+    private final ProductRepository productRepository;
+    private final PurchaseOrderRepository purchaseOrderRepository;
+    private final PurchaseItemRepository purchaseItemRepository;
+    private final CustomerRepository customerRepository;
 
     public void seed() {
         LOGGER.info("Seeding database...");
 
         seedRoles();
         seedSellers();
+        seedCustomer();
         seedAgents();
+        seedProducts();
+        seedPurchaseOrders();
+        seedPurchaseItems();
 
         LOGGER.info("Seeding complete...");
+    }
+
+    private void seedPurchaseItems() {
+        Product oldProduct = productRepository.findById(1L).get();
+        PurchaseOrder oldPurchaseOrder = purchaseOrderRepository.findById(1L).get();
+        purchaseItemRepository.save(PurchaseItem.builder().id(1L).product(oldProduct).purchaseOrder(oldPurchaseOrder).quantity(2).build());
+    }
+
+    private void seedProducts() {
+        productRepository.save(Product.builder().id(1L).nome("Product1").volume(1D).price(BigDecimal.valueOf(100)).category(ProductCategory.FRESCO).build());
+        productRepository.save(Product.builder().id(2L).nome("Product2").volume(2D).price(BigDecimal.valueOf(200)).category(ProductCategory.CONGELADO).build());
+        productRepository.save(Product.builder().id(3L).nome("Product3").volume(3D).price(BigDecimal.valueOf(300)).category(ProductCategory.REFRIGERADO).build());
+        productRepository.save(Product.builder().id(4L).nome("Product4").volume(4D).price(BigDecimal.valueOf(400)).category(ProductCategory.FRESCO).build());
+        productRepository.save(Product.builder().id(5L).nome("Product5").volume(5D).price(BigDecimal.valueOf(500)).category(ProductCategory.REFRIGERADO).build());
+    }
+
+    private void seedPurchaseOrders() {
+
+        purchaseOrderRepository.save(PurchaseOrder.builder().id(1L).orderStatus(OrderStatus.SENT).build());
+        purchaseOrderRepository.save(PurchaseOrder.builder().id(2L).orderStatus(OrderStatus.CLOSED).build());
+        purchaseOrderRepository.save(PurchaseOrder.builder().id(3L).orderStatus(OrderStatus.OPENED).build());
+        purchaseOrderRepository.save(PurchaseOrder.builder().id(4L).orderStatus(OrderStatus.PREPARING).build());
+        purchaseOrderRepository.save(PurchaseOrder.builder().id(5L).orderStatus(OrderStatus.OPENED).build());
     }
 
     private void seedRoles(){
         roleRepository.save(Role.builder().id(1L).name("ROLE_AGENT").build());
         roleRepository.save(Role.builder().id(2L).name("ROLE_SELLER").build());
+        roleRepository.save(Role.builder().id(3L).name("ROLE_CUSTOMER").build());
+    }
+
+        private void seedCustomer() {
+        Role customerRole = roleRepository.findById(3L).get();
+        customerRepository.save(Customer.builder().id(1L).username("customer1").password("123456").email("custumer1@mercadolibre.com").roles(Set.of(customerRole)).build());
     }
 
     private void seedSellers(){
