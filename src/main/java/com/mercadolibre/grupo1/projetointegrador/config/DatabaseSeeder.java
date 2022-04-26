@@ -1,16 +1,18 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
-import com.mercadolibre.grupo1.projetointegrador.entities.Agent;
-import com.mercadolibre.grupo1.projetointegrador.entities.Role;
-import com.mercadolibre.grupo1.projetointegrador.entities.Seller;
-import com.mercadolibre.grupo1.projetointegrador.repositories.AgentRepository;
-import com.mercadolibre.grupo1.projetointegrador.repositories.RoleRepository;
-import com.mercadolibre.grupo1.projetointegrador.repositories.SellerRepository;
+import com.mercadolibre.grupo1.projetointegrador.entities.*;
+import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
+import com.mercadolibre.grupo1.projetointegrador.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 
@@ -26,6 +28,12 @@ public class DatabaseSeeder {
     private final SellerRepository sellerRepository;
     private final AgentRepository agentRepository;
     private final RoleRepository roleRepository;
+    private final CustomerRepository customerRepository;
+    private final ProductRepository productRepository;
+    private final BatchStockRepository batchStockRepository;
+    private final WarehouseRepository warehouseRepository;
+    private final SectionRepository sectionRepository;
+    private final InboundOrderRepository inboundOrderRepository;
 
     public void seed() {
         LOGGER.info("Seeding database...");
@@ -33,6 +41,12 @@ public class DatabaseSeeder {
         seedRoles();
         seedSellers();
         seedAgents();
+        seedCustomer();
+        seedProducts();
+        seedWarehouse();
+        seedSection();
+        seedInboundOrder();
+        seedBatchStock();
 
         LOGGER.info("Seeding complete...");
     }
@@ -40,6 +54,7 @@ public class DatabaseSeeder {
     private void seedRoles(){
         roleRepository.save(Role.builder().id(1L).name("ROLE_AGENT").build());
         roleRepository.save(Role.builder().id(2L).name("ROLE_SELLER").build());
+        roleRepository.save(Role.builder().id(3L).name("ROLE_CUSTOMER").build());
     }
 
     private void seedSellers(){
@@ -54,5 +69,36 @@ public class DatabaseSeeder {
         agentRepository.save(Agent.builder().id(2L).username("agent2").password("123456").email("agent2@mercadolibre.com").roles(Set.of(agentRole)).build());
         agentRepository.save(Agent.builder().id(2L).username("agent3").password("123456").email("agent3@mercadolibre.com").roles(Set.of(agentRole)).build());
         agentRepository.save(Agent.builder().id(2L).username("agent4").password("123456").email("agent4@mercadolibre.com").roles(Set.of(agentRole)).build());
+    }
+
+    private void seedCustomer() {
+        Role customerRole = roleRepository.findById(3L).get();
+        customerRepository.save(Customer.builder().id(1L).username("customer1").password("123456").email("customer1@mercadolibre.com").roles(Set.of(customerRole)).build());
+        customerRepository.save(Customer.builder().id(2L).username("customer2").password("123456").email("customer2@mercadolibre.com").roles(Set.of(customerRole)).build());
+    }
+
+    private void seedProducts() {
+        productRepository.save(Product.builder().id(1L).nome("Maçã").volume(1.).price(BigDecimal.valueOf(1.)).category(ProductCategory.FRESCO).build());
+        productRepository.save(Product.builder().id(2L).nome("Melancia").volume(20.).price(BigDecimal.valueOf(15.30)).category(ProductCategory.FRESCO).build());
+    }
+
+    private void seedWarehouse() {
+        warehouseRepository.save(Warehouse.builder().id(1L).address("Address A").name("WH1").build());
+    }
+
+    private void seedSection() {
+        Warehouse warehouse = warehouseRepository.findById(1L).get();
+        sectionRepository.save(Section.builder().id(1L).description("description").capacity(500.).warehouse(warehouse).build());
+    }
+
+    private void seedInboundOrder() {
+        Section section = sectionRepository.getById(1L);
+        inboundOrderRepository.save(InboundOrder.builder().id(1L).orderDate(LocalDate.now()).section(section).build());
+    }
+
+    private void seedBatchStock() {
+        Product product1 = productRepository.getById(1L);
+        InboundOrder inboundOrder = inboundOrderRepository.findById(1L).get();
+        batchStockRepository.save(BatchStock.builder().id(1L).product(product1).currentTemperature(20F).minimumTemperature(10F).initialQuantity(20).currentQuantity(20).manufacturingDateTime(LocalDateTime.now()).dueDate(LocalDate.now()).inboundOrder(inboundOrder).build());
     }
 }

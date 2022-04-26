@@ -12,9 +12,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Period;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class PurchaseOrderService {
@@ -59,7 +57,7 @@ public class PurchaseOrderService {
             // variável que vai armazenar quantos produtos existem com as condicao passada
             int totalDeProdutos = 0;
 
-            // percorre a lista de produtos encontrados no armazem
+            // percorre a lista de lotes de produtos encontrados no armazem
             for (BatchStock productInStock : prodInStock) {
 
                 // dias para se vencer do produto
@@ -86,12 +84,12 @@ public class PurchaseOrderService {
         purchaseOrder = purchaseOrderRepository.save(purchaseOrder);
 
         // adiciona o purchaseOrder em cada item
-        for (PurchaseItem p : purchaseOrder.getProducts()) {
-            p.setPurchaseOrder(purchaseOrder);
-        }
+//        for (PurchaseItem p : purchaseOrder.getProducts()) {
+//            p.setPurchaseOrder(purchaseOrder);
+//        }
 
         //salva no banco as mudanas feitas
-        purchaseOrderRepository.save(purchaseOrder);
+//        purchaseOrderRepository.save(purchaseOrder);
 
         return purchaseOrder.totalPrice();
     }
