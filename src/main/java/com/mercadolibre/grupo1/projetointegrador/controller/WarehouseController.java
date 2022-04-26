@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * @author Nayara Coca
+ * criação do controller de warehouse, que localiza produtos por armazém
+ */
 @RestController
 @RequestMapping("/api/v1/fresh-products/warehouse")
 public class WarehouseController {
@@ -27,5 +31,7 @@ public class WarehouseController {
         List<WarehouseDTO> findWarehouseByItems = warehouseService.findWarehouse(batchStock);
         return ResponseEntity.ok().body(findWarehouseByItems);
     }
+
+
 }
 
