@@ -11,6 +11,6 @@ public interface PurchaseOrderService {
     List<ProductDTO> allProductsList();
     List<ProductDTO> listProductByStatus(PurchaseOrder orderStatus);
     PurchaseOrder calcFinal(PurchaseOrder purchaseOrder);
-    List<PurchaseOrder> showProductsInOrders();
-    PurchaseOrder editExistentOrder(Long id, PurchaseOrderStatusDTO purchaseOrderStatus);
+    PurchaseOrder showProductsInOrders(Long id);
+    PurchaseOrder editExistentOrder(Long id, PurchaseOrder purchaseOrderStatus);
 }

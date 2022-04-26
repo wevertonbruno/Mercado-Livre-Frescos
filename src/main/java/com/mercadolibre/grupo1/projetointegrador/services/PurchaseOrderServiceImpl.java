@@ -42,15 +42,18 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     }
 
     @Override
-    public List<PurchaseOrder> showProductsInOrders() {
-        return null;
+    public PurchaseOrder showProductsInOrders(Long id) {
+        PurchaseOrder order = purchaseOrderRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("TestCase nao encontrado!"));
+
+        return order;
     }
 
     @Override
-    public PurchaseOrder editExistentOrder(Long id, PurchaseOrderStatusDTO status) {
+    public PurchaseOrder editExistentOrder(Long id, PurchaseOrder status) {
 
         PurchaseOrder purchaseOrder = purchaseOrderRepository.findById(id).map(ordersMap -> {
-            ordersMap.setOrderStatus(status.getStatus());
+            ordersMap.setOrderStatus(status.getOrderStatus());
 
             return ordersMap;
         }).orElseThrow(() -> new RuntimeException("Pedido nao encontrado"));

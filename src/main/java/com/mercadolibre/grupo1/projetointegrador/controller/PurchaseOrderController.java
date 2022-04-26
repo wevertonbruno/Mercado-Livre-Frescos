@@ -57,13 +57,15 @@ public class PurchaseOrderController {
     @GetMapping("/{idOrder}")
     public ResponseEntity<PurchaseOrder> showProductsOrder(@PathVariable("idOrder") Long idOrder) {
 
-        return null;
+        return ResponseEntity.ok(purchaseOrderService.showProductsInOrders(idOrder));
     }
 
     @PutMapping("/orders/{idOrder}")
     public ResponseEntity<PurchaseOrder> modifyOrderStatusByOpenedOrClosed(@PathVariable Long idOrder,
-                                                                           @RequestBody PurchaseOrderStatusDTO statusOrder) {
+                                                                           @RequestBody PurchaseOrder statusOrder) {
 
-        return null;
+        PurchaseOrder purchaseOrder = purchaseOrderService.editExistentOrder(idOrder, statusOrder);
+        return ResponseEntity.ok(purchaseOrder);
     }
+
 }
