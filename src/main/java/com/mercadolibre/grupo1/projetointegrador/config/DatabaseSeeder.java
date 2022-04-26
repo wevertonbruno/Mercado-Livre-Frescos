@@ -40,7 +40,7 @@ public class DatabaseSeeder {
         seedSellers();
         seedAgents();
         seedWarehouses();
-        seedBatches();
+        seedProducts();
 
         LOGGER.info("Seeding complete...");
     }
@@ -71,44 +71,11 @@ public class DatabaseSeeder {
         sectionRepository.save(Section.builder().id(3L).capacity(100.0).category(ProductCategory.REFRIGERADO).warehouse(w1).description("Sessao de refrigerados").build());
     }
 
-    private void seedBatches(){
+    private void seedProducts() {
         Seller s1 = sellerRepository.findById(1L).get();
         Seller s2 = sellerRepository.findById(2L).get();
-        Product p1 = productRepository.save(Product.builder().id(1L).seller(s1).category(ProductCategory.CONGELADO).price(BigDecimal.TEN).nome("peixe").volume(10.0).build());
-        Product p2 = productRepository.save(Product.builder().id(2L).seller(s2).category(ProductCategory.FRESCO).price(BigDecimal.TEN).nome("sardinha").volume(5.0).build());
-        Product p3 = productRepository.save(Product.builder().id(3L).seller(s1).category(ProductCategory.REFRIGERADO).price(BigDecimal.TEN).nome("carne").volume(15.0).build());
-
-        batchStockRepository.save(
-                BatchStock.builder().id(1L)
-                        .product(p1)
-                        .initialQuantity(10)
-                        .currentQuantity(10)
-                        .currentTemperature(15.0F)
-                        .minimumTemperature(10.0F)
-                        .manufacturingDateTime(LocalDateTime.now())
-                        .dueDate(LocalDate.of(2022,06, 25))
-                        .build());
-
-        batchStockRepository.save(
-                BatchStock.builder().id(2L)
-                        .product(p2)
-                        .initialQuantity(10)
-                        .currentQuantity(10)
-                        .currentTemperature(15.0F)
-                        .minimumTemperature(10.0F)
-                        .manufacturingDateTime(LocalDateTime.now())
-                        .dueDate(LocalDate.of(2022,06, 25))
-                        .build());
-
-        batchStockRepository.save(
-                BatchStock.builder().id(3L)
-                        .product(p3)
-                        .initialQuantity(10)
-                        .currentQuantity(10)
-                        .currentTemperature(15.0F)
-                        .minimumTemperature(10.0F)
-                        .manufacturingDateTime(LocalDateTime.now())
-                        .dueDate(LocalDate.of(2022,06, 25))
-                        .build());
+        productRepository.save(Product.builder().id(1L).seller(s1).category(ProductCategory.CONGELADO).price(BigDecimal.TEN).nome("peixe").volume(10.0).build());
+        productRepository.save(Product.builder().id(2L).seller(s2).category(ProductCategory.FRESCO).price(BigDecimal.TEN).nome("sardinha").volume(5.0).build());
+        productRepository.save(Product.builder().id(3L).seller(s1).category(ProductCategory.REFRIGERADO).price(BigDecimal.TEN).nome("carne").volume(15.0).build());
     }
 }

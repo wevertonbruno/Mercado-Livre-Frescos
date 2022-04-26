@@ -17,12 +17,9 @@ import java.util.*;
 @RequiredArgsConstructor
 public class SectionService {
     private final SectionRepository sectionRepository;
-    private final InboundOrderRepository inboundOrderRepository;
 
     public Section findBySectionDto(SectionDTO sectionDto) {
-        Section section = sectionRepository.findByIdAndWarehouse_Id(sectionDto.getSectionCode(), sectionDto.getWarehouseCode())
+        return sectionRepository.findByIdAndWarehouse_Id(sectionDto.getSectionCode(), sectionDto.getWarehouseCode())
                 .orElseThrow(() -> new EntityNotFoundException("Sessão e/ou Armazem não encontrado na base de dados"));
-
-        return section;
     }
 }

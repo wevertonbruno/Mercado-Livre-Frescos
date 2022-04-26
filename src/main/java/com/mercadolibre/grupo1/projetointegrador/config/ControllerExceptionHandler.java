@@ -1,7 +1,10 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.ExceptionDTO;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.ExcededCapacityException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.ExceptionMessage;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.InvalidCategoryException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -30,6 +33,33 @@ public class ControllerExceptionHandler {
         ExceptionDTO response = ExceptionDTO.badRequest(e.getMessage(), request.getRequestURI());
       return ResponseEntity.badRequest().body(response);
 
+    }
+
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ExceptionDTO> entityNotFound(EntityNotFoundException e,
+                                                         HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.badRequest(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(ExcededCapacityException.class)
+    public ResponseEntity<ExceptionDTO> excededCapacityException(ExcededCapacityException e,
+                                                       HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.badRequest(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(InvalidCategoryException.class)
+    public ResponseEntity<ExceptionDTO> invalidCategoryException(InvalidCategoryException e,
+                                                                 HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.badRequest(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.badRequest().body(response);
     }
 
  }
