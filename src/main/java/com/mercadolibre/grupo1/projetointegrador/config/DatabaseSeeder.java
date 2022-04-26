@@ -6,6 +6,7 @@ import com.mercadolibre.grupo1.projetointegrador.entities.Seller;
 import com.mercadolibre.grupo1.projetointegrador.repositories.AgentRepository;
 import com.mercadolibre.grupo1.projetointegrador.repositories.RoleRepository;
 import com.mercadolibre.grupo1.projetointegrador.repositories.SellerRepository;
+import com.mercadolibre.grupo1.projetointegrador.repositories.WarehouseRepository;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,4 +56,5 @@ public class DatabaseSeeder {
         agentRepository.save(Agent.builder().id(2L).username("agent3").password("123456").email("agent3@mercadolibre.com").roles(Set.of(agentRole)).build());
         agentRepository.save(Agent.builder().id(2L).username("agent4").password("123456").email("agent4@mercadolibre.com").roles(Set.of(agentRole)).build());
     }
+
 }
