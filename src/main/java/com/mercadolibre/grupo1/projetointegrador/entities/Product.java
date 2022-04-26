@@ -29,5 +29,8 @@ public class Product {
     private BigDecimal price;
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
+    @ManyToOne
+    @JoinColumn(name = "seller_id", referencedColumnName = "id")
+    private Seller seller;
 
 }

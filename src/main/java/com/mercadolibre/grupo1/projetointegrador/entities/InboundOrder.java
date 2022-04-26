@@ -1,6 +1,7 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 
 import lombok.*;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDate;

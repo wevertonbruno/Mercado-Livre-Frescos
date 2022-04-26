@@ -72,9 +72,11 @@ public class DatabaseSeeder {
     }
 
     private void seedBatches(){
-        Product p1 = productRepository.save(Product.builder().id(1L).category(ProductCategory.CONGELADO).price(BigDecimal.TEN).nome("peixe").volume(10.0).build());
-        Product p2 = productRepository.save(Product.builder().id(2L).category(ProductCategory.FRESCO).price(BigDecimal.TEN).nome("sardinha").volume(5.0).build());
-        Product p3 = productRepository.save(Product.builder().id(3L).category(ProductCategory.REFRIGERADO).price(BigDecimal.TEN).nome("carne").volume(15.0).build());
+        Seller s1 = sellerRepository.findById(1L).get();
+        Seller s2 = sellerRepository.findById(2L).get();
+        Product p1 = productRepository.save(Product.builder().id(1L).seller(s1).category(ProductCategory.CONGELADO).price(BigDecimal.TEN).nome("peixe").volume(10.0).build());
+        Product p2 = productRepository.save(Product.builder().id(2L).seller(s2).category(ProductCategory.FRESCO).price(BigDecimal.TEN).nome("sardinha").volume(5.0).build());
+        Product p3 = productRepository.save(Product.builder().id(3L).seller(s1).category(ProductCategory.REFRIGERADO).price(BigDecimal.TEN).nome("carne").volume(15.0).build());
 
         batchStockRepository.save(
                 BatchStock.builder().id(1L)

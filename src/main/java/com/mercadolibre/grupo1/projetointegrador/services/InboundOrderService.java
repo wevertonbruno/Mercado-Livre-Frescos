@@ -14,8 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -35,38 +34,75 @@ public class InboundOrderService {
     @Transactional
     public InboundOrderResponseDTO createInboundOrder(InboundOrderDTO inboundOrderDTO) {
         InboundOrder inboundOrder = checkAndCreateInboundOrder(inboundOrderDTO);
+        List<BatchStock> batchStocks = createBatchStock(inboundOrderDTO.getBatchStock(), inboundOrder.getSection());
+
+        //Verifica a capacidade da sessao
+        checkSectionCapacity(inboundOrder.getSection(), batchStocks);
+
+        inboundOrder.setBatchStock(batchStocks);
         inboundOrder = inboundOrderRepository.save(inboundOrder);
 
         return InboundOrderResponseDTO.createFromInboundOrder(inboundOrder);
     }
 
     @Transactional
-    public InboundOrderResponseDTO updateOrder(Long id, InboundOrderDTO inboundOrder) {
-        return null;
+    public InboundOrderResponseDTO updateOrder(Long id, InboundOrderDTO inboundOrderDTO) {
+        InboundOrder inboundOrder = checkAndCreateInboundOrder(inboundOrderDTO);
+        List<BatchStock> batchStocks = updateBatchStock(inboundOrderDTO.getBatchStock(), inboundOrder.getSection());
+
+        //Verifica a capacidade da sessao
+        checkSectionCapacity(inboundOrder.getSection(), batchStocks);
+
+        inboundOrder.setId(id);
+        inboundOrder.setBatchStock(batchStocks);
+
+        inboundOrder = inboundOrderRepository.save(inboundOrder);
+
+        return InboundOrderResponseDTO.createFromInboundOrder(inboundOrder);
     }
 
     private InboundOrder checkAndCreateInboundOrder(InboundOrderDTO inboundOrderDTO) {
         Section section = sectionService.findBySectionDto(inboundOrderDTO.getSection());
-        List<BatchStock> batchStocks = createBatchStock(inboundOrderDTO.getBatchStock(), section);
-
-        //Verifica se a sessao tem capacidade para receber o estoque
-        checkSectionCapacity(section, batchStocks);
 
         InboundOrder inboundOrder = new InboundOrder();
         inboundOrder.setSection(section);
         inboundOrder.setOrderDate(inboundOrderDTO.getOrderDate());
-        inboundOrder.setBatchStock(batchStocks);
 
         return inboundOrder;
     }
 
     private List<BatchStock> createBatchStock(List<BatchStockDTO> batchStockDTO, Section section){
-        return batchStockDTO.stream().map( batchStockItem -> {
-            BatchStock batchItem = batchStockService.createFromDTO(batchStockItem);
-            checkProductAndSectionCategory(batchItem.getProduct(), section);
+        return batchStockDTO.stream()
+                .map(batchStockItem -> {
+                    BatchStock batchItem = batchStockService.createFromDTO(batchStockItem);
+                    checkProductAndSectionCategory(batchItem.getProduct(), section);
+                    return batchItem;
+                })
+                .collect(Collectors.toList());
+    }
 
-            return batchItem;
-        }).collect(Collectors.toList());
+    private List<BatchStock> updateBatchStock(List<BatchStockDTO> batchStockDTO, Section section){
+        //Cria novos lotes
+        List<BatchStock> newBatches = createBatchStock(
+                batchStockDTO.stream().filter(item -> item.getBatchNumber() == null).collect(Collectors.toList()),
+                section);
+
+        //Atualiza os lotes ja existentes evitando lotes duplicados
+        Set<Long> distinctBatches = new HashSet<>();
+        List<BatchStock> existentsBatches = batchStockDTO.stream()
+                .filter(item -> item.getBatchNumber() != null)
+                .filter(e -> distinctBatches.add(e.getBatchNumber()))
+                .map(batchStockItem -> {
+                    BatchStock batchItem = batchStockService.updateFromDTO(batchStockItem);
+                    checkProductAndSectionCategory(batchItem.getProduct(), section);
+                    return batchItem;
+                })
+                .collect(Collectors.toList());
+
+        //junta todos os lotes
+        existentsBatches.addAll(newBatches);
+
+        return existentsBatches;
     }
 
     private void checkProductAndSectionCategory(Product product, Section section){
@@ -75,10 +111,19 @@ public class InboundOrderService {
     }
 
     private void checkSectionCapacity(Section section, List<BatchStock> batchStocks){
-        Double inboundVolume = batchStocks.stream().reduce(0.0, (total, batchItem) -> batchItem.getVolume() + total, Double::sum);
-        Double remainingVolume = section.getRemainingCapacity();
-        if(inboundVolume > remainingVolume){
-            throw new ExcededCapacityException("A ordem de entrada possui um volume de " + inboundVolume + "m3. A capacidade restante da sessão é de " + remainingVolume + "m3!");
+        Set<BatchStock> currentStock = section.getStock();
+        Double filledVolume = currentStock.stream().reduce(0.0, (total, batchItem) -> total + batchItem.getVolume(), Double::sum);
+
+        //Verifica o estoque atual e junta com o novo estoque
+        List<BatchStock> targetStock = new ArrayList<>();
+        List<Long> batches = batchStocks.stream().filter(item -> item.getId() != null).mapToLong(item -> item.getId()).boxed().collect(Collectors.toList());
+        targetStock.addAll(batchStocks);
+        targetStock.addAll(currentStock.stream().filter(item -> !batches.contains(item.getId())).collect(Collectors.toList()));
+
+        Double targetVolume = targetStock.stream().reduce(0.0, (total, batchItem) -> total + batchItem.getVolume(), Double::sum);
+
+        if(section.getCapacity() < targetVolume){
+            throw new ExcededCapacityException(String.format("Capacidade da sessao excedida! Capacidade total da sessao: %.2fm3, Capacidade ocupada: %.2fm3, Após a operacao: %.2fm3.", section.getCapacity(), filledVolume, targetVolume));
         }
     }
 
