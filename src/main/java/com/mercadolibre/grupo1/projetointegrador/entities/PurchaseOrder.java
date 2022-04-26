@@ -28,8 +28,10 @@ public class PurchaseOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, fetch = FetchType.EAGER) // a anotacao FetchType.EAGER ira garantir o carregamento de todos os dados de products
     private List<PurchaseItem> products;
+
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
     @ManyToOne

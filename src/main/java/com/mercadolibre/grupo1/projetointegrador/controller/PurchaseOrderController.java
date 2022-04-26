@@ -61,17 +61,19 @@ public class PurchaseOrderController {
                 .body(response);
     }
 
+    // sera retornado uma lista com todos os produtos contidos no carrinho.
     @GetMapping("/orders/{idOrder}")
+
     public ResponseEntity<PurchaseOrder> showProductsOrder(@PathVariable("idOrder") Long idOrder) {
 
-        return null;
+        return ResponseEntity.ok(purchaseOrderService.showProductsInOrders(idOrder));
     }
 
     @PutMapping("/orders/{idOrder}")
-    public ResponseEntity<PurchaseOrder> modifyOrderStatusByOpenedOrClosed(@PathVariable Long idOrder,
+    public ResponseEntity<PurchaseOrderStatusDTO> modifyOrderStatusByOpenedOrPreparing(@PathVariable Long idOrder,
                                                                            @RequestBody PurchaseOrderStatusDTO statusOrder) {
 
-        PurchaseOrder purchaseOrder = purchaseOrderService.editExistentOrder(idOrder, statusOrder);
+        PurchaseOrderStatusDTO purchaseOrder = purchaseOrderService.editExistentOrder(idOrder, statusOrder);
 
         return ResponseEntity.ok(purchaseOrder);
     }
