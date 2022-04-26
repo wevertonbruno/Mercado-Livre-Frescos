@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.util.Set;
 
 /**
  * @author Ederson Rodrigues Araujo
@@ -24,8 +25,12 @@ public class Section {
     private String description;
     private Double capacity;
 
-    // A sessão tera um relacionamento de muito para um com a Warehouse.
+    // A section tera um relacionamento de manyToOne com a Warehouse.
     @ManyToOne
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
     private Warehouse warehouse;
+
+    // A section tera um relacionamento de oneToMany com a InboundOrder.
+    @OneToMany(mappedBy = "section")
+    private Set<InboundOrder> inboundOrder;
 }
