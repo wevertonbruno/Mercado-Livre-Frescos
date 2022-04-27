@@ -1,0 +1,34 @@
+package com.mercadolibre.grupo1.projetointegrador.entities;
+
+import lombok.*;
+import org.hibernate.annotations.Cascade;
+
+import javax.persistence.*;
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * @author Nayara Coca
+ * Criação da entidade Inbound Order
+ * Gerando getters e setters
+ */
+
+@Entity
+@Table(name = "inbound_orders")
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@Builder
+public class InboundOrder {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private LocalDate orderDate;
+    @ManyToOne
+    @JoinColumn(name = "section_id", referencedColumnName = "id")
+    private Section section;
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<BatchStock> batchStock;
+}
