@@ -16,11 +16,10 @@ import java.util.Optional;
 @Repository
 public interface BatchStockRepository extends JpaRepository<BatchStock,Long> {
 
-    List<BatchStock> findByProduct(Product product);
-
-//    @Query("select b from BatchStock b where FUNCTION('timestampdiff', 'day', b.dueDate, current_date)")
-//    public List<BatchStock> validLeftDays();
-
+    /**
+     * @author Ederson Rodrigues Araujo
+     * filtra todos um tipo de produto com data de validade superior a 21 dias
+     */
     @Query("select b from BatchStock b where b.product.id = :id and DATEDIFF('DAY', now() , b.dueDate) > 22")
     public List<BatchStock> findValidDateItems(Long id);
 }

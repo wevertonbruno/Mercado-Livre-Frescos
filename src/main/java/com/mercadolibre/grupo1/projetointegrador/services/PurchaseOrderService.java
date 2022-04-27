@@ -10,9 +10,15 @@ import com.mercadolibre.grupo1.projetointegrador.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * @author ederodrigues
+ * service responsavel por criar um purchase order
+ */
 
 @Service
 public class PurchaseOrderService {
@@ -83,13 +89,6 @@ public class PurchaseOrderService {
         purchaseOrderRepository.save(purchaseOrder);
 
         return purchaseOrder;
-    }
-
-    public void isValidProduct (PurchaseOrderDTO purchaseOrderDTO) {
-        Customer customer = customerRepository
-                .findById(purchaseOrderDTO.getPurchaseOrder().getBuyerId())
-                .orElseThrow(() -> new UnregisteredUser("Usuário não cadastrado"));
-
     }
 
 }

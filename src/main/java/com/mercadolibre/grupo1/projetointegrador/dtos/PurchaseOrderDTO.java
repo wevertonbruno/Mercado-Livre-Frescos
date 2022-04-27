@@ -9,6 +9,11 @@ import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.List;
 
+/**
+ * @author Ederson Rodrigues Araujo
+ * purchase order dto de acordo com o payload
+ */
+
 @Data
 public class PurchaseOrderDTO {
 
@@ -33,6 +38,7 @@ public class PurchaseOrderDTO {
 
     }
 
+    // para enviar a resposta de com o total dos produtos
     @Data
     @Builder
     public static class Response {
