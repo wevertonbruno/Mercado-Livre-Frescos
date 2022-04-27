@@ -4,12 +4,12 @@ import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.*;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.OrderStatus;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.MissingProductExceptions;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredProducts;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredUser;
 import com.mercadolibre.grupo1.projetointegrador.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +39,7 @@ public class PurchaseOrderService {
         // se não houver usuário cadastrado ira retornar erro.
         Customer customer = customerRepository
                 .findById(purchaseOrderDTO.getPurchaseOrder().getBuyerId())
-                .orElseThrow(() -> new UnregisteredUser("Usuário nao cadastrado"));
+                .orElseThrow(() -> new UnregisteredUser("Usuário não cadastrado"));
 
         // percorrer a lista de produtos do purchaseOrderDTO
         for (PurchaseOrderDTO.ProductItemDTO productItemDTO : productsPurchaseOrders) {
@@ -47,7 +47,7 @@ public class PurchaseOrderService {
             // verifica se o produto esta cadastrado e retorna um erro caso nao esteja
             Product prodRepository = productRepository
                     .findById(productItemDTO.getProductId())
-                    .orElseThrow(() -> new RuntimeException("Produto nao cadastrado"));
+                    .orElseThrow(() -> new UnregisteredProducts("Produto não cadastrado"));
 
             // procura no lote se existe o produto solicitado e com data de vencimento superior a solicitada
             List<BatchStock> prodInStock = batchStockRepository
@@ -74,15 +74,22 @@ public class PurchaseOrderService {
         // salva no banco o purchaseOrder
         purchaseOrder = purchaseOrderRepository.save(purchaseOrder);
 
-        // adiciona o purchaseOrder em cada item
-//        for (PurchaseItem p : purchaseOrder.getProducts()) {
-//            p.setPurchaseOrder(purchaseOrder);
-//        }
+//         adiciona o purchaseOrder em cada item
+        for (PurchaseItem p : purchaseOrder.getProducts()) {
+            p.setPurchaseOrder(purchaseOrder);
+        }
 
-        //salva no banco as mudanas feitas
-//        purchaseOrderRepository.save(purchaseOrder);
+//        salva no banco as mudanas feitas
+        purchaseOrderRepository.save(purchaseOrder);
 
         return purchaseOrder;
+    }
+
+    public void isValidProduct (PurchaseOrderDTO purchaseOrderDTO) {
+        Customer customer = customerRepository
+                .findById(purchaseOrderDTO.getPurchaseOrder().getBuyerId())
+                .orElseThrow(() -> new UnregisteredUser("Usuário não cadastrado"));
+
     }
 
 }
