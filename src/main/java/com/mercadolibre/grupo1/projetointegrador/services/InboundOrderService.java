@@ -116,7 +116,7 @@ public class InboundOrderService {
     }
 
     private void checkSectionCapacity(Section section, List<BatchStock> batchStocks){
-        Set<BatchStock> currentStock = section.getStock();
+        Set<BatchStock> currentStock = batchStockService.findBatchStockBySectionId(section.getId());
         Double filledVolume = currentStock.stream().reduce(0.0, (total, batchItem) -> total + batchItem.getVolume(), Double::sum);
 
         //Verifica o estoque atual e junta com o novo estoque

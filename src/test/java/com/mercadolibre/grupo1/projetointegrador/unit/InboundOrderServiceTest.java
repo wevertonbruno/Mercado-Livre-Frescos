@@ -76,7 +76,6 @@ class InboundOrderServiceTest {
         Section section = createFakeSection();
         section.setCapacity(100.0);
         section.setCategory(ProductCategory.FRESCO);
-        section.setInboundOrders(new HashSet<>());
 
         Product product1 = Product.builder().volume(10.0).category(ProductCategory.FRESCO).build();
         Product product2 = Product.builder().volume(10.0).category(ProductCategory.FRESCO).build();
@@ -93,6 +92,8 @@ class InboundOrderServiceTest {
                 .thenReturn(section);
         when(batchStockService.createFromDTO(any(BatchStockDTO.class)))
                 .thenReturn(createdBatch1, createdBatch2);
+        when(batchStockService.findBatchStockBySectionId(anyLong()))
+                .thenReturn(new HashSet<>());
 
         Exception exception = assertThrows(ExcededCapacityException.class, () -> inboundOrderService.createInboundOrder(inboundOrderDTO));
 
@@ -105,7 +106,6 @@ class InboundOrderServiceTest {
         Section section = createFakeSection();
         section.setCapacity(100.0);
         section.setCategory(ProductCategory.FRESCO);
-        section.setInboundOrders(new HashSet<>());
 
         Product product1 = Product.builder().volume(10.0).category(ProductCategory.FRESCO).build();
         Product product2 = Product.builder().volume(10.0).category(ProductCategory.FRESCO).build();
@@ -122,6 +122,8 @@ class InboundOrderServiceTest {
                 .thenReturn(section);
         when(batchStockService.createFromDTO(any(BatchStockDTO.class)))
                 .thenReturn(createdBatch1, createdBatch2);
+        when(batchStockService.findBatchStockBySectionId(anyLong()))
+                .thenReturn(new HashSet<>());
 
         when(inboundOrderRepository.save(any(InboundOrder.class))).thenReturn(
                 InboundOrder.builder()
@@ -145,7 +147,6 @@ class InboundOrderServiceTest {
         Section section = createFakeSection();
         section.setCapacity(100.0);
         section.setCategory(ProductCategory.FRESCO);
-        section.setInboundOrders(new HashSet<>());
 
         Product product1 = Product.builder().volume(10.0).category(ProductCategory.FRESCO).build();
         Product product2 = Product.builder().volume(10.0).category(ProductCategory.FRESCO).build();
@@ -177,6 +178,9 @@ class InboundOrderServiceTest {
 
         when(batchStockService.updateFromDTO(batchToUpdate))
                 .thenReturn(createdBatch2);
+
+        when(batchStockService.findBatchStockBySectionId(anyLong()))
+                .thenReturn(new HashSet<>());
 
         when(inboundOrderRepository.save(any(InboundOrder.class))).thenReturn(inboundFound);
 
