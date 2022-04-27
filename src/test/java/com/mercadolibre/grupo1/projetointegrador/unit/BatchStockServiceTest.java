@@ -16,7 +16,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -77,6 +79,15 @@ class BatchStockServiceTest {
         assertEquals(10.0F, response.getCurrentTemperature());
         assertEquals(LocalDate.parse("2022-10-01"), response.getDueDate());
         assertEquals(product, response.getProduct());
+    }
+
+    @Test
+    public void itShouldReturnAStockSection(){
+        when(batchStockRepository.findStockBySectionId(anyLong()))
+                .thenReturn(new HashSet<>());
+
+        Set<BatchStock> stock = batchStockService.findBatchStockBySectionId(1L);
+        assertNotNull(stock);
     }
 
     private Product createFakeProduct(){

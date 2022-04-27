@@ -9,6 +9,8 @@ import com.mercadolibre.grupo1.projetointegrador.services.mappers.BatchStockMapp
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
+
 @Service
 @RequiredArgsConstructor
 public class BatchStockService {
@@ -38,5 +40,9 @@ public class BatchStockService {
 
     public BatchStock findById(Long batchNumber) {
         return batchStockRepository.findById(batchNumber).orElseThrow(() -> new EntityNotFoundException("Lote com ID " + batchNumber + " não encontrado."));
+    }
+
+    public Set<BatchStock> findBatchStockBySectionId(Long sectionId){
+        return batchStockRepository.findStockBySectionId(sectionId);
     }
 }
