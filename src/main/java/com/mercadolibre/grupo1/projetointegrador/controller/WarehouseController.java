@@ -28,8 +28,8 @@ public class WarehouseController {
     @GetMapping
     public ResponseEntity<List<WarehouseDTO>> listProductWarehouse(@RequestParam(required = false,
             name = "productId") Product batchStock) {
-        List<WarehouseDTO> findWarehouseByItems = warehouseService.findWarehouse(batchStock);
-        return ResponseEntity.ok().body(findWarehouseByItems);
+        List<WarehouseDTO> findWarehouseByProducts = warehouseService.findWarehouse(batchStock);
+        return ResponseEntity.ok().body(findWarehouseByProducts);
     }
 
 
