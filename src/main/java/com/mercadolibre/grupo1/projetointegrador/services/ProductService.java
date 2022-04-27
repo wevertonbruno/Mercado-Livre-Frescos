@@ -38,14 +38,8 @@ public class ProductService {
     Metodo que chama Repositorio de Produto e retorna produtos de acordo com a categoria passada pelo parametro)
     Verifica se a lista esta vazia e se a Categoria esta listada no Enum
      */
-    public List<ProductDTO> listProductByCategory(String productCategory) throws ExceptionCatchIsEmpty {
-            ProductCategory enumCategories;
-        try{
-           enumCategories = ProductCategory.valueOf(productCategory);
-        }catch (IllegalArgumentException e){
-            throw new ExceptionCatchStatusCategory("Categoria nao permitida");
-        }
-        List<Product> productsByCategory = productRepository.findAllByCategory(enumCategories);
+    public List<ProductDTO> listProductByCategory(ProductCategory productCategory) throws ExceptionCatchIsEmpty {
+        List<Product> productsByCategory = productRepository.findAllByCategory(productCategory);
         if (productsByCategory.isEmpty()){
             throw new ExceptionCatchIsEmpty("Categoria não encontrada");
         }

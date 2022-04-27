@@ -30,7 +30,7 @@ public class PurchaseOrderController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<ProductDTO>> listProductForCategory( @RequestParam(required = false, name = "status") String productCategory) throws ExceptionCatchIsEmpty {
+    public ResponseEntity<List<ProductDTO>> listProductForCategory( @RequestParam(required = false, name = "status") ProductCategory productCategory) {
         List<ProductDTO> productByCategory = productService.listProductByCategory(productCategory);
         return ResponseEntity.ok().body(productByCategory);
     }
