@@ -11,8 +11,9 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
-/*
-    @author Gabriel Essenio
+
+/**
+ * @author Gabriel Essenio
  */
 
 //Fazendo anotaçao do controller e criando endereço do endpoint

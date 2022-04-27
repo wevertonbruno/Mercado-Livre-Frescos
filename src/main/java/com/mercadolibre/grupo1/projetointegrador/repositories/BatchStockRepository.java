@@ -19,7 +19,7 @@ import java.util.Set;
 public interface BatchStockRepository extends JpaRepository<BatchStock,Long> {
     /**
      * Listagem do estoque de lotes da sessao
-     * @param sectionId
+     * @param sectionId Id da sessao de onde se quer buscar o lote
      * @author Weverton Bruno
      */
     @Query(value =
@@ -31,10 +31,10 @@ public interface BatchStockRepository extends JpaRepository<BatchStock,Long> {
 
     /**
      * Listagem do o estoque de lotes da sessao filtrados por dias de validade
-     * @param sectionId
-     * @param start
-     * @param end
-     * @return
+     * @param sectionId Id da sessao de onde se quer buscar o lote
+     * @param start data inicial para filtro de produtos vencidos
+     * @param end data final para filtro de produtos vencidos
+     * @author Weverton Bruno
      */
     @Query(value =
             "SELECT b FROM InboundOrder i " +
@@ -46,11 +46,12 @@ public interface BatchStockRepository extends JpaRepository<BatchStock,Long> {
 
     /**
      * Listagem do o estoque de lotes de todos os warehouses
-     * @param category
-     * @param start
-     * @param end
-     * @param sort
-     * @return
+     * @param warehouseId Id do armazem
+     * @param category categoria do produto
+     * @param start data inicial para filtro de produtos vencidos
+     * @param end data final para filtro de produtos vencidos
+     * @param sort parametro de ordenacao
+     * @author Weverton Bruno
      */
     @Query(value =
             "SELECT b FROM BatchStock b " +

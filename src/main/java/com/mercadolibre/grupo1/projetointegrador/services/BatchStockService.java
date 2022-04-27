@@ -17,6 +17,10 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * Classe de servico dos lotes
+ * @author Weverton Bruno
+ */
 @Service
 @RequiredArgsConstructor
 public class BatchStockService {
@@ -25,6 +29,11 @@ public class BatchStockService {
 
     private final BatchStockMapper batchStockMapper;
 
+    /**
+     * Inicializacao de uma entidade de lote a partir do DTO
+     * @param batchStockDTO
+     * @return
+     */
     public BatchStock createFromDTO(BatchStockDTO batchStockDTO) {
         Product product = productService.findById(batchStockDTO.getProductId());
 
@@ -34,14 +43,20 @@ public class BatchStockService {
         return batchStock;
     }
 
+    /**
+     * Atualizacao de uma entidade de lote ja existente pelo DTO
+     * @param batchStockDTO
+     * @return
+     */
     public BatchStock updateFromDTO(BatchStockDTO batchStockDTO){
         Product product = productService.findById(batchStockDTO.getProductId());
-        findById(batchStockDTO.getBatchNumber());
+        BatchStock batchStock = findById(batchStockDTO.getBatchNumber());
 
-        BatchStock batchStock = batchStockMapper.toBatchStock(batchStockDTO);
-        batchStock.setId(batchStockDTO.getBatchNumber());
-        batchStock.setProduct(product);
-        return batchStock;
+        BatchStock updatedBatch = batchStockMapper.toBatchStock(batchStockDTO);
+        updatedBatch.setId(batchStockDTO.getBatchNumber());
+        updatedBatch.setProduct(product);
+        updatedBatch.setInboundOrder(batchStock.getInboundOrder());
+        return updatedBatch;
     }
 
     public void saveAll(List<BatchStock> batchStocks){

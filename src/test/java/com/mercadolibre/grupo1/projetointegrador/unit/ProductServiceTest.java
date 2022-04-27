@@ -5,6 +5,7 @@ import com.mercadolibre.grupo1.projetointegrador.entities.Section;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
 import com.mercadolibre.grupo1.projetointegrador.repositories.ProductRepository;
 import com.mercadolibre.grupo1.projetointegrador.services.ProductService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -16,6 +17,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Testes unitários da classe ProductService
+ * @author Weverton Bruno
+ */
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
 
@@ -26,6 +31,7 @@ class ProductServiceTest {
     private ProductService productService;
 
     @Test
+    @DisplayName("Testa se uma exceção de produto nao encontrado é lancado")
     public void itShouldReturnAProductNotFoundException(){
         when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 

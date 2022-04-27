@@ -9,6 +9,7 @@ import com.mercadolibre.grupo1.projetointegrador.services.BatchStockService;
 import com.mercadolibre.grupo1.projetointegrador.services.ProductService;
 import com.mercadolibre.grupo1.projetointegrador.services.mappers.BatchStockMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -23,6 +24,10 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Testes unitarios da classe BatchStockService
+ * @author Weverton Bruno
+ */
 @ExtendWith(MockitoExtension.class)
 class BatchStockServiceTest {
     @Mock
@@ -41,6 +46,7 @@ class BatchStockServiceTest {
     }
 
     @Test
+    @DisplayName("Testa se uma classe BatchStock é instanciado a partir de um DTO")
     public void itShouldCreateABatchStockFromDto(){
         Product product = createFakeProduct();
         BatchStockDTO stockInput = createFakeBatchStockInput();
@@ -60,6 +66,7 @@ class BatchStockServiceTest {
     }
 
     @Test
+    @DisplayName("Testa se uma entidade BatchStock é atualizada a partir de um DTO")
     public void itShouldUpdateABatchStockFromDto(){
         Product product = createFakeProduct();
         BatchStockDTO stockInput = createFakeBatchStockInput();
@@ -82,6 +89,7 @@ class BatchStockServiceTest {
     }
 
     @Test
+    @DisplayName("Testa os lotes da sessao são retornados")
     public void itShouldReturnAStockSection(){
         when(batchStockRepository.findStockBySectionId(anyLong()))
                 .thenReturn(new HashSet<>());
@@ -91,6 +99,7 @@ class BatchStockServiceTest {
     }
 
     @Test
+    @DisplayName("Testa se os lotes da sessao são retornados e filtrados por um periodo de vencimento.")
     public void itShouldReturnAStockBySectionIdAndExpiresIn(){
         Product product = createFakeProduct();
 
@@ -104,6 +113,7 @@ class BatchStockServiceTest {
     }
 
     @Test
+    @DisplayName("Testa se os lotes do armazem são retornados e filtrados por um periodo de vencimento e categoria de produtos.")
     public void itShouldReturnAStockByCategoryAndExpiresIn(){
         Product product = createFakeProduct();
 
@@ -117,6 +127,7 @@ class BatchStockServiceTest {
     }
 
     @Test
+    @DisplayName("Testa todos os lotes sao salvos")
     public void itShouldSaveAllBatches(){
         List<BatchStock> stock = Arrays.asList(BatchStock.builder().id(1L).build());
         batchStockService.saveAll(stock);

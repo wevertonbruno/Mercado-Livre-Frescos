@@ -8,8 +8,9 @@ import com.mercadolibre.grupo1.projetointegrador.entities.InboundOrder;
 import com.mercadolibre.grupo1.projetointegrador.entities.Product;
 import com.mercadolibre.grupo1.projetointegrador.entities.Section;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.ExcededCapacityException;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.OvercapacityException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.InvalidCategoryException;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.InvalidOperationException;
 import com.mercadolibre.grupo1.projetointegrador.repositories.InboundOrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -52,7 +53,7 @@ public class InboundOrderService {
     @Transactional
     public InboundOrderResponseDTO updateOrder(Long id, InboundOrderDTO inboundOrderDTO) {
         InboundOrder inboundOrder = findById(id);
-        List<BatchStock> batchStocks = updateBatchStock(inboundOrderDTO.getBatchStock(), inboundOrder.getSection());
+        List<BatchStock> batchStocks = updateBatchStock(inboundOrderDTO.getBatchStock(), inboundOrder.getSection(), inboundOrder);
 
         //Verifica a capacidade da sessao
         checkSectionCapacity(inboundOrder.getSection(), batchStocks);
@@ -91,7 +92,7 @@ public class InboundOrderService {
                 .collect(Collectors.toList());
     }
 
-    private List<BatchStock> updateBatchStock(List<BatchStockDTO> batchStockDTO, Section section){
+    private List<BatchStock> updateBatchStock(List<BatchStockDTO> batchStockDTO, Section section, InboundOrder inboundOrder){
         //Cria novos lotes
         List<BatchStock> newBatches = createBatchStock(
                 batchStockDTO.stream().filter(item -> item.getBatchNumber() == null).collect(Collectors.toList()),
@@ -104,6 +105,12 @@ public class InboundOrderService {
                 .filter(e -> distinctBatches.add(e.getBatchNumber()))
                 .map(batchStockItem -> {
                     BatchStock batchItem = batchStockService.updateFromDTO(batchStockItem);
+
+                    //Verifica se o inboundOrder do batch é o mesmo da request
+                    if(!batchItem.getInboundOrder().getId().equals(inboundOrder.getId())){
+                        throw new InvalidOperationException("O lote de ID " + batchItem.getId() + " não pertence a esta Ordem de Entrada!");
+                    }
+
                     checkProductAndSectionCategory(batchItem.getProduct(), section);
                     return batchItem;
                 })
@@ -134,7 +141,7 @@ public class InboundOrderService {
         Double targetVolume = targetStock.stream().reduce(0.0, (total, batchItem) -> total + batchItem.getVolume(), Double::sum);
 
         if(section.getCapacity() < targetVolume){
-            throw new ExcededCapacityException(String.format("Capacidade da sessao excedida! Capacidade total da sessao: %.2fm3, Capacidade ocupada: %.2fm3, Após a operacao: %.2fm3.", section.getCapacity(), filledVolume, targetVolume));
+            throw new OvercapacityException(String.format("Capacidade da sessao excedida! Capacidade total da sessao: %.2fm3, Capacidade ocupada: %.2fm3, Após a operacao: %.2fm3.", section.getCapacity(), filledVolume, targetVolume));
         }
     }
 

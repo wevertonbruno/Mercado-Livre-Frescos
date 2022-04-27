@@ -13,6 +13,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * Controlador do batch stock
+ * @author Weverton Bruno
+ */
 @RestController
 @RequestMapping("api/v1/fresh-products")
 public class BatchStockController {
