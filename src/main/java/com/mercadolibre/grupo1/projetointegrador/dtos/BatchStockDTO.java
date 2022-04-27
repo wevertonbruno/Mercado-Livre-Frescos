@@ -2,6 +2,7 @@ package com.mercadolibre.grupo1.projetointegrador.dtos;
 
 import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
 import com.mercadolibre.grupo1.projetointegrador.entities.InboundOrder;
+import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -47,5 +48,26 @@ public class BatchStockDTO {
                 batchItem.getManufacturingDateTime(),
                 batchItem.getDueDate()
         );
+    }
+
+    public static SimpleBatchStockDTO toSimpleBatchDTO(BatchStock batchItem) {
+        return new SimpleBatchStockDTO(
+                batchItem.getId(),
+                batchItem.getProduct().getId(),
+                batchItem.getProduct().getCategory(),
+                batchItem.getCurrentQuantity(),
+                batchItem.getDueDate()
+        );
+    }
+
+    @Data
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class SimpleBatchStockDTO{
+        private Long batchNumber;
+        private Long productId;
+        private ProductCategory category;
+        private Integer quantity;
+        private LocalDate dueDate;
     }
 }

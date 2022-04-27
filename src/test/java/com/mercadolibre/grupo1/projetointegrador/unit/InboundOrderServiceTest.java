@@ -128,7 +128,7 @@ class InboundOrderServiceTest {
         when(inboundOrderRepository.save(any(InboundOrder.class))).thenReturn(
                 InboundOrder.builder()
                         .section(section)
-                        .batchStock(Arrays.asList(createdBatch1, createdBatch2))
+                        .batchStock(new ArrayList<>())
                         .orderDate(inboundOrderDTO.getOrderDate())
                         .id(1L)
                         .build()
@@ -165,7 +165,7 @@ class InboundOrderServiceTest {
 
         InboundOrder inboundFound = InboundOrder.builder()
                 .section(section)
-                .batchStock(Arrays.asList(createdBatch1, createdBatch2))
+                .batchStock(new ArrayList<>(Arrays.asList(createdBatch1, createdBatch2)))
                 .orderDate(inboundOrderDTO.getOrderDate())
                 .id(1L)
                 .build();

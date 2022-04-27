@@ -40,10 +40,13 @@ public class InboundOrderService {
         //Verifica a capacidade da sessao
         checkSectionCapacity(inboundOrder.getSection(), batchStocks);
 
-        inboundOrder.setBatchStock(batchStocks);
-        inboundOrder = inboundOrderRepository.save(inboundOrder);
+        InboundOrder createdOrder = inboundOrderRepository.save(inboundOrder);
+        batchStocks.forEach(batch -> batch.setInboundOrder(createdOrder));
+        createdOrder.getBatchStock().addAll(batchStocks);
 
-        return InboundOrderResponseDTO.createFromInboundOrder(inboundOrder);
+        batchStockService.saveAll(batchStocks);
+
+        return InboundOrderResponseDTO.createFromInboundOrder(createdOrder);
     }
 
     @Transactional
@@ -54,11 +57,13 @@ public class InboundOrderService {
         //Verifica a capacidade da sessao
         checkSectionCapacity(inboundOrder.getSection(), batchStocks);
 
-        inboundOrder.setBatchStock(batchStocks);
+        batchStocks.forEach(batch -> batch.setInboundOrder(inboundOrder));
+        inboundOrder.getBatchStock().clear();
+        inboundOrder.getBatchStock().addAll(batchStocks);
 
-        inboundOrder = inboundOrderRepository.save(inboundOrder);
+        InboundOrder updatedOrder = inboundOrderRepository.save(inboundOrder);
 
-        return InboundOrderResponseDTO.createFromInboundOrder(inboundOrder);
+        return InboundOrderResponseDTO.createFromInboundOrder(updatedOrder);
     }
 
     public InboundOrder findById(Long id) {

@@ -10,9 +10,6 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Set;
 
 
@@ -31,7 +28,6 @@ public class DatabaseSeeder {
     private final WarehouseRepository warehouseRepository;
     private final SectionRepository sectionRepository;
     private final ProductRepository productRepository;
-    private final BatchStockRepository batchStockRepository;
 
     @Transactional
     public void seed() {
@@ -53,23 +49,33 @@ public class DatabaseSeeder {
 
     private void seedSellers(){
         Role sellerRole = roleRepository.findById(2L).get();
-        sellerRepository.save(Seller.builder().id(1L).username("seller1").password("123456").email("seller1@mercadolibre.com").roles(Set.of(sellerRole)).build());
-        sellerRepository.save(Seller.builder().id(2L).username("seller2").password("123456").email("seller2@mercadolibre.com").roles(Set.of(sellerRole)).build());
+
+        AuthenticableUser user1 = AuthenticableUser.builder().id(1L).username("seller1").password("123456").email("seller1@mercadolibre.com").roles(Set.of(sellerRole)).build();
+        AuthenticableUser user2 = AuthenticableUser.builder().id(2L).username("seller2").password("123456").email("seller2@mercadolibre.com").roles(Set.of(sellerRole)).build();
+
+        sellerRepository.save(new Seller(user1));
+        sellerRepository.save(new Seller(user2));
     }
 
     private void seedAgents(){
         Role agentRole = roleRepository.findById(1L).get();
-        agentRepository.save(Agent.builder().id(1L).username("agent1").password("123456").email("agent1@mercadolibre.com").roles(Set.of(agentRole)).build());
-        agentRepository.save(Agent.builder().id(2L).username("agent2").password("123456").email("agent2@mercadolibre.com").roles(Set.of(agentRole)).build());
-        agentRepository.save(Agent.builder().id(2L).username("agent3").password("123456").email("agent3@mercadolibre.com").roles(Set.of(agentRole)).build());
-        agentRepository.save(Agent.builder().id(2L).username("agent4").password("123456").email("agent4@mercadolibre.com").roles(Set.of(agentRole)).build());
+
+        AuthenticableUser user3 = AuthenticableUser.builder().id(1L).username("agent1").password("123456").email("agent1@mercadolibre.com").roles(Set.of(agentRole)).build();
+        AuthenticableUser user4 = AuthenticableUser.builder().id(2L).username("agent2").password("123456").email("agent2@mercadolibre.com").roles(Set.of(agentRole)).build();
+        AuthenticableUser user5 = AuthenticableUser.builder().id(2L).username("agent3").password("123456").email("agent3@mercadolibre.com").roles(Set.of(agentRole)).build();
+        AuthenticableUser user6 = AuthenticableUser.builder().id(2L).username("agent4").password("123456").email("agent4@mercadolibre.com").roles(Set.of(agentRole)).build();
+
+        agentRepository.save(new Agent(user3));
+        agentRepository.save(new Agent(user4));
+        agentRepository.save(new Agent(user5));
+        agentRepository.save(new Agent(user6));
     }
 
     private void seedWarehouses(){
         Warehouse w1 = warehouseRepository.save(Warehouse.builder().id(1L).name("SP-SP").address("00000-000").build());
-        sectionRepository.save(Section.builder().id(1L).capacity(100.0).category(ProductCategory.FRESCO).warehouse(w1).description("Sessao de frescos").build());
-        sectionRepository.save(Section.builder().id(2L).capacity(100.0).category(ProductCategory.CONGELADO).warehouse(w1).description("Sessao de congelados").build());
-        sectionRepository.save(Section.builder().id(3L).capacity(100.0).category(ProductCategory.REFRIGERADO).warehouse(w1).description("Sessao de refrigerados").build());
+        sectionRepository.save(Section.builder().id(1L).capacity(500.0).category(ProductCategory.FRESCO).warehouse(w1).description("Sessao de frescos").build());
+        sectionRepository.save(Section.builder().id(2L).capacity(500.0).category(ProductCategory.CONGELADO).warehouse(w1).description("Sessao de congelados").build());
+        sectionRepository.save(Section.builder().id(3L).capacity(500.0).category(ProductCategory.REFRIGERADO).warehouse(w1).description("Sessao de refrigerados").build());
     }
 
     private void seedProducts() {

@@ -12,8 +12,14 @@ import javax.persistence.Table;
  */
 
 @Entity
-@SuperBuilder
 @NoArgsConstructor
 @Table(name = "agents")
 public class Agent extends AuthenticableUser{
+    public Agent(AuthenticableUser user) {
+        super.setId(user.getId());
+        super.setEmail(user.getEmail());
+        super.setUsername(user.getUsername());
+        super.setPassword(user.getUsername());
+        super.setRoles(user.getRoles());
+    }
 }

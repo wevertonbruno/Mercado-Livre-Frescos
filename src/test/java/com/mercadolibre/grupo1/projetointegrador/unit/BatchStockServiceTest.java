@@ -3,6 +3,7 @@ package com.mercadolibre.grupo1.projetointegrador.unit;
 import com.mercadolibre.grupo1.projetointegrador.dtos.BatchStockDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
 import com.mercadolibre.grupo1.projetointegrador.entities.Product;
+import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import com.mercadolibre.grupo1.projetointegrador.repositories.BatchStockRepository;
 import com.mercadolibre.grupo1.projetointegrador.services.BatchStockService;
 import com.mercadolibre.grupo1.projetointegrador.services.ProductService;
@@ -13,12 +14,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -88,6 +88,39 @@ class BatchStockServiceTest {
 
         Set<BatchStock> stock = batchStockService.findBatchStockBySectionId(1L);
         assertNotNull(stock);
+    }
+
+    @Test
+    public void itShouldReturnAStockBySectionIdAndExpiresIn(){
+        Product product = createFakeProduct();
+
+        when(batchStockRepository.findStockBySectionIdAndDueDateBetween(1L, LocalDate.now(), LocalDate.now().plusDays(10)))
+                .thenReturn(new ArrayList<>(
+                        Arrays.asList(BatchStock.builder().product(product).currentQuantity(5).build())
+                ));
+
+        List<BatchStockDTO.SimpleBatchStockDTO> stock = batchStockService.findBatchStockBySectionIdAndExpiresIn(1L, 10L);
+        assertNotNull(stock);
+    }
+
+    @Test
+    public void itShouldReturnAStockByCategoryAndExpiresIn(){
+        Product product = createFakeProduct();
+
+        when(batchStockRepository.findWarehouseStockByCategoryAndDueDateBetween(1L, ProductCategory.FRESCO, LocalDate.now(), LocalDate.now().plusDays(10), Sort.by(Sort.Direction.ASC, "dueDate")))
+                .thenReturn(new ArrayList<>(
+                        Arrays.asList(BatchStock.builder().product(product).currentQuantity(5).build())
+                ));
+
+        List<BatchStockDTO.SimpleBatchStockDTO> stock = batchStockService.findBatchStockByCategoryAndExpiresIn(ProductCategory.FRESCO, 10L, Sort.Direction.ASC);
+        assertNotNull(stock);
+    }
+
+    @Test
+    public void itShouldSaveAllBatches(){
+        List<BatchStock> stock = Arrays.asList(BatchStock.builder().id(1L).build());
+        batchStockService.saveAll(stock);
+        verify(batchStockRepository, times(1)).saveAll(stock);
     }
 
     private Product createFakeProduct(){
