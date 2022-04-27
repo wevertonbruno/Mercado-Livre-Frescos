@@ -1,10 +1,9 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.ExceptionCatchStatusCategory;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.InvalidCategoryException;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.convert.converter.Converter;
-import org.springframework.web.bind.MethodArgumentNotValidException;
 
 /**
  * Customizando converter para ProductCategory
@@ -17,7 +16,7 @@ public class EnumConverterConfig implements Converter<String, ProductCategory> {
         try {
             return ProductCategory.valueOf(source.toUpperCase());
         } catch (IllegalArgumentException e) {
-            throw new ExceptionCatchStatusCategory("Categoria inválida");
+            throw new InvalidCategoryException("Categoria inválida");
         }
     }
 }
