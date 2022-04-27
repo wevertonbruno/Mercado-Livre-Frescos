@@ -1,9 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Tables;
 
 import javax.persistence.*;
@@ -22,17 +19,18 @@ import java.util.Set;
 @AllArgsConstructor
 @Getter
 @Setter
-
+@Builder
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToMany(mappedBy = "product")
-    private Set<BatchStock> batchStock;
     private String nome;
     private Double volume;
     private BigDecimal price;
     @Enumerated(EnumType.STRING)
     private ProductCategory category;
+    @ManyToOne
+    @JoinColumn(name = "seller_id", referencedColumnName = "id")
+    private Seller seller;
 
 }

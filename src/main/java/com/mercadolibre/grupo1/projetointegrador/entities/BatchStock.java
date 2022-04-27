@@ -1,13 +1,11 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.Objects;
 
 /**
  * @author Nayara Coca
@@ -21,12 +19,12 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @Getter
 @Setter
-
+@Builder
 public class BatchStock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
+    @OneToOne
     @JoinColumn(name = "product_id")
     private Product product;
     private Float currentTemperature;
@@ -36,11 +34,7 @@ public class BatchStock {
     private LocalDateTime manufacturingDateTime;
     private LocalDate dueDate;
 
-    @ManyToOne
-    @JoinColumn(name = "inbound_order_id")
-    private InboundOrder inboundOrder;
-
-    public Double volume() {
+    public Double getVolume() {
         return product.getVolume() * currentQuantity;
     }
 }
