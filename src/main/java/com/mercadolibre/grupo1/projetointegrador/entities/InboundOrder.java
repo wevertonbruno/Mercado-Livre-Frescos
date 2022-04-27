@@ -1,9 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -16,6 +13,7 @@ import java.util.List;
  */
 
 @Entity
+@Builder
 @Table(name = "inbound_orders")
 @AllArgsConstructor
 @NoArgsConstructor

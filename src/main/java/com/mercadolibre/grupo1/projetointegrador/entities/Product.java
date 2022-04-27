@@ -1,9 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.Tables;
 
 import javax.persistence.*;
@@ -17,6 +14,7 @@ import java.util.Set;
  */
 
 @Entity
+@Builder
 @Table(name = "products")
 @NoArgsConstructor
 @AllArgsConstructor

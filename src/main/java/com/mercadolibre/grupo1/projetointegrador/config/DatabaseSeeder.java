@@ -8,6 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Set;
 
@@ -27,6 +29,9 @@ public class DatabaseSeeder {
     private final RoleRepository roleRepository;
     private final WarehouseRepository warehouseRepository;
     private final SectionRepository sectionRepository;
+    private final InboundOrderRepository inboundOrderRepository;
+    private final BatchStockRepository batchStockRepository;
+    private final ProductRepository productRepository;
 
     public void seed() {
         LOGGER.info("Seeding database...");
@@ -35,7 +40,10 @@ public class DatabaseSeeder {
         seedSellers();
         seedAgents();
         seedWarehouses();
-        seedSection();
+        seedSections();
+        seedInboundOrders();
+        seedBatchStocks();
+        seedProducts();
 
         LOGGER.info("Seeding complete...");
     }
@@ -72,7 +80,7 @@ public class DatabaseSeeder {
 
     }
 
-    private void seedSection() {
+    private void seedSections() {
         Warehouse warehouseSection1 = warehouseRepository.getById(1L);
         Warehouse warehouseSection2 = warehouseRepository.getById(2L);
         Warehouse warehouseSection3 = warehouseRepository.getById(3L);
@@ -81,5 +89,16 @@ public class DatabaseSeeder {
         sectionRepository.save(Section.builder().id(3L).description("FF").capacity(7645.0).warehouse(warehouseSection3).build());
     }
 
+    private void seedInboundOrders() {
 
+    }
+
+    private void seedBatchStocks() {
+
+
+    }
+
+    private void seedProducts() {
+
+    }
 }
