@@ -3,6 +3,8 @@ package com.mercadolibre.grupo1.projetointegrador.services;
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.*;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.OrderStatus;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.MissingProductExceptions;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredUser;
 import com.mercadolibre.grupo1.projetointegrador.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -37,7 +39,7 @@ public class PurchaseOrderService {
         // se não houver usuário cadastrado ira retornar erro.
         Customer customer = customerRepository
                 .findById(purchaseOrderDTO.getPurchaseOrder().getBuyerId())
-                .orElseThrow(() -> new RuntimeException("Usuário nao cadastrado"));
+                .orElseThrow(() -> new UnregisteredUser("Usuário nao cadastrado"));
 
         // percorrer a lista de produtos do purchaseOrderDTO
         for (PurchaseOrderDTO.ProductItemDTO productItemDTO : productsPurchaseOrders) {
@@ -60,7 +62,7 @@ public class PurchaseOrderService {
 
             // valida se existe a quantidade de itens do PurchaseItems
             if (totalDeProdutos < productItemDTO.getQuantity()) {
-                throw new RuntimeException("produtos insuficiente em estoque");
+                throw new MissingProductExceptions(String.format("%s insuficiente em estoque", prodRepository.getNome()));
             }
 
             // cria uma lista de purchaseitems para ser salvo no banco
