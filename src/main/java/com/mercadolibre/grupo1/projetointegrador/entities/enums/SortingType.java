@@ -1,7 +1,8 @@
 package com.mercadolibre.grupo1.projetointegrador.entities.enums;
 
 public enum SortingType {
-    L,
-    C,
-    F,
+    BATH,
+    QUANTITY,
+    DUE_DATE,
+    NONE,
 }
