@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.time.Period;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,18 +27,17 @@ public class PurchaseOrderService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public BigDecimal createPurchaseOrder (PurchaseOrderDTO purchaseOrderDTO) {
+    public PurchaseOrder createPurchaseOrder (PurchaseOrderDTO purchaseOrderDTO) {
         // lista de produtos do purchaseOrderDTO
-        List<PurchaseOrderDTO.ProductItemDTO> productsPurchaseOrders = purchaseOrderDTO.getProducts();
+        List<PurchaseOrderDTO.ProductItemDTO> productsPurchaseOrders = purchaseOrderDTO.getPurchaseOrder().getProducts();
 
         // salvando uma lista de produtos para fazer o purchaseOrderDTO
         List<PurchaseItem> purchaseItemList = new ArrayList<>();
 
         // se não houver usuário cadastrado ira retornar erro.
         Customer customer = customerRepository
-                .findById(purchaseOrderDTO.getBuyerId())
+                .findById(purchaseOrderDTO.getPurchaseOrder().getBuyerId())
                 .orElseThrow(() -> new RuntimeException("Usuário nao cadastrado"));
-
 
         // percorrer a lista de produtos do purchaseOrderDTO
         for (PurchaseOrderDTO.ProductItemDTO productItemDTO : productsPurchaseOrders) {
@@ -50,23 +47,15 @@ public class PurchaseOrderService {
                     .findById(productItemDTO.getProductId())
                     .orElseThrow(() -> new RuntimeException("Produto nao cadastrado"));
 
-            // procura no lote se existe o produto solicitado
+            // procura no lote se existe o produto solicitado e com data de vencimento superior a solicitada
             List<BatchStock> prodInStock = batchStockRepository
-                    .findByProduct(prodRepository);
+                    .findValidDateItems(productItemDTO.getProductId());
 
             // variável que vai armazenar quantos produtos existem com as condicao passada
             int totalDeProdutos = 0;
 
-            // percorre a lista de lotes de produtos encontrados no armazem
-            for (BatchStock productInStock : prodInStock) {
-
-                // dias para se vencer do produto
-                Period leftTime = Period.between(productInStock.getDueDate(), LocalDate.now());
-
-                // validar se o produto tem mais 21 dias de validade
-                if (leftTime.getDays() > 21) {
-                    totalDeProdutos += productInStock.getCurrentQuantity();
-                }
+            for (BatchStock p : prodInStock) {
+                totalDeProdutos += p.getCurrentQuantity();
             }
 
             // valida se existe a quantidade de itens do PurchaseItems
@@ -91,7 +80,7 @@ public class PurchaseOrderService {
         //salva no banco as mudanas feitas
 //        purchaseOrderRepository.save(purchaseOrder);
 
-        return purchaseOrder.totalPrice();
+        return purchaseOrder;
     }
 
 }

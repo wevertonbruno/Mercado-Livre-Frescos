@@ -1,6 +1,7 @@
 package com.mercadolibre.grupo1.projetointegrador.controller;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
+import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
 import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderService;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.math.BigDecimal;
 import java.net.URI;
 import java.util.List;
 
@@ -31,18 +33,21 @@ public class PurchaseOrderController {
     }
 
     @PostMapping("/orders")
-    public ResponseEntity<PurchaseOrder> createPurchaseOrder(@RequestBody PurchaseOrder purchaseOrder,
-                                                             UriComponentsBuilder uriBuilder,
-                                                             HttpServletRequest http) {
+    public ResponseEntity<PurchaseOrderDTO.Response> createPurchaseOrder(@RequestBody PurchaseOrderDTO purchaseOrder,
+                                                          UriComponentsBuilder uriBuilder) {
         //...
+        PurchaseOrder purchaseOrderDTO = purchaseOrderService.createPurchaseOrder(purchaseOrder);
 
         URI uri =  uriBuilder
                 .path("/{idOrder}")
-                .buildAndExpand(purchaseOrder.getId())
+                .buildAndExpand(purchaseOrderDTO.getId())
                 .toUri();
 
+        PurchaseOrderDTO.Response response = PurchaseOrderDTO.Response.builder().totalPrice(purchaseOrderDTO.totalPrice()).build();
+
         //...
-        return null;
+        return ResponseEntity.created(uri)
+                .body(response);
     }
 
     @GetMapping("/{idOrder}")

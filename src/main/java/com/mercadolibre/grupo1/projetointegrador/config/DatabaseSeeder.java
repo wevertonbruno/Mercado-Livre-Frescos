@@ -73,8 +73,8 @@ public class DatabaseSeeder {
 
     private void seedCustomer() {
         Role customerRole = roleRepository.findById(3L).get();
-        customerRepository.save(Customer.builder().id(1L).username("customer1").password("123456").email("customer1@mercadolibre.com").roles(Set.of(customerRole)).build());
-        customerRepository.save(Customer.builder().id(2L).username("customer2").password("123456").email("customer2@mercadolibre.com").roles(Set.of(customerRole)).build());
+        customerRepository.save(Customer.builder().username("customer1").password("123456").email("customer1@mercadolibre.com").roles(Set.of(customerRole)).build());
+        customerRepository.save(Customer.builder().username("customer2").password("123456").email("customer2@mercadolibre.com").roles(Set.of(customerRole)).build());
     }
 
     private void seedProducts() {
@@ -98,7 +98,9 @@ public class DatabaseSeeder {
 
     private void seedBatchStock() {
         Product product1 = productRepository.getById(1L);
+        Product product2 = productRepository.getById(2L);
         InboundOrder inboundOrder = inboundOrderRepository.findById(1L).get();
-        batchStockRepository.save(BatchStock.builder().id(1L).product(product1).currentTemperature(20F).minimumTemperature(10F).initialQuantity(20).currentQuantity(20).manufacturingDateTime(LocalDateTime.now()).dueDate(LocalDate.now()).inboundOrder(inboundOrder).build());
+        batchStockRepository.save(BatchStock.builder().id(1L).product(product1).currentTemperature(20F).minimumTemperature(10F).initialQuantity(20).currentQuantity(20).manufacturingDateTime(LocalDateTime.now()).dueDate(LocalDate.parse("2023-01-01")).inboundOrder(inboundOrder).build());
+        batchStockRepository.save(BatchStock.builder().id(2L).product(product2).currentTemperature(20F).minimumTemperature(10F).initialQuantity(20).currentQuantity(20).manufacturingDateTime(LocalDateTime.now()).dueDate(LocalDate.parse("2022-05-01")).inboundOrder(inboundOrder).build());
     }
 }
