@@ -1,12 +1,8 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
-import com.mercadolibre.grupo1.projetointegrador.entities.*;
-import com.mercadolibre.grupo1.projetointegrador.entities.enums.OrderStatus;
-import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
-import com.mercadolibre.grupo1.projetointegrador.repositories.*;
+
+import com.mercadolibre.grupo1.projetointegrador.repositories.PurchaseOrderRepository;
 import lombok.RequiredArgsConstructor;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
@@ -31,24 +27,30 @@ public class DatabaseSeeder {
     private final ProductRepository productRepository;
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final PurchaseItemRepository purchaseItemRepository;
+    private final WarehouseRepository warehouseRepository;
+    private final SectionRepository sectionRepository;
 
+    @Transactional
     public void seed() {
         LOGGER.info("Seeding database...");
 
         seedRoles();
         seedSellers();
         seedAgents();
-        seedProducts();
         seedPurchaseOrders();
+        seedWarehouses();
+        seedProducts();
 
         LOGGER.info("Seeding complete...");
     }
 
 
     private void seedProducts() {
-        productRepository.save(Product.builder().id(1L).nome("Product1").volume(1D).price(BigDecimal.valueOf(100)).category(ProductCategory.FRESCO).build());
-        productRepository.save(Product.builder().id(2L).nome("Product2").volume(2D).price(BigDecimal.valueOf(200)).category(ProductCategory.CONGELADO).build());
-        productRepository.save(Product.builder().id(3L).nome("Action Figure Mokey D Luffy").volume(3D).price(BigDecimal.valueOf(300)).category(ProductCategory.REFRIGERADO).build());
+        Seller s1 = sellerRepository.findById(1L).get();
+        Seller s2 = sellerRepository.findById(2L).get();
+        productRepository.save(Product.builder().id(1L).seller(s1).nome("Product1").volume(1D).price(BigDecimal.valueOf(100)).category(ProductCategory.FRESCO).build());
+        productRepository.save(Product.builder().id(2L).seller(s2).nome("Product2").volume(2D).price(BigDecimal.valueOf(200)).category(ProductCategory.CONGELADO).build());
+        productRepository.save(Product.builder().id(3L).seller(s1).nome("Action Figure Mokey D Luffy").volume(3D).price(BigDecimal.valueOf(300)).category(ProductCategory.REFRIGERADO).build());
         productRepository.save(Product.builder().id(4L).nome("Product4").volume(4D).price(BigDecimal.valueOf(400)).category(ProductCategory.FRESCO).build());
         productRepository.save(Product.builder().id(5L).nome("Product5").volume(5D).price(BigDecimal.valueOf(500)).category(ProductCategory.REFRIGERADO).build());
     }
@@ -99,4 +101,12 @@ public class DatabaseSeeder {
         agentRepository.save(Agent.builder().id(2L).username("agent3").password("123456").email("agent3@mercadolibre.com").roles(Set.of(agentRole)).build());
         agentRepository.save(Agent.builder().id(2L).username("agent4").password("123456").email("agent4@mercadolibre.com").roles(Set.of(agentRole)).build());
     }
+
+    private void seedWarehouses(){
+        Warehouse w1 = warehouseRepository.save(Warehouse.builder().id(1L).name("SP-SP").address("00000-000").build());
+        sectionRepository.save(Section.builder().id(1L).capacity(100.0).category(ProductCategory.FRESCO).warehouse(w1).description("Sessao de frescos").build());
+        sectionRepository.save(Section.builder().id(2L).capacity(100.0).category(ProductCategory.CONGELADO).warehouse(w1).description("Sessao de congelados").build());
+        sectionRepository.save(Section.builder().id(3L).capacity(100.0).category(ProductCategory.REFRIGERADO).warehouse(w1).description("Sessao de refrigerados").build());
+    }
+
 }

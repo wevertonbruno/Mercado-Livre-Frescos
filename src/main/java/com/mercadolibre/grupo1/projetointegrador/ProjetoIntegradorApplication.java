@@ -17,11 +17,11 @@ public class ProjetoIntegradorApplication {
         SpringApplication.run(ProjetoIntegradorApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner run(){
-        return args -> {
-            databaseSeeder.seed();
-        };
-    }
+//    @Bean
+//    CommandLineRunner run(){
+//        return args -> {
+//            databaseSeeder.seed();
+//        };
+//    }
 
 }
