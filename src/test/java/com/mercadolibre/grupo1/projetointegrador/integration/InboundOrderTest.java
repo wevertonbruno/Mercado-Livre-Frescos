@@ -9,6 +9,7 @@ import com.mercadolibre.grupo1.projetointegrador.entities.Section;
 import com.mercadolibre.grupo1.projetointegrador.entities.Warehouse;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,6 +33,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * Classe de testes de integracao para o InboundOrder
+ * @author Weverton Bruno
+ */
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
@@ -46,6 +51,7 @@ public class InboundOrderTest {
     private static final String BASE_URL = "http://localhost:8080/api/v1/fresh-products/inboundorder";
 
     @Test
+    @DisplayName("Testa se uma ordem de entrada é salva com todos os dados validos")
     public void itShouldSaveAInboundOrder() throws Exception {
         InboundOrderDTO order = createFakeOrderInput();
         BatchStockDTO batchStock1 = createFakeBatchStockInput(null, 1L);
@@ -61,11 +67,12 @@ public class InboundOrderTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(payload))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.orderNumber", is(6)))
-                .andExpect(jsonPath("$.batchStocks.length()", is(2)));
+                .andExpect(header().string("Location", "/api/v1/fresh-products/inboundorder/6"))
+                .andExpect(jsonPath("$.length()", is(2)));
     }
 
     @Test
+    @DisplayName("Testa se uma ordem de entrada existente é atualizada")
     public void itShouldUpdateAInboundOrder() throws Exception {
         InboundOrderDTO order = createFakeOrderInput();
         BatchStockDTO batchStock1 = createFakeBatchStockInput(1L, 1L);
@@ -82,11 +89,12 @@ public class InboundOrderTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(payload))
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.orderNumber", is(1)))
-                .andExpect(jsonPath("$.batchStocks.length()", is(3)));
+                .andExpect(header().string("Location", "/api/v1/fresh-products/inboundorder/1"))
+                .andExpect(jsonPath("$.length()", is(3)));
     }
 
     @Test
+    @DisplayName("Testa se um bad request é retornado ao tentar inserir um volume de lotes maior que a capacidade da sessao")
     public void itShouldGetABadRequestOvercapacity() throws Exception {
         InboundOrderDTO order = createFakeOrderInput();
         BatchStockDTO batchStock1 = createFakeBatchStockInput(1L, 1L);
@@ -108,6 +116,7 @@ public class InboundOrderTest {
     }
 
     @Test
+    @DisplayName("Testa se um bad request é retornado ao tentar inserir um lote cuja categoria seja diferente da categoria aceita na sessão")
     public void itShouldGetABadRequestInvalidCategory() throws Exception {
         InboundOrderDTO order = createFakeOrderInput();
         BatchStockDTO batchStock1 = createFakeBatchStockInput(1L, 1L);
@@ -128,6 +137,7 @@ public class InboundOrderTest {
     }
 
     @Test
+    @DisplayName("Testa se um bad request é retornado caso se tente atualizar um lote já existente de outra ordem de entrada")
     public void itShouldGetABadRequestInvalidOperation() throws Exception {
         InboundOrderDTO order = createFakeOrderInput();
         BatchStockDTO batchStock1 = createFakeBatchStockInput(1L, 1L);

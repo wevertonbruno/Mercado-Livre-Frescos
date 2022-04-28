@@ -59,24 +59,52 @@ public class BatchStockService {
         return updatedBatch;
     }
 
+    /**
+     * Salva um estoque com varios lotes de produtos
+     * @param batchStocks
+     * @author Weverton BRuno
+     */
     public void saveAll(List<BatchStock> batchStocks){
         batchStockRepository.saveAll(batchStocks);
     }
 
+    /**
+     * Faz a busca pelo Id de um BatchStock
+     * @param batchNumber
+     * @author Weverton Bruno
+     */
     public BatchStock findById(Long batchNumber) {
         return batchStockRepository.findById(batchNumber).orElseThrow(() -> new EntityNotFoundException("Lote com ID " + batchNumber + " não encontrado."));
     }
 
+    /**
+     * Busca todos os lotes de uma sessao
+     * @param sectionId
+     * @author Weverton Bruno
+     */
     public Set<BatchStock> findBatchStockBySectionId(Long sectionId){
         return batchStockRepository.findStockBySectionId(sectionId);
     }
 
+    /**
+     * Busca todos os lotes de uma sessao pelos dias de vencimento
+     * @param sectionId
+     * @param expiresIn
+     * @author Weverton Bruno
+     */
     public List<BatchStockDTO.SimpleBatchStockDTO> findBatchStockBySectionIdAndExpiresIn(Long sectionId, Long expiresIn) {
         return batchStockRepository.findStockBySectionIdAndDueDateBetween(sectionId, LocalDate.now(), LocalDate.now().plusDays(expiresIn))
                 .stream().map(BatchStockDTO::toSimpleBatchDTO)
                 .collect(Collectors.toList());
     }
 
+    /**
+     * Busca todos os lotes de um armazem pela categoria e pelos dias de vencimento
+     * @param productCategory
+     * @param expiresIn
+     * @param direction
+     * @author Weverton Bruno
+     */
     public List<BatchStockDTO.SimpleBatchStockDTO> findBatchStockByCategoryAndExpiresIn(ProductCategory productCategory, Long expiresIn, Sort.Direction direction) {
         return batchStockRepository.findWarehouseStockByCategoryAndDueDateBetween(1L, productCategory, LocalDate.now(), LocalDate.now().plusDays(expiresIn), Sort.by(direction, "dueDate"))
                 .stream().map(BatchStockDTO::toSimpleBatchDTO)
