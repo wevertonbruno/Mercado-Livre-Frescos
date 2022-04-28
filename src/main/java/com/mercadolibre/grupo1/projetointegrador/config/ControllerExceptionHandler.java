@@ -1,5 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
+import com.mercadolibre.grupo1.projetointegrador.dtos.ExceptionDTO;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.MissingProductExceptions;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredProducts;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredUser;
@@ -8,22 +9,27 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.servlet.http.HttpServletRequest;
+
 @RestControllerAdvice
 public class ControllerExceptionHandler {
 
     @ExceptionHandler(MissingProductExceptions.class)
-    public ResponseEntity<String> notNullException(MissingProductExceptions missingProductExceptions) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(missingProductExceptions.getMessage());
+    public ResponseEntity<ExceptionDTO> notNullException(MissingProductExceptions e, HttpServletRequest request) {
+        ExceptionDTO response = ExceptionDTO.notFound(e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     @ExceptionHandler(UnregisteredUser.class)
-    public ResponseEntity<String> unregisteredUser(UnregisteredUser unregisteredUser) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(unregisteredUser.getMessage());
+    public ResponseEntity<ExceptionDTO> unregisteredUser(UnregisteredUser e, HttpServletRequest request) {
+        ExceptionDTO response = ExceptionDTO.notFound(e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
     @ExceptionHandler(UnregisteredProducts.class)
-    private ResponseEntity<String> unregisteredProduct(UnregisteredProducts unregisteredProducts) {
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(unregisteredProducts.getMessage());
+    private ResponseEntity<ExceptionDTO> unregisteredProduct(UnregisteredProducts e, HttpServletRequest request) {
+        ExceptionDTO response = ExceptionDTO.notFound(e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
 }

@@ -21,10 +21,12 @@ public class PurchaseOrderDTO {
     private PurchaseOrder purchaseOrder;
 
     @Data
+    @Builder
     public static class ProductItemDTO {
         @NotNull(message = "Não é permitido valor nulo")
         private Long productId;
-        private int quantity;
+        @NotNull(message = "Não é permitido valor nulo")
+        private Integer quantity;
     }
 
     @Data

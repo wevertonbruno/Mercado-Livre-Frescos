@@ -35,7 +35,7 @@ public class PurchaseOrderService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public PurchaseOrder createPurchaseOrder (PurchaseOrderDTO purchaseOrderDTO) {
+    public PurchaseOrder createPurchaseOrder(PurchaseOrderDTO purchaseOrderDTO) {
         // lista de produtos do purchaseOrderDTO
         List<PurchaseOrderDTO.ProductItemDTO> productsPurchaseOrders = purchaseOrderDTO.getPurchaseOrder().getProducts();
 
@@ -80,12 +80,12 @@ public class PurchaseOrderService {
         // salva no banco o purchaseOrder
         purchaseOrder = purchaseOrderRepository.save(purchaseOrder);
 
-//         adiciona o purchaseOrder em cada item
+        // adiciona o purchaseOrder em cada item
         for (PurchaseItem p : purchaseOrder.getProducts()) {
             p.setPurchaseOrder(purchaseOrder);
         }
 
-//        salva no banco as mudanas feitas
+        // salva no banco as mudanas feitas
         purchaseOrderRepository.save(purchaseOrder);
 
         return purchaseOrder;
