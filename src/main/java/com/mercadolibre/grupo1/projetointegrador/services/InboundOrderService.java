@@ -49,11 +49,10 @@ public class InboundOrderService {
         //Verifica a capacidade da sessao
         checkSectionCapacity(inboundOrder.getSection(), batchStocks);
 
+        inboundOrder.setBatchStock(batchStocks);
         InboundOrder createdOrder = inboundOrderRepository.save(inboundOrder);
-        batchStocks.forEach(batch -> batch.setInboundOrder(createdOrder));
-        createdOrder.getBatchStock().addAll(batchStocks);
 
-        batchStockService.saveAll(batchStocks);
+        batchStocks.forEach(batch -> batch.setInboundOrder(createdOrder));
 
         return InboundOrderResponseDTO.createFromInboundOrder(createdOrder);
     }

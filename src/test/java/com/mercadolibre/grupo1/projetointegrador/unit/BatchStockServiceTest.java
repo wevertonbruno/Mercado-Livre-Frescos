@@ -126,14 +126,6 @@ class BatchStockServiceTest {
         assertNotNull(stock);
     }
 
-    @Test
-    @DisplayName("Testa todos os lotes sao salvos")
-    public void itShouldSaveAllBatches(){
-        List<BatchStock> stock = Arrays.asList(BatchStock.builder().id(1L).build());
-        batchStockService.saveAll(stock);
-        verify(batchStockRepository, times(1)).saveAll(stock);
-    }
-
     private Product createFakeProduct(){
         return Product.builder().id(1L).name("product").volume(10.0).build();
     }

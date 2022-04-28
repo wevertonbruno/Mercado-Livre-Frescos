@@ -60,15 +60,6 @@ public class BatchStockService {
     }
 
     /**
-     * Salva um estoque com varios lotes de produtos
-     * @param batchStocks
-     * @author Weverton BRuno
-     */
-    public void saveAll(List<BatchStock> batchStocks){
-        batchStockRepository.saveAll(batchStocks);
-    }
-
-    /**
      * Faz a busca pelo Id de um BatchStock
      * @param batchNumber
      * @author Weverton Bruno

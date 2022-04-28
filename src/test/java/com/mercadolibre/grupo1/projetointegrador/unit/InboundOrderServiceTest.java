@@ -136,7 +136,7 @@ class InboundOrderServiceTest {
         when(inboundOrderRepository.save(any(InboundOrder.class))).thenReturn(
                 InboundOrder.builder()
                         .section(section)
-                        .batchStock(new ArrayList<>())
+                        .batchStock(Arrays.asList(createdBatch1, createdBatch2))
                         .orderDate(inboundOrderDTO.getOrderDate())
                         .id(1L)
                         .build()
