@@ -1,5 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.dtos;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.validation.constraints.NotNull;
@@ -9,6 +10,7 @@ import javax.validation.constraints.NotNull;
  * DTO pegando o id da Section e o id da Warehouse
  */
 @Data
+@AllArgsConstructor
 public class SectionDTO {
     @NotNull(message = "Código da sessão não pode ser nulo")
     private Long sectionCode;

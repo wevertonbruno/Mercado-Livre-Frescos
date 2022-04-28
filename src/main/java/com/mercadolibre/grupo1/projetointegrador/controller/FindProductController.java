@@ -16,12 +16,9 @@ public class FindProductController {
 
     @GetMapping("/{productId}")
     public ResponseEntity<FindProductResponseDTO> findProduct(@PathVariable Long productId, @RequestParam Character type) {
-        SortingType sortingType = SortingType.NONE;
+        SortingType sortingType = SortingType.BATH_ID;
         if (type != null) {
             switch (type) {
-                case 'L':
-                    sortingType = SortingType.BATH;
-                    break;
                 case 'C':
                     sortingType = SortingType.QUANTITY;
                     break;
