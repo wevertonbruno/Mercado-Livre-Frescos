@@ -1,8 +1,11 @@
-package com.mercadolibre.grupo1.projetointegrador.unitario;
+package com.mercadolibre.grupo1.projetointegrador.unit;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
+import com.mercadolibre.grupo1.projetointegrador.dtos.SectionDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.Product;
+import com.mercadolibre.grupo1.projetointegrador.entities.Section;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.ListIsEmptyException;
 import com.mercadolibre.grupo1.projetointegrador.repositories.ProductRepository;
 import com.mercadolibre.grupo1.projetointegrador.services.ProductService;
@@ -19,20 +22,28 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+/*
+@author Gabriel Essenio & @author Weverton Bruno
+Teste unitario de Service
+ */
+@ExtendWith(MockitoExtension.class)
+class ProductServiceTest {
+
+    @Mock
+    private ProductRepository productRepository;
+
+    @InjectMocks
+    private ProductService productService;
 
 /*
 @author Gabriel Essenio
+metodo que gera uma lista de produtosDTO para teste
  */
-@ExtendWith(MockitoExtension.class)
-public class ProductServiceTest {
-
-    @Mock
-    ProductRepository productRepository;
-
-    @InjectMocks
-    ProductService productService;
-
     private List<ProductDTO> gerarProductDTO(){
         ProductDTO productDTO1 = new ProductDTO();
         productDTO1.setProductId(1L);
@@ -58,6 +69,10 @@ public class ProductServiceTest {
         return Arrays.asList(productDTO1,productDTO2,productDTO3);
     }
 
+    /*
+@author Gabriel Essenio
+metodo que gera uma lista de produtos para teste
+ */
     private List<Product> gerarProduct(){
         Product product1 = new Product();
         product1.setId(1L);
@@ -82,7 +97,9 @@ public class ProductServiceTest {
 
         return Arrays.asList(product1,product2, product3);
     }
-
+    /*
+    @author Gabriel Essenio
+     */
     @Test
     @DisplayName("Teste se a lista retorna todos os produtos cadastrados corretamente")
     public void testAllListProducts(){
@@ -92,7 +109,9 @@ public class ProductServiceTest {
         Assertions.assertEquals(allProducts.get(0).getNome(), serviceProductDTO.get(0).getNome());
         Assertions.assertEquals(allProducts.get(1).getNome(), serviceProductDTO.get(1).getNome());
     }
-
+    /*
+    @author Gabriel Essenio
+     */
     @Test
     @DisplayName("Teste se a lista retorna vazia quando nenhum produto tiver cadastrado")
     public void testListIsEmpty(){
@@ -100,7 +119,9 @@ public class ProductServiceTest {
         Throwable listIsEmptyException = Assertions.assertThrows(ListIsEmptyException.class, () -> productService.listAllProducts());
         Assertions.assertEquals(listIsEmptyException.getMessage(), "Nenhum produto cadastrado");
     }
-
+    /*
+    @author Gabriel Essenio
+     */
     @Test
     @DisplayName("Teste se retorna lista de produtos quando é passado um status de category")
     public void testListProductByCategory(){
@@ -110,12 +131,28 @@ public class ProductServiceTest {
         List<ProductDTO> serviceProductByCategory = productService.listProductByCategory(ProductCategory.FRESCO);
         Assertions.assertNotNull(serviceProductByCategory);
     }
-
+    /*
+    @author Gabriel Essenio
+     */
     @Test
     @DisplayName("Teste e retorna mensagem correta quando passado uma lista vazia")
     public void testMessageReturnEmptyListProductByCategory(){
         Mockito.when(productRepository.findAllByCategory(ProductCategory.CONGELADO)).thenReturn(new ArrayList<>());
         Throwable listIsEmptyException = Assertions.assertThrows(ListIsEmptyException.class, () -> productService.listProductByCategory(ProductCategory.CONGELADO));
         Assertions.assertEquals(listIsEmptyException.getMessage(), "Categoria não encontrada");
+    }
+
+
+
+
+    @Test
+    public void itShouldReturnAProductNotFoundException(){
+        when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
+
+        Exception exception = assertThrows(EntityNotFoundException.class, () -> {
+            productService.findById(1L);
+        });
+
+        assertEquals("Produto com ID 1 não encontrado", exception.getMessage());
     }
 }

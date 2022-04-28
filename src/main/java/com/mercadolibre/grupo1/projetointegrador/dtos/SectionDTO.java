@@ -8,12 +8,10 @@ import javax.validation.constraints.NotNull;
  * @author Ederson Rodrigues Araujo
  * DTO pegando o id da Section e o id da Warehouse
  */
-
 @Data
 public class SectionDTO {
-
     @NotNull(message = "Código da sessão não pode ser nulo")
     private Long sectionCode;
-    @NotNull(message = "Código da sessão não pode ser nulo")
+    @NotNull(message = "Código do armazém não pode ser nulo")
     private Long warehouseCode;
 }

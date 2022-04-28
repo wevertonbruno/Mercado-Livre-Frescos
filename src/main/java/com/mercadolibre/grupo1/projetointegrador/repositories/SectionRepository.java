@@ -4,6 +4,8 @@ import com.mercadolibre.grupo1.projetointegrador.entities.Section;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.Optional;
+
 /**
  * @author Ederson Rodrigues Araujo
  * Entidade responsável pela Section
@@ -11,4 +13,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SectionRepository extends JpaRepository<Section, Long> {
+    Optional<Section> findByIdAndWarehouse_Id(Long sectionId, Long warehouseId);
 }

@@ -31,4 +31,5 @@ trato exceçoes de NotFound com status 404
     public static ExceptionDTO notFound(String message, String path) {
         return new ExceptionDTO(HttpStatus.NOT_FOUND.value(), message, Instant.now(), path);
     }
+
 }

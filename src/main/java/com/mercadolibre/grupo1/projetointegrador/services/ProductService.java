@@ -1,10 +1,12 @@
 package com.mercadolibre.grupo1.projetointegrador.services;
-
 import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.Product;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.ListIsEmptyException;
 import com.mercadolibre.grupo1.projetointegrador.repositories.ProductRepository;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
+
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,7 @@ import java.util.stream.Collectors;
 Construindo service de para tratar as requisitos da busca de produtos
  */
 @Service
+@RequiredArgsConstructor
 public class ProductService {
     /*
     @author Gabriel Essenio
@@ -48,5 +51,12 @@ public class ProductService {
         return productsByCategory.stream()
                 .map(product -> new ProductDTO(product.getId(),product.getNome(),product.getVolume(),product.getPrice(),product.getCategory()))
                 .collect(Collectors.toList());
+    }
+
+    public Product findById(Long productId){
+        return productRepository
+                .findById(productId)
+                .orElseThrow(() ->
+                        new EntityNotFoundException("Produto com ID " + productId + " não encontrado"));
     }
 }
