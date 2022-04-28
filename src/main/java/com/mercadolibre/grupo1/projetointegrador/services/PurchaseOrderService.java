@@ -9,6 +9,7 @@ import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredUser;
 import com.mercadolibre.grupo1.projetointegrador.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -35,6 +36,7 @@ public class PurchaseOrderService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    @Transactional // so salva no banco se nao houver erro
     public PurchaseOrder createPurchaseOrder(PurchaseOrderDTO purchaseOrderDTO) {
         // lista de produtos do purchaseOrderDTO
         List<PurchaseOrderDTO.ProductItemDTO> productsPurchaseOrders = purchaseOrderDTO.getPurchaseOrder().getProducts();
@@ -76,14 +78,14 @@ public class PurchaseOrderService {
         }
 
         // criando o purchaseOrder para ser salvo no banco
-        PurchaseOrder purchaseOrder = new PurchaseOrder(null, new ArrayList<>(), LocalDateTime.now(), LocalDateTime.now(), customer, OrderStatus.OPENED);
+        PurchaseOrder purchaseOrder = new PurchaseOrder(null, purchaseItemList, LocalDateTime.now(), LocalDateTime.now(), customer, OrderStatus.OPENED);
+
         // salva no banco o purchaseOrder
-        PurchaseOrder savePurchaseOrderWithItemsList = purchaseOrderRepository.save(purchaseOrder);
+        PurchaseOrder purchaseOrderWithItemsList = purchaseOrderRepository.save(purchaseOrder);
 
-        purchaseItemList.forEach(x -> x.setPurchaseOrder(savePurchaseOrderWithItemsList));
-        savePurchaseOrderWithItemsList.getProducts().addAll(purchaseItemList);
+        purchaseItemList.forEach(x -> x.setPurchaseOrder(purchaseOrderWithItemsList));
 
-        return savePurchaseOrderWithItemsList;
+        return purchaseOrderWithItemsList;
     }
 
 }
