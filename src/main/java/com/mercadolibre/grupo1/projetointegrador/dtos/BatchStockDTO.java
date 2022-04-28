@@ -3,9 +3,7 @@ package com.mercadolibre.grupo1.projetointegrador.dtos;
 import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
 import com.mercadolibre.grupo1.projetointegrador.entities.InboundOrder;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
@@ -60,7 +58,7 @@ public class BatchStockDTO {
         );
     }
 
-    @Data
+    @Getter @Setter
     @AllArgsConstructor
     @NoArgsConstructor
     public static class SimpleBatchStockDTO{
