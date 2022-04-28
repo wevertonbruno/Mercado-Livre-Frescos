@@ -1,5 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.services;
 
+import com.mercadolibre.grupo1.projetointegrador.dtos.WarehouseProductDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
 import com.mercadolibre.grupo1.projetointegrador.entities.Warehouse;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.NotFoundException;
@@ -19,8 +20,8 @@ public class WarehouseService {
     @Autowired
     private WarehouseRepository warehouseRepository;
 
-    public List<Warehouse> findWarehouse(Long productsId) {
-        List<Warehouse> stockByWarehouseProduct = warehouseRepository.findProductsInWarehouse(productsId);
+    public List<WarehouseProductDTO> findWarehouse(Long productsId) {
+        List<WarehouseProductDTO> stockByWarehouseProduct = warehouseRepository.findProductsInWarehouse(productsId);
         if(stockByWarehouseProduct.isEmpty()){
             throw new NotFoundException("PRODUTO NÃO ENCONTRADO");
         }

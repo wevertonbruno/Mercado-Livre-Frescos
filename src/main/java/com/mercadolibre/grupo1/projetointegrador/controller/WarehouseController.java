@@ -2,6 +2,7 @@ package com.mercadolibre.grupo1.projetointegrador.controller;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.WarehouseDTO;
+import com.mercadolibre.grupo1.projetointegrador.dtos.WarehouseProductDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
 import com.mercadolibre.grupo1.projetointegrador.entities.Product;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
@@ -28,9 +29,9 @@ public class WarehouseController {
     private WarehouseService warehouseService;
 
     @GetMapping
-    public ResponseEntity<List<Warehouse>> listProductWarehouse(@RequestParam(required = false,
+    public ResponseEntity<List<WarehouseProductDTO>> listProductWarehouse(@RequestParam(required = false,
             name = "productId") Long id) {
-        List<Warehouse> findWarehouseByProducts = warehouseService.findWarehouse(id);
+        List<WarehouseProductDTO> findWarehouseByProducts = warehouseService.findWarehouse(id);
         return ResponseEntity.ok().body(findWarehouseByProducts);
     }
 
