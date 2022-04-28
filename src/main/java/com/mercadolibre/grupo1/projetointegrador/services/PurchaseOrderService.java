@@ -53,7 +53,7 @@ public class PurchaseOrderService {
             // verifica se o produto esta cadastrado e retorna um erro caso nao esteja
             Product prodRepository = productRepository
                     .findById(productItemDTO.getProductId())
-                    .orElseThrow(() -> new UnregisteredProducts("Produto não cadastrado"));
+                    .orElseThrow(() -> new UnregisteredProducts("Produto não cadastrado!"));
 
             // procura no lote se existe o produto solicitado e com data de vencimento superior a solicitada
             List<BatchStock> prodInStock = batchStockRepository
@@ -68,7 +68,7 @@ public class PurchaseOrderService {
 
             // valida se existe a quantidade de itens do PurchaseItems
             if (totalDeProdutos < productItemDTO.getQuantity()) {
-                throw new MissingProductExceptions(String.format("%s insuficiente em estoque", prodRepository.getNome()));
+                throw new MissingProductExceptions(String.format("%s insuficiente em estoque!", prodRepository.getNome()));
             }
 
             // cria uma lista de purchaseitems para ser salvo no banco
@@ -76,19 +76,14 @@ public class PurchaseOrderService {
         }
 
         // criando o purchaseOrder para ser salvo no banco
-        PurchaseOrder purchaseOrder = new PurchaseOrder(null, purchaseItemList, LocalDateTime.now(), LocalDateTime.now(), customer, OrderStatus.OPENED);
+        PurchaseOrder purchaseOrder = new PurchaseOrder(null, new ArrayList<>(), LocalDateTime.now(), LocalDateTime.now(), customer, OrderStatus.OPENED);
         // salva no banco o purchaseOrder
-        purchaseOrder = purchaseOrderRepository.save(purchaseOrder);
+        PurchaseOrder savePurchaseOrderWithItemsList = purchaseOrderRepository.save(purchaseOrder);
 
-        // adiciona o purchaseOrder em cada item
-        for (PurchaseItem p : purchaseOrder.getProducts()) {
-            p.setPurchaseOrder(purchaseOrder);
-        }
+        purchaseItemList.forEach(x -> x.setPurchaseOrder(savePurchaseOrderWithItemsList));
+        savePurchaseOrderWithItemsList.getProducts().addAll(purchaseItemList);
 
-        // salva no banco as mudanas feitas
-        purchaseOrderRepository.save(purchaseOrder);
-
-        return purchaseOrder;
+        return savePurchaseOrderWithItemsList;
     }
 
 }
