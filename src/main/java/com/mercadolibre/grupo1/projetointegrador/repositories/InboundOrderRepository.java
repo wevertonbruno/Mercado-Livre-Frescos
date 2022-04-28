@@ -2,6 +2,7 @@ package com.mercadolibre.grupo1.projetointegrador.repositories;
 
 import com.mercadolibre.grupo1.projetointegrador.entities.InboundOrder;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -11,4 +12,5 @@ import java.util.List;
  */
 public interface InboundOrderRepository extends JpaRepository<InboundOrder,Long> {
     List<InboundOrder> findInboundOrderBy();
+    List<InboundOrder> findBySection_Id(Long sectionId);
 }

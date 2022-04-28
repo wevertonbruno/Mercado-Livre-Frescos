@@ -2,6 +2,7 @@ package com.mercadolibre.grupo1.projetointegrador.controller;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.WarehouseDTO;
+import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
 import com.mercadolibre.grupo1.projetointegrador.entities.Product;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
 import com.mercadolibre.grupo1.projetointegrador.entities.Warehouse;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author Nayara Coca
@@ -26,9 +28,9 @@ public class WarehouseController {
     private WarehouseService warehouseService;
 
     @GetMapping
-    public ResponseEntity<List<WarehouseDTO>> listProductWarehouse(@RequestParam(required = false,
-            name = "productId") Product batchStock) {
-        List<WarehouseDTO> findWarehouseByProducts = warehouseService.findWarehouse(batchStock);
+    public ResponseEntity<List<Warehouse>> listProductWarehouse(@RequestParam(required = false,
+            name = "productId") Long id) {
+        List<Warehouse> findWarehouseByProducts = warehouseService.findWarehouse(id);
         return ResponseEntity.ok().body(findWarehouseByProducts);
     }
 

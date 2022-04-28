@@ -1,7 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.util.List;
@@ -13,13 +12,12 @@ import java.util.List;
  */
 
 @Entity
-@Builder
 @Table(name = "inbound_orders")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-
+@Builder
 public class InboundOrder {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,6 +26,6 @@ public class InboundOrder {
     @ManyToOne
     @JoinColumn(name = "section_id", referencedColumnName = "id")
     private Section section;
-    @OneToMany(mappedBy = "inboundOrder")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<BatchStock> batchStock;
 }

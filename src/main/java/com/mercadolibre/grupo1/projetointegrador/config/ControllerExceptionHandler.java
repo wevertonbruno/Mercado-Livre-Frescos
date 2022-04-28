@@ -1,7 +1,8 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.ExceptionDTO;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.ExceptionMessage;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -32,4 +33,36 @@ public class ControllerExceptionHandler {
 
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<ExceptionDTO> entityNotFound(EntityNotFoundException e,
+                                                         HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.badRequest(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(ExcededCapacityException.class)
+    public ResponseEntity<ExceptionDTO> excededCapacityException(ExcededCapacityException e,
+                                                       HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.badRequest(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(InvalidCategoryException.class)
+    public ResponseEntity<ExceptionDTO> invalidCategoryException(InvalidCategoryException e,
+                                                                 HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.badRequest(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<ExceptionDTO> notFoundException(NotFoundException e, HttpServletRequest request){
+        ExceptionDTO response = ExceptionDTO.notFound(e.getMessage(),request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
  }
