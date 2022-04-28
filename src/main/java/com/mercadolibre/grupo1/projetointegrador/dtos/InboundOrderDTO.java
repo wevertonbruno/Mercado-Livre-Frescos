@@ -17,7 +17,6 @@ import java.util.Set;
  */
 
 @Data
-@AllArgsConstructor
 @NoArgsConstructor
 public class InboundOrderDTO {
     private Long orderNumber;
