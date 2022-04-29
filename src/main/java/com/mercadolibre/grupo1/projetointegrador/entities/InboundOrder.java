@@ -5,6 +5,7 @@ import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -29,7 +30,7 @@ public class InboundOrder {
     @ManyToOne
     @JoinColumn(name = "section_id", referencedColumnName = "id")
     private Section section;
-
     @OneToMany(mappedBy = "inboundOrder",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
     private List<BatchStock> batchStock;
+
 }

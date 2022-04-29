@@ -5,6 +5,7 @@ import com.mercadolibre.grupo1.projetointegrador.entities.Section;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
 import com.mercadolibre.grupo1.projetointegrador.repositories.ProductRepository;
 import com.mercadolibre.grupo1.projetointegrador.services.ProductService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -25,7 +26,11 @@ class ProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
+    /**
+     * @author Weverton Bruno
+     */
     @Test
+    @DisplayName("Testa se uma exceção de produto nao encontrado é lancado")
     public void itShouldReturnAProductNotFoundException(){
         when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 

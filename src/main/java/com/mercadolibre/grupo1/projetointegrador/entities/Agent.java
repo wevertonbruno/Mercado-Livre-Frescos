@@ -24,4 +24,11 @@ public class Agent extends AuthenticableUser{
     @ManyToOne
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
     private Warehouse warehouse;
+    public Agent(AuthenticableUser user) {
+        super.setId(user.getId());
+        super.setEmail(user.getEmail());
+        super.setUsername(user.getUsername());
+        super.setPassword(user.getUsername());
+        super.setRoles(user.getRoles());
+    }
 }

@@ -3,26 +3,31 @@ package com.mercadolibre.grupo1.projetointegrador.unit;
 import com.mercadolibre.grupo1.projetointegrador.dtos.BatchStockDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
 import com.mercadolibre.grupo1.projetointegrador.entities.Product;
+import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import com.mercadolibre.grupo1.projetointegrador.repositories.BatchStockRepository;
 import com.mercadolibre.grupo1.projetointegrador.services.BatchStockService;
 import com.mercadolibre.grupo1.projetointegrador.services.ProductService;
 import com.mercadolibre.grupo1.projetointegrador.services.mappers.BatchStockMapper;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Sort;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Testes unitarios da classe BatchStockService
+ * @author Weverton Bruno
+ */
 @ExtendWith(MockitoExtension.class)
 class BatchStockServiceTest {
     @Mock
@@ -41,6 +46,7 @@ class BatchStockServiceTest {
     }
 
     @Test
+    @DisplayName("Testa se uma classe BatchStock é instanciado a partir de um DTO")
     public void itShouldCreateABatchStockFromDto(){
         Product product = createFakeProduct();
         BatchStockDTO stockInput = createFakeBatchStockInput();
@@ -60,6 +66,7 @@ class BatchStockServiceTest {
     }
 
     @Test
+    @DisplayName("Testa se uma entidade BatchStock é atualizada a partir de um DTO")
     public void itShouldUpdateABatchStockFromDto(){
         Product product = createFakeProduct();
         BatchStockDTO stockInput = createFakeBatchStockInput();
@@ -82,6 +89,7 @@ class BatchStockServiceTest {
     }
 
     @Test
+    @DisplayName("Testa os lotes da sessao são retornados")
     public void itShouldReturnAStockSection(){
         when(batchStockRepository.findStockBySectionId(anyLong()))
                 .thenReturn(new HashSet<>());
@@ -90,8 +98,36 @@ class BatchStockServiceTest {
         assertNotNull(stock);
     }
 
+    @Test
+    @DisplayName("Testa se os lotes da sessao são retornados e filtrados por um periodo de vencimento.")
+    public void itShouldReturnAStockBySectionIdAndExpiresIn(){
+        Product product = createFakeProduct();
+
+        when(batchStockRepository.findStockBySectionIdAndDueDateBetween(1L, LocalDate.now(), LocalDate.now().plusDays(10)))
+                .thenReturn(new ArrayList<>(
+                        Arrays.asList(BatchStock.builder().product(product).currentQuantity(5).build())
+                ));
+
+        List<BatchStockDTO.SimpleBatchStockDTO> stock = batchStockService.findBatchStockBySectionIdAndExpiresIn(1L, 10L);
+        assertNotNull(stock);
+    }
+
+    @Test
+    @DisplayName("Testa se os lotes do armazem são retornados e filtrados por um periodo de vencimento e categoria de produtos.")
+    public void itShouldReturnAStockByCategoryAndExpiresIn(){
+        Product product = createFakeProduct();
+
+        when(batchStockRepository.findWarehouseStockByCategoryAndDueDateBetween(1L, ProductCategory.FRESCO, LocalDate.now(), LocalDate.now().plusDays(10), Sort.by(Sort.Direction.ASC, "dueDate")))
+                .thenReturn(new ArrayList<>(
+                        Arrays.asList(BatchStock.builder().product(product).currentQuantity(5).build())
+                ));
+
+        List<BatchStockDTO.SimpleBatchStockDTO> stock = batchStockService.findBatchStockByCategoryAndExpiresIn(ProductCategory.FRESCO, 10L, Sort.Direction.ASC);
+        assertNotNull(stock);
+    }
+
     private Product createFakeProduct(){
-        return Product.builder().id(1L).nome("product").volume(10.0).build();
+        return Product.builder().id(1L).name("product").volume(10.0).build();
     }
 
     private BatchStockDTO createFakeBatchStockInput(){

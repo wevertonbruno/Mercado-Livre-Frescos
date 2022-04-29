@@ -37,13 +37,13 @@ public class DatabaseSeeder {
     private final BatchStockRepository batchStockRepository;
     private final InboundOrderRepository inboundOrderRepository;
 
+
     @Transactional
     public void seed() {
         LOGGER.info("Seeding database...");
 
         seedRoles();
         seedSellers();
-//        seedAgents();
         seedWarehouses();
         seedProducts();
 
@@ -57,17 +57,14 @@ public class DatabaseSeeder {
 
     private void seedSellers(){
         Role sellerRole = roleRepository.findById(2L).get();
-        sellerRepository.save(Seller.builder().id(1L).username("seller1").password("123456").email("seller1@mercadolibre.com").roles(Set.of(sellerRole)).build());
-        sellerRepository.save(Seller.builder().id(2L).username("seller2").password("123456").email("seller2@mercadolibre.com").roles(Set.of(sellerRole)).build());
+
+        AuthenticableUser user1 = AuthenticableUser.builder().id(1L).username("seller1").password("123456").email("seller1@mercadolibre.com").roles(Set.of(sellerRole)).build();
+        AuthenticableUser user2 = AuthenticableUser.builder().id(2L).username("seller2").password("123456").email("seller2@mercadolibre.com").roles(Set.of(sellerRole)).build();
+
+        sellerRepository.save(new Seller(user1));
+        sellerRepository.save(new Seller(user2));
     }
 
-//    private void seedAgents(){
-//        Role agentRole = roleRepository.findById(1L).get();
-//        agentRepository.save(Agent.builder().id(1L).username("agent1").password("123456").email("agent1@mercadolibre.com").roles(Set.of(agentRole)).build());
-//        agentRepository.save(Agent.builder().id(2L).username("agent2").password("123456").email("agent2@mercadolibre.com").roles(Set.of(agentRole)).build());
-//        agentRepository.save(Agent.builder().id(3L).username("agent3").password("123456").email("agent3@mercadolibre.com").roles(Set.of(agentRole)).build());
-//        agentRepository.save(Agent.builder().id(4L).username("agent4").password("123456").email("agent4@mercadolibre.com").roles(Set.of(agentRole)).build());
-//    }
 
     private void seedWarehouses(){
         Warehouse w1 = warehouseRepository.save(Warehouse.builder().id(1L).name("SP-SP").address("00000-000").build());
@@ -86,7 +83,6 @@ public class DatabaseSeeder {
         agentRepository.save(Agent.builder().id(4L).username("agent2").password("123456").email("agent2@mercadolibre.com").roles(Set.of(agentRole)).warehouse(w1).build());
         agentRepository.save(Agent.builder().id(5L).username("agent3").password("123456").email("agent3@mercadolibre.com").roles(Set.of(agentRole)).warehouse(w2).build());
         agentRepository.save(Agent.builder().id(6L).username("agent4").password("123456").email("agent4@mercadolibre.com").roles(Set.of(agentRole)).warehouse(w2).build());
-
     }
 
     private void seedProducts() {
@@ -348,7 +344,5 @@ public class DatabaseSeeder {
                         .build()));
 
         inboundOrderRepository.save(InboundOrder.builder().orderDate(LocalDate.now()).section(refrigerated2).id(6L).batchStock(batchStocksRefrigerated2).build());
-
-
     }
 }
