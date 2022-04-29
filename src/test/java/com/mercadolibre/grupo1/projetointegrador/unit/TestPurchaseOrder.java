@@ -1,4 +1,4 @@
-package com.mercadolibre.grupo1.projetointegrador.unity;
+package com.mercadolibre.grupo1.projetointegrador.unit;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.Customer;
