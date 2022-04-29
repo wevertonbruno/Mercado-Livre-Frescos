@@ -73,5 +73,4 @@ public interface BatchStockRepository extends JpaRepository<BatchStock,Long> {
                     "AND b.dueDate > CURRENT_DATE + 21" +
                     "ORDER BY b.currentQuantity ASC" )
     Set<BatchStock> findStockByProductIdAndWarehouseIdOrderByCurrentQuantity(Long productId, Long warehouseId);
-
 }

@@ -7,6 +7,7 @@ import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
 import com.mercadolibre.grupo1.projetointegrador.entities.InboundOrder;
 import com.mercadolibre.grupo1.projetointegrador.entities.Product;
 import com.mercadolibre.grupo1.projetointegrador.entities.Section;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.ExcededCapacityException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.InvalidCategoryException;
 import com.mercadolibre.grupo1.projetointegrador.repositories.InboundOrderRepository;
@@ -47,18 +48,22 @@ public class InboundOrderService {
 
     @Transactional
     public InboundOrderResponseDTO updateOrder(Long id, InboundOrderDTO inboundOrderDTO) {
-        InboundOrder inboundOrder = checkAndCreateInboundOrder(inboundOrderDTO);
+        InboundOrder inboundOrder = findById(id);
         List<BatchStock> batchStocks = updateBatchStock(inboundOrderDTO.getBatchStock(), inboundOrder.getSection());
 
         //Verifica a capacidade da sessao
         checkSectionCapacity(inboundOrder.getSection(), batchStocks);
 
-        inboundOrder.setId(id);
         inboundOrder.setBatchStock(batchStocks);
 
         inboundOrder = inboundOrderRepository.save(inboundOrder);
 
         return InboundOrderResponseDTO.createFromInboundOrder(inboundOrder);
+    }
+
+    public InboundOrder findById(Long id) {
+        return inboundOrderRepository.findById(id).orElseThrow(() ->
+                new EntityNotFoundException("Ordem com ID " + id + " não encontrada"));
     }
 
     private InboundOrder checkAndCreateInboundOrder(InboundOrderDTO inboundOrderDTO) {
@@ -111,12 +116,13 @@ public class InboundOrderService {
     }
 
     private void checkSectionCapacity(Section section, List<BatchStock> batchStocks){
-        Set<BatchStock> currentStock = section.getStock();
+        Set<BatchStock> currentStock = batchStockService.findBatchStockBySectionId(section.getId());
         Double filledVolume = currentStock.stream().reduce(0.0, (total, batchItem) -> total + batchItem.getVolume(), Double::sum);
 
         //Verifica o estoque atual e junta com o novo estoque
         List<BatchStock> targetStock = new ArrayList<>();
         List<Long> batches = batchStocks.stream().filter(item -> item.getId() != null).mapToLong(item -> item.getId()).boxed().collect(Collectors.toList());
+
         targetStock.addAll(batchStocks);
         targetStock.addAll(currentStock.stream().filter(item -> !batches.contains(item.getId())).collect(Collectors.toList()));
 

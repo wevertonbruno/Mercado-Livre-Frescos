@@ -32,21 +32,4 @@ public class Section {
     @ManyToOne
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
     private Warehouse warehouse;
-
-    @OneToMany(mappedBy = "section")
-    private Set<InboundOrder> inboundOrders;
-
-    public Set<BatchStock> getStock(){
-        Set<BatchStock> stock = new HashSet<>();
-
-        for (InboundOrder order: inboundOrders){
-            stock.addAll(order.getBatchStock());
-        }
-
-        return stock;
-    }
-
-    public Double getRemainingCapacity(){
-        return capacity - getStock().stream().reduce(0.0, (total, batchItem) -> total + batchItem.getVolume(), Double::sum);
-    }
 }

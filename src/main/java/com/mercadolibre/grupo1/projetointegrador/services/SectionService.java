@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class SectionService {
     private final SectionRepository sectionRepository;
-    private final InboundOrderRepository inboundOrderRepository;
 
     public Section findBySectionDto(SectionDTO sectionDto) {
         return sectionRepository.findByIdAndWarehouse_Id(sectionDto.getSectionCode(), sectionDto.getWarehouseCode())
