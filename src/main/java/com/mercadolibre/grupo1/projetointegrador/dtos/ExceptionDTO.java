@@ -20,6 +20,14 @@ public class ExceptionDTO {
     private Instant timestamp;
     private String path;
 
+    /**
+     * @author Ederson Rodrigues Araujo
+     * erro 404
+     */
+    public static ExceptionDTO notFound(String message, String path) {
+        return new ExceptionDTO(HttpStatus.NOT_FOUND.value(), message, Instant.now(), path);
+    }
+
     //erro 400
     public static ExceptionDTO badRequest(String message, String path) {
         return new ExceptionDTO(HttpStatus.BAD_REQUEST.value(), message, Instant.now(), path);
