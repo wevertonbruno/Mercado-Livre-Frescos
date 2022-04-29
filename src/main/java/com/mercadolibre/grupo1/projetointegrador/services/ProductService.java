@@ -9,6 +9,9 @@ import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundExcept
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
+import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,7 +22,6 @@ Construindo service de para tratar as requisitos da busca de produtos
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-
     /*
     @author Gabriel Essenio
     Faz injeção de dependecia do repositorio de produtos

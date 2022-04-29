@@ -1,47 +1,64 @@
 package com.mercadolibre.grupo1.projetointegrador.controller;
-
-import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
+import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
-import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.ListIsEmptyException;
-import com.mercadolibre.grupo1.projetointegrador.services.ProductService;
+import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
+
+/**
+ * Adicionados os EndPoints para realizacao do crud (exceto delete) da API
+ *
+ * @author  Jefferson Botelho
+ * @since   2022-03-22
+ *
+ */
 
 @RestController
 @RequestMapping("/api/v1/fresh-products/")
 public class PurchaseOrderController {
 
+    @Autowired
+    private PurchaseOrderService purchaseOrderService;
+
+
     @PostMapping("/orders")
-    public ResponseEntity<PurchaseOrder> createPurchaseOrder(@RequestBody PurchaseOrder purchaseOrder,
-                                                             UriComponentsBuilder uriBuilder) {
+    public ResponseEntity<PurchaseOrderDTO.Response> createPurchaseOrder(@RequestBody PurchaseOrderDTO purchaseOrder,
+                                                          UriComponentsBuilder uriBuilder) {
         //...
+        PurchaseOrder purchaseOrderDTO = purchaseOrderService.createPurchaseOrder(purchaseOrder);
 
         URI uri =  uriBuilder
                 .path("/{idOrder}")
-                .buildAndExpand(purchaseOrder.getId())
+                .buildAndExpand(purchaseOrderDTO.getId())
                 .toUri();
 
+        PurchaseOrderDTO.Response response = PurchaseOrderDTO.Response.builder().totalPrice(purchaseOrderDTO.totalPrice()).build();
+
         //...
-        return null;
+        return ResponseEntity.created(uri)
+                .body(response);
     }
 
-    @GetMapping("/{idOrder}")
+    // sera retornado uma lista com todos os produtos contidos no carrinho.
+    @GetMapping("/orders/{idOrder}")
+
     public ResponseEntity<PurchaseOrder> showProductsOrder(@PathVariable("idOrder") Long idOrder) {
 
-        return null;
+        return ResponseEntity.ok(purchaseOrderService.showProductsInOrders(idOrder));
     }
 
     @PutMapping("/orders/{idOrder}")
-    public ResponseEntity<PurchaseOrder> modifyOrderStatusByOpenedOrClosed(@PathVariable Long idOrder,
+    public ResponseEntity<PurchaseOrderStatusDTO> modifyOrderStatusByOpenedOrPreparing(@PathVariable Long idOrder,
                                                                            @RequestBody PurchaseOrderStatusDTO statusOrder) {
 
-        return null;
+        PurchaseOrderStatusDTO purchaseOrder = purchaseOrderService.editExistentOrder(idOrder, statusOrder);
+
+        return ResponseEntity.ok(purchaseOrder);
     }
+
 }

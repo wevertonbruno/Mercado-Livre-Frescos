@@ -1,5 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -23,12 +24,16 @@ public class PurchaseItem {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @ManyToOne
     @JoinColumn(name = "product_id", referencedColumnName = "id")
     private Product product;
+
     @ManyToOne
     @JoinColumn(name = "purchase_order_id", referencedColumnName = "id")
+    @JsonIgnore // esta anotacao garante que nao havera looping de dados quando for requisitado
     private PurchaseOrder purchaseOrder;
+
     private Integer quantity;
 
     public BigDecimal subTotal() {
