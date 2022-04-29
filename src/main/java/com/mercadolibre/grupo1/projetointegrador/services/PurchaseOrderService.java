@@ -1,9 +1,8 @@
 package com.mercadolibre.grupo1.projetointegrador.services;
 
-import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
-
+import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
 
 public interface PurchaseOrderService {
 
