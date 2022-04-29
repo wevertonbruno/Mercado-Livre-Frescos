@@ -1,8 +1,11 @@
-package com.mercadolibre.grupo1.projetointegrador.unitario;
+package com.mercadolibre.grupo1.projetointegrador.unity;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.Customer;
 import com.mercadolibre.grupo1.projetointegrador.entities.Product;
+import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseItem;
+import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
+import com.mercadolibre.grupo1.projetointegrador.entities.enums.OrderStatus;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.MissingProductExceptions;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredProducts;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredUser;
@@ -21,6 +24,7 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -37,6 +41,9 @@ public class TestPurchaseOrder {
 
     @Mock
     CustomerRepository customerRepository;
+
+    @Mock
+    PurchaseOrderRepository purchaseOrderRepository;
 
     @InjectMocks
     PurchaseOrderService purchaseOrderService;
@@ -73,6 +80,30 @@ public class TestPurchaseOrder {
 
         return product;
     }
+
+    private PurchaseItem createPurchaseItem () {
+        PurchaseItem purchaseItem = new PurchaseItem();
+        purchaseItem.setId(1L);
+        purchaseItem.setQuantity(20);
+        purchaseItem.setProduct(createProduct());
+
+        return purchaseItem;
+    }
+
+    private PurchaseOrder createPurchaseOrder () {
+        PurchaseOrder purchaseOrder = new PurchaseOrder();
+        purchaseOrder.setOrderStatus(OrderStatus.OPENED);
+        purchaseOrder.setCustomer(createCustomer());
+        purchaseOrder.setId(1L);
+        purchaseOrder.setCreatedDate(LocalDateTime.now());
+        purchaseOrder.setUpdatedDate(LocalDateTime.now());
+        ArrayList<PurchaseItem> purchaseItems = new ArrayList<>();
+        purchaseItems.add(createPurchaseItem());
+        purchaseOrder.setProducts(purchaseItems);
+
+        return purchaseOrder;
+    }
+
     @Test
     @DisplayName("Testa se retorna a mensagem de error: Usuário não cadastrado")
     public void testandoExcepitionUregistered() {
@@ -118,13 +149,41 @@ public class TestPurchaseOrder {
 
         Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(customer));
         Mockito.when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(product));
-        Mockito.when(batchStockRepository.findValidDateItems(Mockito.anyLong())).thenReturn(new ArrayList<>());
+        Mockito.when(batchStockRepository.findValidDateItems(Mockito.anyLong())).thenReturn(0D);
 
         Throwable messageMissingProduct = Assertions.assertThrows(MissingProductExceptions.class, () ->
                 purchaseOrderService.createPurchaseOrder(purchaseOrderDTO));
 
         Assertions.assertEquals(
                 messageMissingProduct.getMessage(), "Product insuficiente em estoque!"
+        );
+    }
+
+    @Test
+    @DisplayName("Testa se cadastra com sucesso!")
+    public void testSuccessfulCreatePurchaseOrder() {
+        PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
+        PurchaseOrder purchaseOrder = createPurchaseOrder();
+        Customer customer = createCustomer();
+        Product product = createProduct();
+
+        Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(customer));
+        Mockito.when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(product));
+        Mockito.when(batchStockRepository.findValidDateItems(Mockito.anyLong())).thenReturn(20D);
+        Mockito.when(purchaseOrderRepository.save(Mockito.any())).thenReturn(purchaseOrder);
+
+        PurchaseOrder testePurchaseOrderSuccessful = purchaseOrderService.createPurchaseOrder(purchaseOrderDTO);
+
+        Assertions.assertEquals(
+                testePurchaseOrderSuccessful.getOrderStatus(), OrderStatus.OPENED
+        );
+
+        Assertions.assertEquals(
+                testePurchaseOrderSuccessful.getProducts().size(), 1
+        );
+
+        Assertions.assertEquals(
+                testePurchaseOrderSuccessful.getCustomer(), customer
         );
 
     }

@@ -11,13 +11,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author ederodrigues
+ * @author Ederson Rodrigues Araujo
  * service responsavel por criar um purchase order
  */
 
@@ -57,19 +56,15 @@ public class PurchaseOrderService {
                     .findById(productItemDTO.getProductId())
                     .orElseThrow(() -> new UnregisteredProducts("Produto não cadastrado!"));
 
-            // procura no lote se existe o produto solicitado e com data de vencimento superior a solicitada
-            List<BatchStock> prodInStock = batchStockRepository
+            /**
+             * procura no lote se existe o produto solicitado com a data de vencimento superior
+             * e retorna a soma de todos os produtos.
+             */
+            Double quantityProdInStock = batchStockRepository
                     .findValidDateItems(productItemDTO.getProductId());
 
-            // variável que vai armazenar quantos produtos existem com as condicao passada
-            int totalDeProdutos = 0;
-
-            for (BatchStock p : prodInStock) {
-                totalDeProdutos += p.getCurrentQuantity();
-            }
-
             // valida se existe a quantidade de itens do PurchaseItems
-            if (totalDeProdutos < productItemDTO.getQuantity()) {
+            if (quantityProdInStock < productItemDTO.getQuantity()) {
                 throw new MissingProductExceptions(String.format("%s insuficiente em estoque!", prodRepository.getNome()));
             }
 
