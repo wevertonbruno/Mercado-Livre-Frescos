@@ -17,10 +17,6 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
-/**
- * Testes unitários da classe ProductService
- * @author Weverton Bruno
- */
 @ExtendWith(MockitoExtension.class)
 class ProductServiceTest {
 
@@ -30,6 +26,9 @@ class ProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
+    /**
+     * @author Weverton Bruno
+     */
     @Test
     @DisplayName("Testa se uma exceção de produto nao encontrado é lancado")
     public void itShouldReturnAProductNotFoundException(){
