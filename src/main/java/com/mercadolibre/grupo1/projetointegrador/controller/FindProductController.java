@@ -15,7 +15,7 @@ public class FindProductController {
     private final FindProductsService findProductsService;
 
     @GetMapping("/{productId}")
-    public ResponseEntity<FindProductResponseDTO> findProduct(@PathVariable Long productId, @RequestParam Character type) {
+    public ResponseEntity<FindProductResponseDTO> findProduct(@PathVariable Long productId, @RequestParam(required = false) Character type) {
         SortingType sortingType = SortingType.BATH_ID;
         if (type != null) {
             switch (type) {
@@ -29,9 +29,9 @@ public class FindProductController {
         }
         //Enquanto o serviço de autenticação não esta implementado, o id do representado esta sendo hardcoded
 
-        Long agentId = 1L;
+        Long agentId = 3L;
 
         FindProductResponseDTO findProductResponseDTO = findProductsService.findProducts(productId, sortingType, agentId);
-        return ResponseEntity.ok().body(new FindProductResponseDTO());
+        return ResponseEntity.ok().body(findProductResponseDTO);
     }
 }

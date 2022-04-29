@@ -15,13 +15,10 @@ import java.util.Set;
 @Repository
 public interface BatchStockRepository extends JpaRepository<BatchStock,Long> {
     @Query(value =
-            "SELECT b.* FROM inbound_orders i " +
-                    "INNER JOIN inbound_orders_batch_stock ib ON i.id = ib.inbound_order_id " +
-                    "INNER JOIN batch_stocks b ON b.id = ib.batch_stock_id " +
-                    "INNER JOIN sections s ON s.id = i.section_id " +
-                    "INNER JOIN products p ON p.id = b.product_id " +
-                    "WHERE i.section_id = :sectionId",
-            nativeQuery = true)
+            "SELECT b FROM InboundOrder i " +
+                    "INNER JOIN BatchStock b ON b.inboundOrder.id = i.id " +
+                    "INNER JOIN Section s ON s.id = i.section.id " +
+                    "WHERE s.id = :sectionId")
     Set<BatchStock> findStockBySectionId(Long sectionId);
 
     /**
@@ -32,16 +29,14 @@ public interface BatchStockRepository extends JpaRepository<BatchStock,Long> {
      */
 
     @Query(value =
-            "SELECT b.* FROM warehouses w " +
-                    "INNER JOIN batch_stocks b ON b.id = ib.batch_stock_id " +
-                    "INNER JOIN inbound_orders_batch_stock ib ON i.id = ib.inbound_order_id " +
-                    "INNER JOIN inbound_orders i ON s.id = i.section_id " +
-                    "INNER JOIN sections s ON w.id = s.warehouse_id " +
-                    "INNER JOIN products p ON p.id = b.product_id " +
-                    "WHERE s.warehouse_id = :warehouseId AND b.product_id = :productId " +
-                    "AND DATEDIFF(DATE(b.due_date), CURRENT_DATEDATE()) > 21 ",
-            nativeQuery = true)
-    Set<BatchStock> findStockByProductIdAndWarehouseId(Long producId, Long warehouseId);
+            "SELECT b FROM Warehouse w " +
+                    "INNER JOIN Section s ON w.id = s.warehouse.id " +
+                    "INNER JOIN InboundOrder i ON s.id = i.section.id " +
+                    "INNER JOIN BatchStock b ON b.inboundOrder.id = i.id " +
+                    "INNER JOIN Product p ON p.id = b.product.id " +
+                    "WHERE s.warehouse.id = :warehouseId AND b.product.id = :productId " +
+                    "AND b.dueDate > CURRENT_DATE + 21")
+    Set<BatchStock> findStockByProductIdAndWarehouseId(Long productId, Long warehouseId);
 
     /**
      * @author Rogério Lambert
@@ -51,17 +46,15 @@ public interface BatchStockRepository extends JpaRepository<BatchStock,Long> {
      */
 
     @Query(value =
-            "SELECT b.* FROM warehouses w " +
-                    "INNER JOIN batch_stocks b ON b.id = ib.batch_stock_id " +
-                    "INNER JOIN inbound_orders_batch_stock ib ON i.id = ib.inbound_order_id " +
-                    "INNER JOIN inbound_orders i ON s.id = i.section_id " +
-                    "INNER JOIN sections s ON w.id = s.warehouse_id " +
-                    "INNER JOIN products p ON p.id = b.product_id " +
-                    "WHERE s.warehouse_id = :warehouseId AND b.product_id = :productId " +
-                    "AND DATEDIFF(DATE(b.due_date), CURRENT_DATEDATE()) > 21 " +
-                    "ORDER BY b.due_date ASC",
-            nativeQuery = true)
-    Set<BatchStock> findStockByProductIdAndWarehouseIdOrderByDueDate(Long producId, Long warehouseId);
+            "SELECT b FROM Warehouse w " +
+                    "INNER JOIN Section s ON w.id = s.warehouse.id " +
+                    "INNER JOIN InboundOrder i ON s.id = i.section.id " +
+                    "INNER JOIN BatchStock b ON b.inboundOrder.id = i.id " +
+                    "INNER JOIN Product p ON p.id = b.product.id " +
+                    "WHERE s.warehouse.id = :warehouseId AND b.product.id = :productId " +
+                    "AND b.dueDate > CURRENT_DATE + 21" +
+                    "ORDER BY b.dueDate ASC" )
+    Set<BatchStock> findStockByProductIdAndWarehouseIdOrderByDueDate(Long productId, Long warehouseId);
 
     /**
      * @author Rogério Lambert
@@ -71,16 +64,14 @@ public interface BatchStockRepository extends JpaRepository<BatchStock,Long> {
      */
 
     @Query(value =
-            "SELECT b.* FROM warehouses w " +
-                    "INNER JOIN batch_stocks b ON b.id = ib.batch_stock_id " +
-                    "INNER JOIN inbound_orders_batch_stock ib ON i.id = ib.inbound_order_id " +
-                    "INNER JOIN inbound_orders i ON s.id = i.section_id " +
-                    "INNER JOIN sections s ON w.id = s.warehouse_id " +
-                    "INNER JOIN products p ON p.id = b.product_id " +
-                    "WHERE s.warehouse_id = :warehouseId AND b.product_id = :productId " +
-                    "AND DATEDIFF(DATE(b.due_date), CURRENT_DATEDATE()) > 21 " +
-                    "ORDER BY b.current_quantity ASC",
-            nativeQuery = true)
-    Set<BatchStock> findStockByProductIdAndWarehouseIdOrderByCurrentQuantity(Long producId, Long warehouseId);
+            "SELECT b FROM Warehouse w " +
+                    "INNER JOIN Section s ON w.id = s.warehouse.id " +
+                    "INNER JOIN InboundOrder i ON s.id = i.section.id " +
+                    "INNER JOIN BatchStock b ON b.inboundOrder.id = i.id " +
+                    "INNER JOIN Product p ON p.id = b.product.id " +
+                    "WHERE s.warehouse.id = :warehouseId AND b.product.id = :productId " +
+                    "AND b.dueDate > CURRENT_DATE + 21" +
+                    "ORDER BY b.currentQuantity ASC" )
+    Set<BatchStock> findStockByProductIdAndWarehouseIdOrderByCurrentQuantity(Long productId, Long warehouseId);
 
 }

@@ -15,9 +15,9 @@ import java.util.Set;
 public class FindProductResponseDTO {
     private SectionDTO section;
     private String productId;
-    List<BatchStockResumeDTO> batchStock;
+    private List<BatchStockResumeDTO> batchStock;
 
-    FindProductResponseDTO(Long productId, Set<BatchStock> batchStocks, Long sectionId, Long warehouseId) {
+    public FindProductResponseDTO(Long productId, Set<BatchStock> batchStocks, Long sectionId, Long warehouseId) {
         batchStock = new ArrayList<>();
         for (BatchStock batch : batchStocks) {
             batchStock.add(BatchStockResumeDTO.fromBatchItem(batch));

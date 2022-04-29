@@ -16,11 +16,7 @@ import java.util.Set;
 @Service
 @RequiredArgsConstructor
 public class FindProductsService {
-    private final SellerRepository sellerRepository;
-    private final WarehouseRepository warehouseRepository;
-    private final ProductRepository productRepository;
     private final BatchStockRepository batchStockRepository;
-    private final SectionRepository sectionRepositor;
     private final AgentService agentService;
     private final WarehouseService warehouseService;
 
@@ -44,7 +40,9 @@ public class FindProductsService {
          * gerar o DTO
          */
         Agent agent = agentService.findById(agentId);
+
         Long warehouseId = agent.getWarehouse().getId();
+
         validateAgent(agent);
         Set<BatchStock> batchStocks = new HashSet<>();
         switch (sortingType) {
@@ -62,8 +60,8 @@ public class FindProductsService {
         if (batchStocks.isEmpty()) {
             throw new EntityNotFoundException("Produto não disponível");
         }
+        Long sectionId = batchStocks.iterator().next().getInboundOrder().getSection().getId();
 
-
-        return new FindProductResponseDTO();
+        return new FindProductResponseDTO(productId, batchStocks, sectionId, warehouseId);
     }
 }

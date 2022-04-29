@@ -22,6 +22,6 @@ import javax.persistence.*;
 @Table(name = "customers")
 public class Customer extends AuthenticableUser {
     private String cpf;
-    @OneToMany
+    @OneToMany(mappedBy = "customer")
     private List<PurchaseOrder> orders;
 }
