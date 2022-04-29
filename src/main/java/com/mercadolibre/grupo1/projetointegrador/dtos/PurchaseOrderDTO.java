@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Data;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -26,6 +27,7 @@ public class PurchaseOrderDTO {
         @NotNull(message = "Não é permitido valor nulo")
         private Long productId;
         @NotNull(message = "Não é permitido valor nulo")
+        @Min(value = 1, message = "Quantidade minima permitida: 1")
         private Integer quantity;
     }
 
