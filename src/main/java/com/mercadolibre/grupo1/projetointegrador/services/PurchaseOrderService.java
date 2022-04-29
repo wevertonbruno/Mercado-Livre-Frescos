@@ -37,6 +37,7 @@ public class PurchaseOrderService {
 
     @Transactional // so salva no banco se nao houver erro
     public PurchaseOrder createPurchaseOrder(PurchaseOrderDTO purchaseOrderDTO) {
+
         // lista de produtos do purchaseOrderDTO
         List<PurchaseOrderDTO.ProductItemDTO> productsPurchaseOrders = purchaseOrderDTO.getPurchaseOrder().getProducts();
 
@@ -64,7 +65,7 @@ public class PurchaseOrderService {
                     .findValidDateItems(productItemDTO.getProductId());
 
             // valida se existe a quantidade de itens do PurchaseItems
-            if (quantityProdInStock < productItemDTO.getQuantity()) {
+            if (quantityProdInStock == null || quantityProdInStock < productItemDTO.getQuantity()) {
                 throw new MissingProductExceptions(String.format("%s insuficiente em estoque!", prodRepository.getNome()));
             }
 
@@ -78,7 +79,8 @@ public class PurchaseOrderService {
         // salva no banco o purchaseOrder
         PurchaseOrder purchaseOrderWithItemsList = purchaseOrderRepository.save(purchaseOrder);
 
-        purchaseItemList.forEach(x -> x.setPurchaseOrder(purchaseOrderWithItemsList));
+        // vincula o purchaseOrder em cada item do purchaseOrder
+        purchaseItemList.forEach(product -> product.setPurchaseOrder(purchaseOrderWithItemsList));
 
         return purchaseOrderWithItemsList;
     }
