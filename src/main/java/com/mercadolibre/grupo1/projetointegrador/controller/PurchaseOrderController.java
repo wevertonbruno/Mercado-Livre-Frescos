@@ -3,9 +3,11 @@ package com.mercadolibre.grupo1.projetointegrador.controller;
 import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
+import com.mercadolibre.grupo1.projetointegrador.entities.enums.OrderStatus;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import com.mercadolibre.grupo1.projetointegrador.services.ProductService;
 import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderService;
+import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -27,6 +29,9 @@ public class PurchaseOrderController {
 
     @Autowired
     private PurchaseOrderService purchaseOrderService;
+
+    @Autowired
+    private PurchaseOrderServiceImpl purchaseOrderServiceIml;
 
     @GetMapping
     public ResponseEntity<List<ProductDTO>> listAllProduct() {
@@ -60,12 +65,14 @@ public class PurchaseOrderController {
 
         return ResponseEntity.ok(purchaseOrderService.showProductsInOrders(idOrder));
     }
-
-    @PutMapping("/orders/{idOrder}")
-    public ResponseEntity<PurchaseOrderStatusDTO> modifyOrderStatusByOpenedOrPreparing(@PathVariable Long idOrder,
-                                                                           @RequestBody PurchaseOrderStatusDTO statusOrder) {
-        PurchaseOrderStatusDTO purchaseOrder = purchaseOrderService.editExistentOrder(idOrder, statusOrder);
-        return ResponseEntity.ok(purchaseOrder);
+    /*
+    @author Gabriel Essenio
+    Controller para atualizar o status da compra quando concluida
+     */
+    @PutMapping("/orders/{idOrder}/close")
+    public ResponseEntity<PurchaseOrder> editStatusExistentOrder(@PathVariable Long idOrder) {
+        PurchaseOrder purchaseOrder = purchaseOrderServiceIml.editExistentOrder(idOrder);
+        return ResponseEntity.ok().body(purchaseOrder);
     }
 
 }

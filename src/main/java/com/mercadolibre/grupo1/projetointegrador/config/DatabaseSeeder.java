@@ -60,7 +60,7 @@ public class DatabaseSeeder {
                 .id(1L)
                 .createdDate(LocalDateTime.parse("2015-08-04T10:11:30"))                                // insere DateTime por string
                 .updatedDate(LocalDateTime.of(2022, 4, 26, 10, 0))  // insere DateTime por int
-                .orderStatus(OrderStatus.SENT)
+                .orderStatus(OrderStatus.OPENED)
                 .build());
 
         List<PurchaseItem> purchaseItemList = Arrays.asList(
