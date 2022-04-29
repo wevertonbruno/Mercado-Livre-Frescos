@@ -13,7 +13,7 @@ import com.mercadolibre.grupo1.projetointegrador.repositories.BatchStockReposito
 import com.mercadolibre.grupo1.projetointegrador.repositories.CustomerRepository;
 import com.mercadolibre.grupo1.projetointegrador.repositories.ProductRepository;
 import com.mercadolibre.grupo1.projetointegrador.repositories.PurchaseOrderRepository;
-import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderService;
+import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -46,7 +46,7 @@ public class TestPurchaseOrder {
     PurchaseOrderRepository purchaseOrderRepository;
 
     @InjectMocks
-    PurchaseOrderService purchaseOrderService;
+    PurchaseOrderServiceImpl purchaseOrderService;
 
     private PurchaseOrderDTO createPurchaseOrderDTO() {
         PurchaseOrderDTO.PurchaseOrder purchaseOrder = new PurchaseOrderDTO.PurchaseOrder();

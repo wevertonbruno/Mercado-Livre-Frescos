@@ -23,7 +23,7 @@ public class ProductService {
     // Faz injeção de dependecia do repositorio de produtos
     private final ProductRepository productRepository;
 
-    //Metodo que chama Repositorio de Produto e retorna todos produtos cadastrados
+    // Metodo que chama Repositorio de Produto e retorna todos produtos cadastrados
     public List<ProductDTO> listAllProducts(){
         return productRepository.findAll().stream()
                 .map(product -> new ProductDTO(product.getId(),product.getNome(),product.getVolume(),product.getPrice(),product.getCategory()))
@@ -40,7 +40,6 @@ public class ProductService {
                 .map(product -> new ProductDTO(product.getId(),product.getNome(),product.getVolume(),product.getPrice(),product.getCategory()))
                 .collect(Collectors.toList());
     }
-
 
     /**
      * @author Weverton Bruno

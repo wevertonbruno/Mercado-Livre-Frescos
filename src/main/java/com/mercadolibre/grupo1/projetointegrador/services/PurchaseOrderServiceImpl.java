@@ -1,16 +1,21 @@
 package com.mercadolibre.grupo1.projetointegrador.services;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
-import com.mercadolibre.grupo1.projetointegrador.entities.*;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.OrderStatus;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.MissingProductExceptions;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredProducts;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredUser;
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
+import com.mercadolibre.grupo1.projetointegrador.entities.Customer;
+import com.mercadolibre.grupo1.projetointegrador.entities.Product;
+import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseItem;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
 import com.mercadolibre.grupo1.projetointegrador.repositories.PurchaseOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.mercadolibre.grupo1.projetointegrador.repositories.BatchStockRepository;
+import com.mercadolibre.grupo1.projetointegrador.repositories.CustomerRepository;
+import com.mercadolibre.grupo1.projetointegrador.repositories.ProductRepository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
@@ -28,23 +33,23 @@ import java.util.List;
 @Service
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
-    @Autowired
-    private PurchaseOrderRepository purchaseOrderRepository;
-
-    @Autowired
-    private BatchStockRepository batchStockRepository;
-
+    // Faz injeção de dependecia do repositorio de produtos
     @Autowired
     private ProductRepository productRepository;
-
+    @Autowired
+    private PurchaseOrderRepository purchaseOrderRepository;
+    @Autowired
+    private BatchStockRepository batchStockRepository;
     @Autowired
     private CustomerRepository customerRepository;
 
-
     @Override
     public PurchaseOrder calcFinal(PurchaseOrder purchaseOrder) {
+
         return null;
     }
+
+// ------------------------------------------------------------------------------------------------------------------------ //
 
     /**
      *
@@ -74,6 +79,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         return new PurchaseOrderStatusDTO(status.getStatus());
     }
 
+// ------------------------------------------------------------------------------------------------------------------------ //
 
 /**
  * @author Ederson Rodrigues Araujo
@@ -107,7 +113,6 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
              */
             Double quantityProdInStock = batchStockRepository
                     .findValidDateItems(productItemDTO.getProductId());
-
             // valida se existe a quantidade de itens do PurchaseItems
             if (quantityProdInStock == null || quantityProdInStock < productItemDTO.getQuantity()) {
                 throw new MissingProductExceptions(String.format("%s insuficiente em estoque!", prodRepository.getNome()));
@@ -128,6 +133,5 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
         return purchaseOrderWithItemsList;
     }
-
 
 }
