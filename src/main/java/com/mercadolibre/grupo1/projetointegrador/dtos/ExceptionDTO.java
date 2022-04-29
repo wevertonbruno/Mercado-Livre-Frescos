@@ -8,7 +8,7 @@ import org.springframework.http.HttpStatus;
 import java.time.Instant;
 
 /**
- * @author Nayara Coca
+ * @author Nayara Coca, Gabriel Essenio, Ederson Rodrigues
  * trata exceções do controller
  */
 @Data
@@ -21,8 +21,8 @@ public class ExceptionDTO {
     private String path;
 
     /**
-     * @author Ederson Rodrigues Araujo
-     * erro 404
+     * @author Gabriel Essenio, Ederson Rodrigues Araujo
+     * erro 404 Not Found
      */
     public static ExceptionDTO notFound(String message, String path) {
         return new ExceptionDTO(HttpStatus.NOT_FOUND.value(), message, Instant.now(), path);
@@ -32,4 +32,5 @@ public class ExceptionDTO {
     public static ExceptionDTO badRequest(String message, String path) {
         return new ExceptionDTO(HttpStatus.BAD_REQUEST.value(), message, Instant.now(), path);
     }
+
 }

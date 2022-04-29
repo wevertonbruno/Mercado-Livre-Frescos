@@ -1,6 +1,8 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.ExceptionDTO;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.ListIsEmptyException;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.InvalidCategoryException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.MissingProductExceptions;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredProducts;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredUser;
@@ -8,20 +10,18 @@ import org.springframework.http.HttpStatus;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.ExcededCapacityException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.ExceptionMessage;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.InvalidCategoryException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
-
 import java.util.Objects;
-
 /**
- * @author Nayara Coca
+ * @author  Nayara Coca, Gabriel Essenio
  * controladores de excessão
  */
+
 @RestControllerAdvice
 public class ControllerExceptionHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -85,4 +85,13 @@ public class ControllerExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
-}
+    //exceçao que trato caso a lista esteja vazia
+
+    @ExceptionHandler(ListIsEmptyException.class)
+    public ResponseEntity<ExceptionDTO> listEmptyException (ListIsEmptyException e, HttpServletRequest request){
+        ExceptionDTO response = ExceptionDTO.notFound(e.getMessage(), request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+ }
+

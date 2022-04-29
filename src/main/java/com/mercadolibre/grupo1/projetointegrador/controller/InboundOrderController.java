@@ -12,10 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.net.URI;
 /*
-    @author Gabriel Essenio
+@author Gabriel Essenio
+* Controller de Product ,cria os endpoints e trata o retorno de acordo com cada tipo de endpoint
  */
 
-//Fazendo anotaçao do controller e criando endereço do endpoint
 @RestController
 @RequestMapping("api/v1/fresh-products/inboundorder")
 public class InboundOrderController {

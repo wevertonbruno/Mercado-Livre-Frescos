@@ -1,6 +1,4 @@
 package com.mercadolibre.grupo1.projetointegrador.controller;
-
-import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.net.URI;
-import java.util.List;
 
 /**
  * Adicionados os EndPoints para realizacao do crud (exceto delete) da API
@@ -33,20 +30,6 @@ public class PurchaseOrderController {
 
     @Autowired
     private PurchaseOrderService purchaseOrderService;
-    @Autowired
-    private ProductService productService;
-
-    @GetMapping
-    public ResponseEntity<List<ProductDTO>> listAllProduct() {
-        List<ProductDTO> allProducts = productService.listAllProducts();
-        return ResponseEntity.ok().body(allProducts);
-    }
-
-    @GetMapping("/list")
-    public ResponseEntity<List<ProductDTO>> listProductForCategory(@RequestParam(required = false, name = "status") ProductCategory productCategory) throws Exception {
-        List<ProductDTO> productByCategory = productService.listProductByCategory(productCategory);
-        return ResponseEntity.ok().body(productByCategory);
-    }
 
     @PostMapping("/orders")
     public ResponseEntity<PurchaseOrderDTO.Response> createPurchaseOrder(@RequestBody PurchaseOrderDTO purchaseOrder,
