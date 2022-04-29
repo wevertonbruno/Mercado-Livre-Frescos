@@ -7,6 +7,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * @author Rogério Lambert
+ * Controlador responsável pela rota de busca de lotes de um determinado produto de um determinado representante
+ * podem ordenar o retorno por id do lote, quantidade corrente e data de vencimento (requisito 3)
+ */
+
 @RestController
 @RequestMapping("/api/v1/fresh-products/list")
 @RequiredArgsConstructor
