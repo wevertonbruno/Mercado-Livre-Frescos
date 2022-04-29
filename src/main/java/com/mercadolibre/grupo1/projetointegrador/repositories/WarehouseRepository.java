@@ -10,8 +10,9 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Set;
 
-// Repositório da Warehouse.
-// @author Ederson Rodrigues Araujo
+/** Repositório da Warehouse.
+ * @author Ederson Rodrigues Araujo
+ */
 
 @Repository
 public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {

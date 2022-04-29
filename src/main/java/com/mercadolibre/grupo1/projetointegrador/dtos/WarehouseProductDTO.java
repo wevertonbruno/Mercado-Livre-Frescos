@@ -15,5 +15,4 @@ public class WarehouseProductDTO {
     private Long warehouseCode;
     private Long totalQuantity;
 
-
 }

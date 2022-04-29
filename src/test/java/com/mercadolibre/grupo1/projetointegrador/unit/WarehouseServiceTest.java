@@ -22,6 +22,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+/**
+ * @author Nayara Coca
+ * descrição de cada teste no displayName
+ */
 @ExtendWith(MockitoExtension.class)
 public class WarehouseServiceTest {
     @Mock
@@ -30,7 +34,7 @@ public class WarehouseServiceTest {
     private WarehouseService warehouseService;
 
     @Test
-    @DisplayName("Testa se os produtos e suas quantidades são mostrados por armazém")
+    @DisplayName("Testa se as quantidades de produtos mostrados no armazém ao pesquisar por ID de produto")
     public void itShouldReturnTheProductsByWarehouse(){
         List<WarehouseProductDTO> warehouse = createWarehouse();
         Mockito.when(warehouseRepository.findProductsInWarehouse(1L)).thenReturn(warehouse);
