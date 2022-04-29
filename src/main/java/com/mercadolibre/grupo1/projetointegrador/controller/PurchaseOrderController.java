@@ -3,6 +3,7 @@ import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
 import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderService;
+import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -22,9 +23,13 @@ import java.net.URI;
 @RequestMapping("/api/v1/fresh-products/")
 public class PurchaseOrderController {
 
+    /**
+     *  Foi realizado a uniao dos services ProductService e PurchaseOrderServiceImpl numa so classe as regras de negocio para este controller
+     *  sera mantido alguns comentarios para informacao e consulta.
+     */
+
     @Autowired
     private PurchaseOrderService purchaseOrderService;
-
 
     @PostMapping("/orders")
     public ResponseEntity<PurchaseOrderDTO.Response> createPurchaseOrder(@RequestBody PurchaseOrderDTO purchaseOrder,

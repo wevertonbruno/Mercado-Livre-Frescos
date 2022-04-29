@@ -11,19 +11,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 /*
 @author Gabriel Essenio
 Construindo service de para tratar as requisitos da busca de produtos
  */
+
 @Service
 @RequiredArgsConstructor
 public class ProductService {
     /*
-    @author Gabriel Essenio
     Faz injeção de dependecia do repositorio de produtos
      */
     @Autowired
@@ -32,6 +32,7 @@ public class ProductService {
     @author Gabriel Essenio
     Metodo que chama Repositorio de Produto e retorna todos produtos cadastrados
      */
+
     public List<ProductDTO> listAllProducts(){
         List<ProductDTO> allProducts =  productRepository.findAll().stream()
                 .map(product -> new ProductDTO(product.getId(),product.getNome(),product.getVolume(),product.getPrice(),product.getCategory()))
@@ -41,6 +42,7 @@ public class ProductService {
         }
         return allProducts;
     }
+
     /*
     @author Gabriel Essenio
     Metodo que chama Repositorio de Produto e retorna produtos de acordo com a categoria passada pelo parametro)
@@ -56,6 +58,10 @@ public class ProductService {
                 .collect(Collectors.toList());
     }
 
+    /**
+     * @author Weverton Bruno
+     * @param productId
+     */
     public Product findById(Long productId){
         return productRepository
                 .findById(productId)
