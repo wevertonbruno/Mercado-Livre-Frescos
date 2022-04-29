@@ -27,6 +27,6 @@ public class InboundOrder {
     @ManyToOne
     @JoinColumn(name = "section_id", referencedColumnName = "id")
     private Section section;
-    @OneToMany(mappedBy = "inboundOrder")
+    @OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<BatchStock> batchStock;
 }

@@ -3,6 +3,8 @@ package com.mercadolibre.grupo1.projetointegrador.entities;
 import lombok.*;
 
 import javax.persistence.*;
+
+import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import java.util.Set;
 
 /**
@@ -21,6 +23,9 @@ public class Section {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
+    @Enumerated(EnumType.STRING)
+    private ProductCategory category;
+
     private Double capacity;
 
     // A section tera um relacionamento de manyToOne com a Warehouse.
