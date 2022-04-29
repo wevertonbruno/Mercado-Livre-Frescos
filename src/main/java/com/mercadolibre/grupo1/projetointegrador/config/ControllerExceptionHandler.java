@@ -1,10 +1,7 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.ExceptionDTO;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.ExcededCapacityException;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.ExceptionMessage;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.InvalidCategoryException;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -60,6 +57,15 @@ public class ControllerExceptionHandler {
                 ExceptionDTO.badRequest(e.getMessage(),
                         request.getRequestURI());
         return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(ProductNotAvailable.class)
+    public ResponseEntity<ExceptionDTO> productNotAvailable(ProductNotAvailable e,
+                                                                 HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.notFound(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.status(404).body(response);
     }
 
  }
