@@ -1,18 +1,20 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
 import com.mercadolibre.grupo1.projetointegrador.entities.*;
+import com.mercadolibre.grupo1.projetointegrador.entities.enums.OrderStatus;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import com.mercadolibre.grupo1.projetointegrador.repositories.*;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Set;
 
 
@@ -21,6 +23,7 @@ import java.util.Set;
  *
  * @author Grupo 1
  */
+
 @Component
 @RequiredArgsConstructor
 public class DatabaseSeeder {
@@ -35,11 +38,11 @@ public class DatabaseSeeder {
     private final WarehouseRepository warehouseRepository;
     private final SectionRepository sectionRepository;
     private final InboundOrderRepository inboundOrderRepository;
+    private final PurchaseOrderRepository purchaseOrderRepository;
+    private final PurchaseItemRepository purchaseItemRepository;
 
-    @Transactional
     public void seed() {
         LOGGER.info("Seeding database...");
-
         seedRoles();
         seedSellers();
         seedAgents();
@@ -50,11 +53,59 @@ public class DatabaseSeeder {
         seedInboundOrder();
         seedBatchStock();
         seedProducts();
+        seedProducts();
+        seedProducts();
+        seedPurchaseOrders();
 
         LOGGER.info("Seeding complete...");
     }
 
-    private void seedRoles() {
+    private void seedPurchaseItems() {
+    purchaseItemRepository.save(PurchaseItem.builder().id(1L)
+            .product(Product.builder().id(1L).build())
+            .quantity(1).build());
+    purchaseItemRepository.save(PurchaseItem.builder().id(2L).quantity(2).build());
+    purchaseItemRepository.save(PurchaseItem.builder().id(3L).quantity(3).build());
+
+    }
+
+    private void seedProducts() {
+        productRepository.save(Product.builder().id(1L).nome("Product1").volume(1D).price(BigDecimal.valueOf(100)).category(ProductCategory.FRESCO).build());
+        productRepository.save(Product.builder().id(2L).nome("Product2").volume(2D).price(BigDecimal.valueOf(200)).category(ProductCategory.CONGELADO).build());
+        productRepository.save(Product.builder().id(3L).nome("Action Figure Mokey D Luffy").volume(3D).price(BigDecimal.valueOf(300)).category(ProductCategory.REFRIGERADO).build());
+        productRepository.save(Product.builder().id(4L).nome("Maçã").volume(1.).price(BigDecimal.valueOf(1.)).category(ProductCategory.FRESCO).build());
+        productRepository.save(Product.builder().id(5L).nome("Melancia").volume(20.).price(BigDecimal.valueOf(15.30)).category(ProductCategory.FRESCO).build());
+    }
+
+    private void seedPurchaseOrders() {
+
+
+        PurchaseOrder product = purchaseOrderRepository.save(PurchaseOrder.builder()
+                .id(1L)
+                .createdDate(LocalDateTime.parse("2015-08-04T10:11:30"))                                // insere DateTime por string
+                .updatedDate(LocalDateTime.of(2022, 4, 26, 10, 0))  // insere DateTime por int
+                .orderStatus(OrderStatus.SENT)
+                .build());
+
+        List<PurchaseItem> purchaseItemList = Arrays.asList(
+                PurchaseItem.builder()
+                    .purchaseOrder(product)
+                    .id(1L).product(productRepository.getById(1L)).quantity(1)
+                    .build(),
+                PurchaseItem.builder()
+                        .purchaseOrder(product)
+                        .id(2L).product(productRepository.getById(2L)).quantity(2)
+                        .build(),
+                PurchaseItem.builder()
+                        .purchaseOrder(product)
+                        .id(3L).product(productRepository.getById(3L)).quantity(4)
+                        .build());
+
+        purchaseItemRepository.saveAll(purchaseItemList);
+
+    }
+
+    private void seedRoles(){
         roleRepository.save(Role.builder().id(1L).name("ROLE_AGENT").build());
         roleRepository.save(Role.builder().id(2L).name("ROLE_SELLER").build());
         roleRepository.save(Role.builder().id(3L).name("ROLE_CUSTOMER").build());
@@ -79,11 +130,6 @@ public class DatabaseSeeder {
         Role customerRole = roleRepository.findById(3L).get();
         customerRepository.save(Customer.builder().username("customer1").password("123456").email("customer1@mercadolibre.com").roles(Set.of(customerRole)).build());
         customerRepository.save(Customer.builder().username("customer2").password("123456").email("customer2@mercadolibre.com").roles(Set.of(customerRole)).build());
-    }
-
-    private void seedProducts() {
-        productRepository.save(Product.builder().id(1L).nome("Maçã").volume(1.).price(BigDecimal.valueOf(1.)).category(ProductCategory.FRESCO).build());
-        productRepository.save(Product.builder().id(2L).nome("Melancia").volume(20.).price(BigDecimal.valueOf(15.30)).category(ProductCategory.FRESCO).build());
     }
 
     private void seedWarehouse() {

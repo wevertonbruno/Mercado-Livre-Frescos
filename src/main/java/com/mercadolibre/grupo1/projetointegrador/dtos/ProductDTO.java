@@ -29,4 +29,5 @@ public class ProductDTO {
     private BigDecimal price;
     @NotNull(message = "A categoria não pode estar vazia")
     private ProductCategory category;
+
 }
