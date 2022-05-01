@@ -27,4 +27,7 @@ public class Warehouse {
 
     @OneToMany(mappedBy = "warehouse")
     private Set<Section> sections;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "warehouse")
+    private Set<Agent> agents;
 }

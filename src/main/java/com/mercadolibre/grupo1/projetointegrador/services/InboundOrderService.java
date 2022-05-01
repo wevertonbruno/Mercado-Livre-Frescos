@@ -3,9 +3,7 @@ package com.mercadolibre.grupo1.projetointegrador.services;
 import com.mercadolibre.grupo1.projetointegrador.dtos.BatchStockDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.InboundOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.InboundOrderResponseDTO;
-import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
-import com.mercadolibre.grupo1.projetointegrador.entities.InboundOrder;
-import com.mercadolibre.grupo1.projetointegrador.entities.Section;
+import com.mercadolibre.grupo1.projetointegrador.entities.*;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.OvercapacityException;
@@ -29,6 +27,7 @@ public class InboundOrderService {
 
     private final SectionService sectionService;
     private final BatchStockService batchStockService;
+    private final AuthService authService;
 
     private final InboundOrderRepository inboundOrderRepository;
 

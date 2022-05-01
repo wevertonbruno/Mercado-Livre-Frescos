@@ -1,13 +1,19 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
+import com.auth0.jwt.exceptions.JWTDecodeException;
+import com.auth0.jwt.exceptions.JWTVerificationException;
 import com.mercadolibre.grupo1.projetointegrador.dtos.ExceptionDTO;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import javax.security.sasl.AuthenticationException;
 import javax.servlet.http.HttpServletRequest;
 import java.util.Objects;
 /**
@@ -78,4 +84,21 @@ public class ControllerExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ExceptionDTO> authenticationException(AccessDeniedException e,
+                                                                   HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.forbidden("Acesso não autorizado!",
+                        request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
+
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ExceptionDTO> badCredentials(BadCredentialsException e,
+                                                                   HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.unauthorized("Usuário e/ou senha inválidos!",
+                        request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
  }

@@ -8,8 +8,13 @@ INSERT INTO users(id, username, email, password) VALUES
     (5, 'customer1', 'customer1@mercadolibre.com', '123456'),
     (6, 'customer2', 'customer2@mercadolibre.com', '123456');
 
+INSERT INTO warehouses(id, address, name) VALUES
+    (1, '11111-000', 'SP'),
+    (2, '22222-000', 'RJ'),
+    (3, '33333-000', 'SC');
+
 INSERT INTO sellers VALUES (1), (2);
-INSERT INTO agents VALUES (3), (4);
+INSERT INTO agents VALUES (3, 1), (4, 2);
 INSERT INTO customers(id, cpf) VALUES (5, '111.111.111-11'), (6, '222.222.222-22');
 
 INSERT INTO users_roles(user_id, role_id) VALUES
@@ -19,11 +24,6 @@ INSERT INTO users_roles(user_id, role_id) VALUES
     (4, 1),
     (5, 3),
     (6, 3);
-
-INSERT INTO warehouses(id, address, name) VALUES
-    (1, '11111-000', 'SP'),
-    (2, '22222-000', 'RJ'),
-    (3, '33333-000', 'SC');
 
 INSERT INTO sections(id, capacity, category, description, warehouse_id) VALUES
     (1, 500, 'FRESCO', 'sessao SP 1', 1),
