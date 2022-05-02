@@ -3,6 +3,7 @@ package com.mercadolibre.grupo1.projetointegrador.integration;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.grupo1.projetointegrador.dtos.LoginDTO;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -30,6 +31,7 @@ public class AuthenticationTest {
     private static final String AUTH_URL = "http://localhost:8080/api/v1/auth";
 
     @Test
+    @DisplayName("Testa se é possível fazer login")
     public void itShouldLoggingWithValidUser() throws Exception {
         LoginDTO loginDTO = new LoginDTO();
         loginDTO.setUsername("seller1");
@@ -43,6 +45,7 @@ public class AuthenticationTest {
     }
 
     @Test
+    @DisplayName("Testa se um bad request é retornado ao logar com credenciais inválidas")
     public void itShouldReturnABadRequestInvalidCredentials() throws Exception {
         LoginDTO loginDTO = new LoginDTO();
         loginDTO.setUsername("seller1");

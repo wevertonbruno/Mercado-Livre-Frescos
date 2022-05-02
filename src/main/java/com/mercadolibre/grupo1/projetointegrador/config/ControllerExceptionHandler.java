@@ -7,7 +7,7 @@ import com.mercadolibre.grupo1.projetointegrador.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -98,6 +98,15 @@ public class ControllerExceptionHandler {
                                                                    HttpServletRequest request) {
         ExceptionDTO response =
                 ExceptionDTO.unauthorized("Usuário e/ou senha inválidos!",
+                        request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    @ExceptionHandler(UsernameNotFoundException.class)
+    public ResponseEntity<ExceptionDTO> usernamenotfound(UsernameNotFoundException e,
+                                                       HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.unauthorized(e.getMessage(),
                         request.getRequestURI());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
