@@ -189,5 +189,5 @@ buildNumber.properties
 .project
 # JDT-specific (Eclipse Java Development Tools)
 .classpath
-
+projeto-integrador.iml
 # End of https://www.toptal.com/developers/gitignore/api/macos,maven,intellij,java
