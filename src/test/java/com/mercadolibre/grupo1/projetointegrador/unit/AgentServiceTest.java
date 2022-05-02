@@ -1,6 +1,7 @@
 package com.mercadolibre.grupo1.projetointegrador.unit;
 
 import com.mercadolibre.grupo1.projetointegrador.entities.Agent;
+import com.mercadolibre.grupo1.projetointegrador.entities.AuthenticableUser;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
 import com.mercadolibre.grupo1.projetointegrador.repositories.AgentRepository;
 import com.mercadolibre.grupo1.projetointegrador.services.AgentService;
@@ -28,7 +29,8 @@ public class AgentServiceTest {
     @DisplayName("Testa se a query certa é chamada quando o método findById é chamado retornando um objeto Agent: ")
     public void itShouldCallFindById() {
         //setup do test
-        Agent agent = Agent.builder().id(1L).build();
+        AuthenticableUser user = AuthenticableUser.builder().id(3L).build();
+        Agent agent = new Agent(user, null);
         when(agentRepository.findById(1L)).thenReturn(Optional.of(agent));
 
         //execução

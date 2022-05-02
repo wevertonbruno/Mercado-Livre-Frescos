@@ -3,12 +3,14 @@ package com.mercadolibre.grupo1.projetointegrador.dtos;
 import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @Data
 public class BatchStockResumeDTO {
     private Long batchNumber;

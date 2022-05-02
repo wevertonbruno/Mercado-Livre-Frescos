@@ -67,7 +67,7 @@ public class InboundOrderTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(payload))
                 .andExpect(status().isCreated())
-                .andExpect(header().string("Location", "/api/v1/fresh-products/inboundorder/6"))
+                .andExpect(header().string("Location", "/api/v1/fresh-products/inboundorder/9"))
                 .andExpect(jsonPath("$.length()", is(2)));
     }
 

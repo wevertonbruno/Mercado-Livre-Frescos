@@ -42,7 +42,8 @@ public class FindProductServiceTest {
     private void queryItShouldCalled(SortingType sortingType) {
         //setup do teste
         Warehouse warehouse = Warehouse.builder().id(1L).build();
-        Agent agent = Agent.builder().id(3L).warehouse(warehouse).build();
+        AuthenticableUser user = AuthenticableUser.builder().id(3L).build();
+        Agent agent = new Agent(user, warehouse);
         Product mockProduct = Product.builder().id(1L).build();
         Section mockSection = Section.builder().id(1L).build();
         when(agentService.findById(agent.getId())).thenReturn(agent);
@@ -108,7 +109,8 @@ public class FindProductServiceTest {
     public void itShouldReturnExceptionProductNotFound() {
         //setup do teste
         Warehouse warehouse = Warehouse.builder().id(1L).build();
-        Agent agent = Agent.builder().id(3L).warehouse(warehouse).build();
+        AuthenticableUser user = AuthenticableUser.builder().id(3L).build();
+        Agent agent = new Agent(user, warehouse);
         Product mockProduct = Product.builder().id(1L).build();
         when(agentService.findById(agent.getId())).thenReturn(agent);
         when(warehouseService.findById(warehouse.getId())).thenReturn(warehouse);
@@ -130,7 +132,8 @@ public class FindProductServiceTest {
     public void itShouldReturnExceptionEntityNotFound() {
         //setup do teste
         Warehouse warehouse = Warehouse.builder().id(1L).build();
-        Agent agent = Agent.builder().id(3L).warehouse(warehouse).build();
+        AuthenticableUser user = AuthenticableUser.builder().id(3L).build();
+        Agent agent = new Agent(user, warehouse);
         Product mockProduct = Product.builder().id(1L).build();
         when(agentService.findById(agent.getId())).thenReturn(agent);
         when(warehouseService.findById(warehouse.getId())).thenThrow(EntityNotFoundException.class);

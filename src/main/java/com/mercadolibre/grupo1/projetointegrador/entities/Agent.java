@@ -17,18 +17,18 @@ import javax.persistence.Table;
 
 @Entity
 @Getter
-@SuperBuilder
 @NoArgsConstructor
 @Table(name = "agents")
 public class Agent extends AuthenticableUser{
     @ManyToOne
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
     private Warehouse warehouse;
-    public Agent(AuthenticableUser user) {
+    public Agent(AuthenticableUser user, Warehouse warehouse) {
         super.setId(user.getId());
         super.setEmail(user.getEmail());
         super.setUsername(user.getUsername());
         super.setPassword(user.getUsername());
         super.setRoles(user.getRoles());
+        this.warehouse = warehouse;
     }
 }

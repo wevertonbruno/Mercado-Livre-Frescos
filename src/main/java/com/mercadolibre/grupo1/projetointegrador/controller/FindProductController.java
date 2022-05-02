@@ -35,7 +35,7 @@ public class FindProductController {
         }
         //Enquanto o serviço de autenticação não esta implementado, o id do representado esta sendo hardcoded
 
-        Long agentId = 3L;
+        Long agentId = 7L;
 
         FindProductResponseDTO findProductResponseDTO = findProductsService.findProducts(productId, sortingType, agentId);
         return ResponseEntity.ok().body(findProductResponseDTO);

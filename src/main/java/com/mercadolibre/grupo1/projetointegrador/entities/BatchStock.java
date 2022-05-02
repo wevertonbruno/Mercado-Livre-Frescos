@@ -35,7 +35,7 @@ public class BatchStock {
     private LocalDate dueDate;
 
     @ManyToOne
-    @JoinColumn(name = "inboud_order_id", referencedColumnName = "id")
+    @JoinColumn(name = "inbound_order_id", referencedColumnName = "id")
     private InboundOrder inboundOrder;
 
     public Double getVolume() {
