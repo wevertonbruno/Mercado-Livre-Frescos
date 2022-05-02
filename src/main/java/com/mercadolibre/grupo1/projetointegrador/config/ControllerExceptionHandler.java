@@ -5,6 +5,7 @@ import com.mercadolibre.grupo1.projetointegrador.exceptions.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -42,9 +43,9 @@ public class ControllerExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
-    @ExceptionHandler(ExcededCapacityException.class)
-    public ResponseEntity<ExceptionDTO> excededCapacityException(ExcededCapacityException e,
-                                                       HttpServletRequest request) {
+    @ExceptionHandler(OvercapacityException.class)
+    public ResponseEntity<ExceptionDTO> excededCapacityException(OvercapacityException e,
+                                                                 HttpServletRequest request) {
         ExceptionDTO response =
                 ExceptionDTO.badRequest(e.getMessage(),
                         request.getRequestURI());
@@ -59,10 +60,27 @@ public class ControllerExceptionHandler {
                         request.getRequestURI());
         return ResponseEntity.badRequest().body(response);
     }
-
     @ExceptionHandler(NotFoundException.class)
     public ResponseEntity<ExceptionDTO> notFoundException(NotFoundException e, HttpServletRequest request){
         ExceptionDTO response = ExceptionDTO.notFound(e.getMessage(),request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    }
+
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ExceptionDTO> missingParametersException(MissingServletRequestParameterException e,
+                                                                 HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.badRequest(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.badRequest().body(response);
+    }
+
+    @ExceptionHandler(InvalidOperationException.class)
+    public ResponseEntity<ExceptionDTO> missingParametersException(InvalidOperationException e,
+                                                                   HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.badRequest(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.badRequest().body(response);
     }
  }

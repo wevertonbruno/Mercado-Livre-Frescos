@@ -37,6 +37,10 @@ public class BatchStock {
     @JoinColumn(name = "inbound_order_id")
     private InboundOrder inboundOrder;
 
+    @ManyToOne
+    @JoinColumn(name = "inbound_order_id", referencedColumnName = "id")
+    private InboundOrder inboundOrder;
+
     public Double getVolume() {
         return product.getVolume() * currentQuantity;
     }

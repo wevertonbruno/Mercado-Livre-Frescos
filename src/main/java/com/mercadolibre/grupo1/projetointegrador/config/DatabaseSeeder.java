@@ -7,17 +7,15 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 
 /**
  * Classe responsável por popular o banco de dados com dados de teste.
+ *
  * @author Grupo 1
  */
 @Component
@@ -42,50 +40,57 @@ public class DatabaseSeeder {
         seedSellers();
         seedAgents();
         seedCustomer();
-        seedProducts();
-        seedWarehouse();
         seedSection();
         seedInboundOrder();
         seedBatchStock();
+        seedWarehouses();
+        seedProducts();
 
         LOGGER.info("Seeding complete...");
     }
 
-    private void seedRoles(){
+    private void seedRoles() {
         roleRepository.save(Role.builder().id(1L).name("ROLE_AGENT").build());
         roleRepository.save(Role.builder().id(2L).name("ROLE_SELLER").build());
         roleRepository.save(Role.builder().id(3L).name("ROLE_CUSTOMER").build());
     }
 
-    private void seedSellers(){
+    private void seedSellers() {
         Role sellerRole = roleRepository.findById(2L).get();
-        sellerRepository.save(Seller.builder().id(1L).username("seller1").password("123456").email("seller1@mercadolibre.com").roles(Set.of(sellerRole)).build());
-        sellerRepository.save(Seller.builder().id(2L).username("seller2").password("123456").email("seller2@mercadolibre.com").roles(Set.of(sellerRole)).build());
+
+        AuthenticableUser user1 = AuthenticableUser.builder().id(1L).username("seller1").password("123456").email(
+                "seller1@mercadolibre.com").roles(Set.of(sellerRole)).build();
+        AuthenticableUser user2 = AuthenticableUser.builder().id(2L).username("seller2").password("123456").email(
+                "seller2@mercadolibre.com").roles(Set.of(sellerRole)).build();
+
+        sellerRepository.save(new Seller(user1));
+        sellerRepository.save(new Seller(user2));
     }
 
-    private void seedAgents(){
+    private void seedAgents() {
         Role agentRole = roleRepository.findById(1L).get();
-        agentRepository.save(Agent.builder().id(1L).username("agent1").password("123456").email("agent1@mercadolibre.com").roles(Set.of(agentRole)).build());
-        agentRepository.save(Agent.builder().id(2L).username("agent2").password("123456").email("agent2@mercadolibre.com").roles(Set.of(agentRole)).build());
-        agentRepository.save(Agent.builder().id(2L).username("agent3").password("123456").email("agent3@mercadolibre.com").roles(Set.of(agentRole)).build());
-        agentRepository.save(Agent.builder().id(2L).username("agent4").password("123456").email("agent4@mercadolibre.com").roles(Set.of(agentRole)).build());
+
+        AuthenticableUser user3 = AuthenticableUser.builder().id(1L).username("agent1").password("123456").email(
+                "agent1@mercadolibre.com").roles(Set.of(agentRole)).build();
+        AuthenticableUser user4 = AuthenticableUser.builder().id(2L).username("agent2").password("123456").email(
+                "agent2@mercadolibre.com").roles(Set.of(agentRole)).build();
+        AuthenticableUser user5 = AuthenticableUser.builder().id(2L).username("agent3").password("123456").email(
+                "agent3@mercadolibre.com").roles(Set.of(agentRole)).build();
+        AuthenticableUser user6 = AuthenticableUser.builder().id(2L).username("agent4").password("123456").email(
+                "agent4@mercadolibre.com").roles(Set.of(agentRole)).build();
+
+        agentRepository.save(new Agent(user3));
+        agentRepository.save(new Agent(user4));
+        agentRepository.save(new Agent(user5));
+        agentRepository.save(new Agent(user6));
     }
 
     private void seedCustomer() {
         Role customerRole = roleRepository.findById(3L).get();
-        customerRepository.save(Customer.builder().username("customer1").password("123456").email("customer1@mercadolibre.com").roles(Set.of(customerRole)).build());
-        customerRepository.save(Customer.builder().username("customer2").password("123456").email("customer2@mercadolibre.com").roles(Set.of(customerRole)).build());
-    }
-
-    private void seedProducts() {
-        productRepository.save(Product.builder().id(1L).nome("Maçã").volume(1.).price(BigDecimal.valueOf(1.)).category(ProductCategory.FRESCO).build());
-        productRepository.save(Product.builder().id(2L).nome("Melancia").volume(20.).price(BigDecimal.valueOf(15.30)).category(ProductCategory.FRESCO).build());
-    }
-
-    private void seedWarehouse() {
-        warehouseRepository.save(Warehouse.builder().id(1L).address("Address A").name("WH1").build());
-        warehouseRepository.save(Warehouse.builder().id(2L).address("Address b").name("WH2").build());
-
+        customerRepository.save(Customer.builder().username("customer1").password("123456").email("customer1" +
+                "@mercadolibre.com").roles(Set.of(customerRole)).build());
+        customerRepository.save(Customer.builder().username("customer2").password("123456").email("customer2" +
+                "@mercadolibre.com").roles(Set.of(customerRole)).build());
     }
 
     private void seedSection() {
@@ -111,6 +116,23 @@ public class DatabaseSeeder {
         batchStockRepository.save(BatchStock.builder().id(1L).product(product1).currentTemperature(20F).minimumTemperature(10F).initialQuantity(20).currentQuantity(20).manufacturingDateTime(LocalDateTime.now()).dueDate(LocalDate.parse("2023-01-01")).inboundOrder(inboundOrder).build());
         batchStockRepository.save(BatchStock.builder().id(2L).product(product2).currentTemperature(20F).minimumTemperature(10F).initialQuantity(20).currentQuantity(20).manufacturingDateTime(LocalDateTime.now()).dueDate(LocalDate.parse("2022-05-01")).inboundOrder(inboundOrder).build());
         batchStockRepository.save(BatchStock.builder().id(3L).product(product1).currentTemperature(20F).minimumTemperature(10F).initialQuantity(20).currentQuantity(20).manufacturingDateTime(LocalDateTime.now()).dueDate(LocalDate.parse("2024-01-01")).inboundOrder(inboundOrder).build());
+    }
+
+    private void seedWarehouses() {
+        Warehouse w1 =
+                warehouseRepository.save(Warehouse.builder().id(1L).name("SP-SP").address("00000-000").build());
+        sectionRepository.save(Section.builder().id(1L).capacity(500.0).category(ProductCategory.FRESCO).warehouse(w1).description("Sessao de frescos").build());
+        sectionRepository.save(Section.builder().id(2L).capacity(500.0).category(ProductCategory.CONGELADO).warehouse(w1).description("Sessao de congelados").build());
+        sectionRepository.save(Section.builder().id(3L).capacity(500.0).category(ProductCategory.REFRIGERADO).warehouse(w1).description("Sessao de refrigerados").build());
 
     }
+
+    private void seedProducts() {
+        Seller s1 = sellerRepository.findById(1L).get();
+        Seller s2 = sellerRepository.findById(2L).get();
+        productRepository.save(Product.builder().id(1L).seller(s1).category(ProductCategory.CONGELADO).price(BigDecimal.TEN).name("peixe").volume(10.0).build());
+        productRepository.save(Product.builder().id(2L).seller(s2).category(ProductCategory.FRESCO).price(BigDecimal.TEN).name("sardinha").volume(5.0).build());
+        productRepository.save(Product.builder().id(3L).seller(s1).category(ProductCategory.REFRIGERADO).price(BigDecimal.TEN).name("carne").volume(15.0).build());
+    }
 }
+
