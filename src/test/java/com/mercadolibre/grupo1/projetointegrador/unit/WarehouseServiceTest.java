@@ -40,7 +40,7 @@ public class WarehouseServiceTest {
         Mockito.when(warehouseRepository.findProductsInWarehouse(1L)).thenReturn(warehouse);
         List<WarehouseProductDTO> warehouse1 = warehouseService.findWarehouse(1L);
         Assertions.assertEquals(warehouse1, warehouse);
-        Assertions.assertEquals(warehouse1.size(),1);
+        Assertions.assertEquals(warehouse1.size(),10);
     }
     public List<WarehouseProductDTO> createWarehouse(){
         WarehouseProductDTO createWarehouse = new WarehouseProductDTO();

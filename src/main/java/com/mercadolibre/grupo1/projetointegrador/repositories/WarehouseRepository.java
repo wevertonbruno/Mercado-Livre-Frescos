@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 import java.util.Set;
 
-/** Repositório da Warehouse.
+/** Repositório da Warehouse
  * @author Ederson Rodrigues Araujo
  */
 

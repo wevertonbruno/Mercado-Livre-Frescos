@@ -39,7 +39,7 @@ public class DatabaseSeeder {
         seedRoles();
         seedSellers();
         seedAgents();
-        seedCustomer();
+//        seedCustomer();
         seedSection();
         seedInboundOrder();
         seedBatchStock();
@@ -85,13 +85,13 @@ public class DatabaseSeeder {
         agentRepository.save(new Agent(user6));
     }
 
-    private void seedCustomer() {
-        Role customerRole = roleRepository.findById(3L).get();
-        customerRepository.save(Customer.builder().username("customer1").password("123456").email("customer1" +
-                "@mercadolibre.com").roles(Set.of(customerRole)).build());
-        customerRepository.save(Customer.builder().username("customer2").password("123456").email("customer2" +
-                "@mercadolibre.com").roles(Set.of(customerRole)).build());
-    }
+//    private void seedCustomer() {
+//        Role customerRole = roleRepository.findById(3L).get();
+//        customerRepository.save(Customer.builder().username("customer1").password("123456").email("customer1" +
+//                "@mercadolibre.com").roles(Set.of(customerRole)).build());
+//        customerRepository.save(Customer.builder().username("customer2").password("123456").email("customer2" +
+//                "@mercadolibre.com").roles(Set.of(customerRole)).build());
+//    }
 
     private void seedSection() {
         Warehouse warehouse1 = warehouseRepository.findById(1L).get();
@@ -119,8 +119,7 @@ public class DatabaseSeeder {
     }
 
     private void seedWarehouses() {
-        Warehouse w1 =
-                warehouseRepository.save(Warehouse.builder().id(1L).name("SP-SP").address("00000-000").build());
+        Warehouse w1 = warehouseRepository.save(Warehouse.builder().id(1L).name("SP-SP").address("00000-000").build());
         sectionRepository.save(Section.builder().id(1L).capacity(500.0).category(ProductCategory.FRESCO).warehouse(w1).description("Sessao de frescos").build());
         sectionRepository.save(Section.builder().id(2L).capacity(500.0).category(ProductCategory.CONGELADO).warehouse(w1).description("Sessao de congelados").build());
         sectionRepository.save(Section.builder().id(3L).capacity(500.0).category(ProductCategory.REFRIGERADO).warehouse(w1).description("Sessao de refrigerados").build());
