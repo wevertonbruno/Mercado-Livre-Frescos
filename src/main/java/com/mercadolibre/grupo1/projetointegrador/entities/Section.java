@@ -1,11 +1,11 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
+
+import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
+import java.util.Set;
 
 /**
  * @author Ederson Rodrigues Araujo
@@ -17,15 +17,23 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "sections")
+@Builder
 public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String description;
+    @Enumerated(EnumType.STRING)
+    private ProductCategory category;
+
     private Double capacity;
 
-    // A sessão tera um relacionamento de muito para um com a Warehouse.
+    // A section tera um relacionamento de manyToOne com a Warehouse.
     @ManyToOne
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
     private Warehouse warehouse;
+
+    // A section tera um relacionamento de oneToMany com a InboundOrder.
+    @OneToMany(mappedBy = "section")
+    private Set<InboundOrder> inboundOrder;
 }
