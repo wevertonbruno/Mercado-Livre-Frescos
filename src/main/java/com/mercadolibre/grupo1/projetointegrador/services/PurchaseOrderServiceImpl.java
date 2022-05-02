@@ -18,7 +18,10 @@ import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Stream;
-
+/*
+* @author Gabriel Essenio
+* Camada service que faz validacoes do negocio e alteracoes no BD
+ */
 @Service
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
@@ -49,7 +52,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
     /**
      *
-     * @author  Jefferson Botelho
+     * @author  Jefferson Botelho, Gabriel Essenio
      * @since   2022-03-25
      *
      */
