@@ -51,7 +51,7 @@ public class PurchaseOrderControllerTest {
     }
 
     @Test
-    @DisplayName("Testando cadastrar um Purchase Order com sucesso")
+    @DisplayName("Testando cadastrar um Purchase Order com sucesso.")
     public void testPostPurchaseOrderSuccessful() throws Exception {
         PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
 
@@ -64,6 +64,117 @@ public class PurchaseOrderControllerTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath(
                         "$.totalPrice", Matchers.is(10.))
+                ).andReturn();
+    }
+
+    @Test
+    @DisplayName("Testando cadastrar um Purchase Order com userId null.")
+    public void testPostPurchaseOrderExceptionNullUserId() throws Exception {
+        PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
+        purchaseOrderDTO.getPurchaseOrder().setBuyerId(null);
+
+        String payloadPurchaseOrder = objectMapper.writeValueAsString(purchaseOrderDTO);
+
+        // Requisição
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/v1/fresh-products/orders")
+                .contentType(MediaType.APPLICATION_JSON).content(payloadPurchaseOrder))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath(
+                        "$.message", Matchers.is("BuyerId não é permitido valor nulo!"))
+                ).andReturn();
+    }
+
+    @Test
+    @DisplayName("Testando cadastrar um Purchase Order com userId não cadastrado.")
+    public void testPostPurchaseOrderExceptionUserNotRegistred() throws Exception {
+        PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
+        purchaseOrderDTO.getPurchaseOrder().setBuyerId(0L);
+
+        String payloadPurchaseOrder = objectMapper.writeValueAsString(purchaseOrderDTO);
+
+        // Requisição
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/v1/fresh-products/orders")
+                .contentType(MediaType.APPLICATION_JSON).content(payloadPurchaseOrder))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath(
+                        "$.message", Matchers.is("Usuário não cadastrado!"))
+                ).andReturn();
+    }
+
+    @Test
+    @DisplayName("Testando cadastrar um Purchase Order com productId não cadastrado.")
+    public void testPostPurchaseOrderExceptionProductNotRegistred() throws Exception {
+        PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
+        purchaseOrderDTO.getPurchaseOrder().getProducts().get(0).setProductId(0L);
+
+        String payloadPurchaseOrder = objectMapper.writeValueAsString(purchaseOrderDTO);
+
+        // Requisição
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/v1/fresh-products/orders")
+                .contentType(MediaType.APPLICATION_JSON).content(payloadPurchaseOrder))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath(
+                        "$.message", Matchers.is("Produto não cadastrado!"))
+                ).andReturn();
+    }
+
+    @Test
+    @DisplayName("Testando cadastrar um Purchase Order com productId null.")
+    public void testPostPurchaseOrderExceptionProductNull() throws Exception {
+        PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
+        purchaseOrderDTO.getPurchaseOrder().getProducts().get(0).setProductId(null);
+
+
+        String payloadPurchaseOrder = objectMapper.writeValueAsString(purchaseOrderDTO);
+
+        // Requisição
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/v1/fresh-products/orders")
+                .contentType(MediaType.APPLICATION_JSON).content(payloadPurchaseOrder))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath(
+                        "$.message", Matchers.is("ProductId não é permitido valor nulo!"))
+                ).andReturn();
+    }
+
+    @Test
+    @DisplayName("Testando cadastrar um Purchase Order com productId com quantidade zero.")
+    public void testPostPurchaseOrderExceptionProductQuantityZero() throws Exception {
+        PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
+        purchaseOrderDTO.getPurchaseOrder().getProducts().get(0).setQuantity(0);
+
+
+        String payloadPurchaseOrder = objectMapper.writeValueAsString(purchaseOrderDTO);
+
+        // Requisição
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/v1/fresh-products/orders")
+                .contentType(MediaType.APPLICATION_JSON).content(payloadPurchaseOrder))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath(
+                        "$.message", Matchers.is("Quantidade mínima permitida: 1"))
+                ).andReturn();
+    }
+
+    @Test
+    @DisplayName("Testando cadastrar um Purchase Order com productId com quantidade null.")
+    public void testPostPurchaseOrderExceptionProductQuantityNull() throws Exception {
+        PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
+        purchaseOrderDTO.getPurchaseOrder().getProducts().get(0).setQuantity(null);
+
+
+        String payloadPurchaseOrder = objectMapper.writeValueAsString(purchaseOrderDTO);
+
+        // Requisição
+        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
+                .post("/api/v1/fresh-products/orders")
+                .contentType(MediaType.APPLICATION_JSON).content(payloadPurchaseOrder))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath(
+                        "$.message", Matchers.is("Quantidade não é permitido valor nulo!"))
                 ).andReturn();
     }
 
