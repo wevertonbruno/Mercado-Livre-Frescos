@@ -1,6 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador;
 
-//import com.mercadolibre.grupo1.projetointegrador.config.DatabaseSeeder;
+import com.mercadolibre.grupo1.projetointegrador.config.DatabaseSeeder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -11,7 +11,7 @@ import org.springframework.context.annotation.Bean;
 public class ProjetoIntegradorApplication {
 
     @Autowired
-//    private DatabaseSeeder databaseSeeder;
+    private DatabaseSeeder databaseSeeder;
 
     public static void main(String[] args) {
         SpringApplication.run(ProjetoIntegradorApplication.class, args);
@@ -20,7 +20,7 @@ public class ProjetoIntegradorApplication {
     @Bean
     CommandLineRunner run(){
         return args -> {
-//            databaseSeeder.seed();
+            databaseSeeder.seed();
         };
     }
 
