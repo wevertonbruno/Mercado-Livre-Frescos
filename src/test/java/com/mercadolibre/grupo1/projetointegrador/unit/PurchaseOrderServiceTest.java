@@ -1,5 +1,4 @@
 package com.mercadolibre.grupo1.projetointegrador.unit;
-
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
 import com.mercadolibre.grupo1.projetointegrador.entities.Product;
@@ -9,7 +8,6 @@ import com.mercadolibre.grupo1.projetointegrador.entities.enums.OrderStatus;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import com.mercadolibre.grupo1.projetointegrador.repositories.BatchStockRepository;
 import com.mercadolibre.grupo1.projetointegrador.repositories.PurchaseOrderRepository;
-import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderService;
 import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -19,15 +17,12 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import javax.persistence.criteria.CriteriaBuilder;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
  * @author Jefferson Botelho, Gabriel Essenio
@@ -71,7 +66,6 @@ public class PurchaseOrderServiceTest {
         Assertions.assertEquals(editedOrder.getOrderStatus(), OrderStatus.CLOSED);
         Assertions.assertEquals(listBatchStock1.get(0).getCurrentQuantity(), 19);
         Assertions.assertEquals(listBatchStock2.get(0).getCurrentQuantity(), 7);
-
     }
 
     /*
@@ -145,6 +139,33 @@ public class PurchaseOrderServiceTest {
  */
     private List<BatchStock> createListBatchStock(BatchStock batchStock1, BatchStock batchStock2) {
         return Arrays.asList(batchStock1, batchStock2);
+    }
+
+    /*
+    @ author Jeffeson Botelho
+     */
+    @Test
+    @DisplayName("Verifica se o service esta retornando os produtos do carrinho")
+    public void showProductsInOrdersIsOkTest() {
+
+        PurchaseOrder test = createOrder();
+        Mockito.when(purchaseOrderRepository.findById(1L)).thenReturn(Optional.of(test));
+        PurchaseOrder retorno = purchaseOrderService.showProductsInOrders(1L);
+        Assertions.assertEquals(2, retorno.getProducts().size());
+        Assertions.assertEquals(LocalDateTime.parse("2015-08-04T10:11:30"), retorno.getCreatedDate());
+        Assertions.assertEquals(LocalDateTime.parse("2022-04-26T10:00"), retorno.getUpdatedDate());
+    }
+
+    @Test
+    @DisplayName("Verifica se o retorno de excecao esta correto em caso de id invalido")
+    public void editExistentOrderExceptionTest() {
+        Mockito.when(purchaseOrderRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
+
+        // action
+        RuntimeException runtimeException1 = Assertions.assertThrows(RuntimeException.class, () -> purchaseOrderService.editExistentOrder(1L));
+
+        // verificacoes
+        Assertions.assertEquals("Pedido nao encontrado", runtimeException1.getMessage());
     }
 }
 

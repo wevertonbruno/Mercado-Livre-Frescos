@@ -1,10 +1,10 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 
-import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import lombok.*;
 
 import javax.persistence.*;
-import java.util.HashSet;
+
+import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import java.util.Set;
 
 /**
@@ -12,12 +12,12 @@ import java.util.Set;
  * Entidade responsável pela Section
  */
 
-@Builder
 @Entity
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "sections")
+@Builder
 public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,8 +28,12 @@ public class Section {
 
     private Double capacity;
 
-    // A sessão tera um relacionamento de muito para um com a Warehouse.
+    // A section tera um relacionamento de manyToOne com a Warehouse.
     @ManyToOne
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
     private Warehouse warehouse;
+
+    // A section tera um relacionamento de oneToMany com a InboundOrder.
+    @OneToMany(mappedBy = "section")
+    private Set<InboundOrder> inboundOrder;
 }
