@@ -35,9 +35,9 @@ public class ProductControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/v1/fresh-products/"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.is(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].nome", Matchers.is("Melancia")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].nome", Matchers.is("Maçã")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.is(5)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].nome", Matchers.is("Product2")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].nome", Matchers.is("Product1")));
     }
 
     /**
@@ -52,8 +52,8 @@ public class ProductControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/v1/fresh-products/list?status=FRESCO"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.is(1)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].nome", Matchers.is("Maçã")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.is(2)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].nome", Matchers.is("Product1")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].category", Matchers.is("FRESCO")));
     }
 }
