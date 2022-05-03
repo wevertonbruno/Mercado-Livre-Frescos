@@ -15,13 +15,13 @@ import java.util.Set;
 
 @Getter
 @Setter
-@SuperBuilder
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class AuthenticableUser {
+public class AuthenticableUser {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
