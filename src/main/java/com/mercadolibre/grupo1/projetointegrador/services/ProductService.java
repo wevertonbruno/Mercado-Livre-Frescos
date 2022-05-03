@@ -33,7 +33,7 @@ public class ProductService {
      */
     public List<ProductDTO> listAllProducts(){
         List<ProductDTO> allProducts =  productRepository.findAll().stream()
-                .map(product -> new ProductDTO(product.getId(),product.getNome(),product.getVolume(),product.getPrice(),product.getCategory()))
+                .map(product -> new ProductDTO(product.getId(),product.getName(),product.getVolume(),product.getPrice(),product.getCategory()))
                 .collect(Collectors.toList());
         if(allProducts.isEmpty()){
             throw new ListIsEmptyException("Nenhum produto cadastrado");
@@ -52,7 +52,7 @@ public class ProductService {
             throw new ListIsEmptyException("Categoria não encontrada");
         }
         return productsByCategory.stream()
-                .map(product -> new ProductDTO(product.getId(),product.getNome(),product.getVolume(),product.getPrice(),product.getCategory()))
+                .map(product -> new ProductDTO(product.getId(),product.getName(),product.getVolume(),product.getPrice(),product.getCategory()))
                 .collect(Collectors.toList());
     }
 

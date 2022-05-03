@@ -1,16 +1,18 @@
-package com.mercadolibre.grupo1.projetointegrador.integracao;
+package com.mercadolibre.grupo1.projetointegrador.integration;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Profile;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import javax.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 
 /**
  * @author Gabriel Essenio
@@ -18,10 +20,14 @@ import javax.transaction.Transactional;
  */
 @AutoConfigureMockMvc
 @SpringBootTest
+@ActiveProfiles("test")
 public class ProductControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper objectMapper;
 
     /**
     @author Gabriel Essenio
@@ -34,9 +40,9 @@ public class ProductControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/v1/fresh-products/"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.is(5)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[1].nome", Matchers.is("Product2")))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].nome", Matchers.is("Product1")));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.is(9)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[1].name", Matchers.is("MACA")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name", Matchers.is("UVA")));
     }
 
     /**
@@ -50,8 +56,8 @@ public class ProductControllerTest {
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/v1/fresh-products/list?status=FRESCO"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
-                .andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.is(2)))
-                .andExpect(MockMvcResultMatchers.jsonPath("$[0].nome", Matchers.is("Product1")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.is(3)))
+                .andExpect(MockMvcResultMatchers.jsonPath("$[0].name", Matchers.is("UVA")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].category", Matchers.is("FRESCO")));
     }
 

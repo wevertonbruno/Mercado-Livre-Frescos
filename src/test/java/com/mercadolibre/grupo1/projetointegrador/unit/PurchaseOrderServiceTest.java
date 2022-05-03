@@ -132,7 +132,7 @@ public class PurchaseOrderServiceTest {
     private Product createProduct(Long idProd, String nomeProd, Double volume, BigDecimal price, ProductCategory category) {
         Product product1 = new Product();
         product1.setId(idProd);
-        product1.setNome(nomeProd);
+        product1.setName(nomeProd);
         product1.setVolume(volume);
         product1.setPrice(price);
         product1.setCategory(category);

@@ -74,7 +74,7 @@ public class TestPurchaseOrder {
     private Product createProduct() {
         Product product = new Product();
         product.setId(1L);
-        product.setNome("Product");
+        product.setName("Product");
         product.setPrice(BigDecimal.valueOf(1.));
         product.setVolume(10.);
 

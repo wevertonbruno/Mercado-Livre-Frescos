@@ -109,7 +109,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
                     .findValidDateItems(productItemDTO.getProductId());
             // valida se existe a quantidade de itens do PurchaseItems
             if (quantityProdInStock == null || quantityProdInStock < productItemDTO.getQuantity()) {
-                throw new MissingProductExceptions(String.format("%s insuficiente em estoque!", prodRepository.getNome()));
+                throw new MissingProductExceptions(String.format("%s insuficiente em estoque!", prodRepository.getName()));
             }
 
             // cria uma lista de purchaseitems para ser salvo no banco

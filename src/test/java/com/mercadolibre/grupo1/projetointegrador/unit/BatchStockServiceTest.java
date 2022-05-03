@@ -91,7 +91,7 @@ class BatchStockServiceTest {
     }
 
     private Product createFakeProduct(){
-        return Product.builder().id(1L).nome("product").volume(10.0).build();
+        return Product.builder().id(1L).name("product").volume(10.0).build();
     }
 
     private BatchStockDTO createFakeBatchStockInput(){
