@@ -1,10 +1,8 @@
 package com.mercadolibre.grupo1.projetointegrador.dtos;
 
 import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
-import com.mercadolibre.grupo1.projetointegrador.entities.InboundOrder;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
