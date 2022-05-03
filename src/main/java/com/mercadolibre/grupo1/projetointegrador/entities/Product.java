@@ -1,11 +1,9 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import lombok.*;
-import org.hibernate.annotations.Tables;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Set;
 
 /**
  * @author Nayara Coca
@@ -14,13 +12,12 @@ import java.util.Set;
  */
 
 @Entity
+@Builder
 @Table(name = "products")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
 @Setter
-@Builder
-
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

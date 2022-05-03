@@ -5,7 +5,6 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.Objects;
 
 /**
  * @author Nayara Coca
@@ -14,12 +13,12 @@ import java.util.Objects;
  */
 
 @Entity
+@Builder
 @Table(name = "batch_stocks")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
 public class BatchStock {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -33,6 +32,9 @@ public class BatchStock {
     private Integer currentQuantity;
     private LocalDateTime manufacturingDateTime;
     private LocalDate dueDate;
+//    @ManyToOne
+//    @JoinColumn(name = "inbound_order_id")
+//    private InboundOrder inboundOrder;
 
     @ManyToOne
     @JoinColumn(name = "inbound_order_id", referencedColumnName = "id")
