@@ -1,10 +1,10 @@
 package com.mercadolibre.grupo1.projetointegrador.unit;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.BatchStockDTO;
-import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
-import com.mercadolibre.grupo1.projetointegrador.entities.Product;
+import com.mercadolibre.grupo1.projetointegrador.entities.*;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import com.mercadolibre.grupo1.projetointegrador.repositories.BatchStockRepository;
+import com.mercadolibre.grupo1.projetointegrador.services.AuthService;
 import com.mercadolibre.grupo1.projetointegrador.services.BatchStockService;
 import com.mercadolibre.grupo1.projetointegrador.services.ProductService;
 import com.mercadolibre.grupo1.projetointegrador.services.mappers.BatchStockMapper;
@@ -36,13 +36,16 @@ class BatchStockServiceTest {
     @Mock
     private BatchStockRepository batchStockRepository;
 
+    @Mock
+    private AuthService authService;
+
     @InjectMocks
     private BatchStockService batchStockService;
 
     @BeforeEach
     public void setUp(){
         BatchStockMapper batchStockMapper = new BatchStockMapper();
-        batchStockService = new BatchStockService(productService, batchStockRepository, batchStockMapper);
+        batchStockService = new BatchStockService(productService, batchStockRepository, batchStockMapper, authService);
     }
 
     @Test
@@ -103,6 +106,9 @@ class BatchStockServiceTest {
     public void itShouldReturnAStockBySectionIdAndExpiresIn(){
         Product product = createFakeProduct();
 
+        Agent agent = createFakeAgent();
+        when(authService.getPrincipalAs(Agent.class)).thenReturn(agent);
+
         when(batchStockRepository.findStockBySectionIdAndDueDateBetween(1L, LocalDate.now(), LocalDate.now().plusDays(10)))
                 .thenReturn(new ArrayList<>(
                         Arrays.asList(BatchStock.builder().product(product).currentQuantity(5).build())
@@ -116,6 +122,9 @@ class BatchStockServiceTest {
     @DisplayName("Testa se os lotes do armazem são retornados e filtrados por um periodo de vencimento e categoria de produtos.")
     public void itShouldReturnAStockByCategoryAndExpiresIn(){
         Product product = createFakeProduct();
+
+        Agent agent = createFakeAgent();
+        when(authService.getPrincipalAs(Agent.class)).thenReturn(agent);
 
         when(batchStockRepository.findWarehouseStockByCategoryAndDueDateBetween(1L, ProductCategory.FRESCO, LocalDate.now(), LocalDate.now().plusDays(10), Sort.by(Sort.Direction.ASC, "dueDate")))
                 .thenReturn(new ArrayList<>(
@@ -142,6 +151,23 @@ class BatchStockServiceTest {
         item.setProductId(1L);
 
         return item;
+    }
+
+    private Agent createFakeAgent(){
+        Agent agent = new Agent();
+        Warehouse warehouse =
+                Warehouse.builder()
+                        .id(1L)
+                        .address("1111-111")
+                        .name("SP")
+                        .agents(Set.of(agent))
+                        .sections(Set.of(
+                                Section.builder().id(1L).build(),
+                                Section.builder().id(2L).build()
+                        )).build();
+        agent.setId(1L);
+        agent.setWarehouse(warehouse);
+        return agent;
     }
 
 }

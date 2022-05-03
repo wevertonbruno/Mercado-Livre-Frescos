@@ -14,9 +14,11 @@ import com.mercadolibre.grupo1.projetointegrador.repositories.BatchStockReposito
 import com.mercadolibre.grupo1.projetointegrador.repositories.InboundOrderRepository;
 import com.mercadolibre.grupo1.projetointegrador.repositories.ProductRepository;
 import com.mercadolibre.grupo1.projetointegrador.repositories.SectionRepository;
+import com.mercadolibre.grupo1.projetointegrador.services.AuthService;
 import com.mercadolibre.grupo1.projetointegrador.services.BatchStockService;
 import com.mercadolibre.grupo1.projetointegrador.services.InboundOrderService;
 import com.mercadolibre.grupo1.projetointegrador.services.SectionService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -46,6 +48,7 @@ class InboundOrderServiceTest {
     @Mock private BatchStockRepository batchStockRepository;
     @Mock private SectionService sectionService;
     @Mock private BatchStockService batchStockService;
+    @Mock private AuthService authService;
 
     @InjectMocks
     private InboundOrderService inboundOrderService;
@@ -55,6 +58,7 @@ class InboundOrderServiceTest {
     public void itShouldReturnAInvalidCategoryException(){
         InboundOrderDTO inboundOrderDTO = createFakeOrderInput();
         Section section = createFakeSection();
+        Agent agent = createFakeAgent(section.getWarehouse());
 
         section.setCategory(ProductCategory.FRESCO);
         Product product1 = Product.builder().category(ProductCategory.FRESCO).build();
@@ -70,6 +74,7 @@ class InboundOrderServiceTest {
                 .thenReturn(BatchStock.builder().product(product1).build());
         when(batchStockService.createFromDTO(batch2))
                 .thenReturn(BatchStock.builder().product(product2).build());
+        when(authService.getPrincipalAs(Agent.class)).thenReturn(agent);
 
         Exception exception = assertThrows(InvalidCategoryException.class, () -> inboundOrderService.createInboundOrder(inboundOrderDTO));
 
@@ -81,6 +86,8 @@ class InboundOrderServiceTest {
     public void itShouldReturnAOvercapacityException(){
         InboundOrderDTO inboundOrderDTO = createFakeOrderInput();
         Section section = createFakeSection();
+        Agent agent = createFakeAgent(section.getWarehouse());
+
         section.setCapacity(100.0);
         section.setCategory(ProductCategory.FRESCO);
 
@@ -101,6 +108,7 @@ class InboundOrderServiceTest {
                 .thenReturn(createdBatch1, createdBatch2);
         when(batchStockService.findBatchStockBySectionId(anyLong()))
                 .thenReturn(new HashSet<>());
+        when(authService.getPrincipalAs(Agent.class)).thenReturn(agent);
 
         Exception exception = assertThrows(OvercapacityException.class, () -> inboundOrderService.createInboundOrder(inboundOrderDTO));
 
@@ -112,6 +120,7 @@ class InboundOrderServiceTest {
     public void itShouldRegisterAInboundOrder(){
         InboundOrderDTO inboundOrderDTO = createFakeOrderInput();
         Section section = createFakeSection();
+        Agent agent = createFakeAgent(section.getWarehouse());
         section.setCapacity(100.0);
         section.setCategory(ProductCategory.FRESCO);
 
@@ -132,6 +141,7 @@ class InboundOrderServiceTest {
                 .thenReturn(createdBatch1, createdBatch2);
         when(batchStockService.findBatchStockBySectionId(anyLong()))
                 .thenReturn(new HashSet<>());
+        when(authService.getPrincipalAs(Agent.class)).thenReturn(agent);
 
         when(inboundOrderRepository.save(any(InboundOrder.class))).thenReturn(
                 InboundOrder.builder()
@@ -154,6 +164,7 @@ class InboundOrderServiceTest {
     public void itShouldUpdateAInboundOrder(){
         InboundOrderDTO inboundOrderDTO = createFakeOrderInput();
         Section section = createFakeSection();
+        Agent agent = createFakeAgent(section.getWarehouse());
         section.setCapacity(100.0);
         section.setCategory(ProductCategory.FRESCO);
 
@@ -193,6 +204,8 @@ class InboundOrderServiceTest {
         when(batchStockService.findBatchStockBySectionId(anyLong()))
                 .thenReturn(new HashSet<>());
 
+        when(authService.getPrincipalAs(Agent.class)).thenReturn(agent);
+
         when(inboundOrderRepository.save(any(InboundOrder.class))).thenReturn(inboundFound);
 
         InboundOrderResponseDTO inboundOrderResponse = inboundOrderService.updateOrder(1L, inboundOrderDTO);
@@ -207,6 +220,7 @@ class InboundOrderServiceTest {
     public void itShouldThrowAInvalidOperationException(){
         InboundOrderDTO inboundOrderDTO = createFakeOrderInput();
         Section section = createFakeSection();
+        Agent agent = createFakeAgent(section.getWarehouse());
         section.setCapacity(100.0);
         section.setCategory(ProductCategory.FRESCO);
 
@@ -305,5 +319,12 @@ class InboundOrderServiceTest {
                 .warehouse(Warehouse.builder().id(1L).address("555").name("SP").build())
                         .build();
         return section;
+    }
+
+    private Agent createFakeAgent(Warehouse warehouse){
+        Agent agent = new Agent();
+        agent.setId(1L);
+        agent.setWarehouse(warehouse);
+        return agent;
     }
 }

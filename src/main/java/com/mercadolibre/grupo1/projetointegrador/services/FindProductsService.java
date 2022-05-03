@@ -23,7 +23,6 @@ import java.util.Set;
 @RequiredArgsConstructor
 public class FindProductsService {
     private final BatchStockRepository batchStockRepository;
-    private final AgentService agentService;
     private final WarehouseService warehouseService;
 
     /**
@@ -34,7 +33,7 @@ public class FindProductsService {
     public void validateAgent(Agent agent) {
         String errorMessage = "O representante com ID " + agent.getId() + " não está cadastrado em nenhuma warehouse";
         try {
-            Warehouse warehouse = warehouseService.findById(agent.getWarehouse().getId());
+            warehouseService.findById(agent.getWarehouse().getId());
         }
         catch (EntityNotFoundException e) {
             throw new EntityNotFoundException(errorMessage);
@@ -51,13 +50,12 @@ public class FindProductsService {
      * - busca lotes do produto filtrados pela warehouse do agente e segundo o tipo de ordenação solicitado
      * - gera o DTO
      */
-    public FindProductResponseDTO findProducts(Long productId, SortingType sortingType, Long agentId) {
-
-        Agent agent = agentService.findById(agentId);
+    public FindProductResponseDTO findProducts(Long productId, SortingType sortingType, Agent agent) {
 
         Long warehouseId = agent.getWarehouse().getId();
 
         validateAgent(agent);
+
         Set<BatchStock> batchStocks = new HashSet<>();
         switch (sortingType) {
             case BATH_ID:
