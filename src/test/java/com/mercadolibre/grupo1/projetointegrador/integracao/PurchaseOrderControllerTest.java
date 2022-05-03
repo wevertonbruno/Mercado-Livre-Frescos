@@ -63,7 +63,7 @@ public class PurchaseOrderControllerTest {
                 .contentType(MediaType.APPLICATION_JSON).content(payloadPurchaseOrder))
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath(
-                        "$.totalPrice", Matchers.is(10.))
+                        "$.totalPrice", Matchers.is(1000.))
                 ).andReturn();
     }
 

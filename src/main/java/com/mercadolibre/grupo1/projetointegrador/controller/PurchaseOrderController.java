@@ -1,8 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.controller;
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
-import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
-import com.mercadolibre.grupo1.projetointegrador.services.ProductService;
 import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderService;
 import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +23,6 @@ import java.net.URI;
 @RequestMapping("/api/v1/fresh-products/")
 public class PurchaseOrderController {
 
-    // Inicialmente o controller esta lidando com dois services, afim de minnimizar conflitos por Gabriel e Jefferson estarem implementando o service ao mesmo tempo.
-    // ao fim do requisito 02 a ideia é unir em um unico service.
-
     @Autowired
     private PurchaseOrderService purchaseOrderService;
 
@@ -35,6 +30,7 @@ public class PurchaseOrderController {
     private PurchaseOrderServiceImpl purchaseOrderServiceIml;
 
     @PostMapping("/orders")
+
 
     public ResponseEntity<PurchaseOrderDTO.Response> createPurchaseOrder(@Valid @RequestBody PurchaseOrderDTO purchaseOrder,
                                                           UriComponentsBuilder uriBuilder) {
@@ -57,13 +53,13 @@ public class PurchaseOrderController {
         return ResponseEntity.ok(purchaseOrderService.showProductsInOrders(idOrder));
     }
 
-    /*
-    @author Jeffeson ,Gabriel Essenio
-    Controller para atualizar o status da compra quando concluida
+    /**
+     * @author Jeffeson ,Gabriel Essenio
+     *Controller para atualizar o status da compra quando concluida
      */
     @PutMapping("/orders/{idOrder}/close")
     public ResponseEntity<PurchaseOrder> editStatusExistentOrder(@PathVariable Long idOrder) {
-        PurchaseOrder purchaseOrder = purchaseOrderServiceIml.editExistentOrder(idOrder);
+        PurchaseOrder purchaseOrder = purchaseOrderService.editExistentOrder(idOrder);
         return ResponseEntity.ok().body(purchaseOrder);
     }
 }

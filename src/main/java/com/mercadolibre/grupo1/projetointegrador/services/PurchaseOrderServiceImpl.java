@@ -3,6 +3,7 @@ package com.mercadolibre.grupo1.projetointegrador.services;
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.*;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.OrderStatus;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.ListIsEmptyException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.MissingProductExceptions;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredProducts;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredUser;
@@ -41,7 +42,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     public PurchaseOrder showProductsInOrders(Long id) {
 
         return purchaseOrderRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Pedido nao encontrado"));
+                .orElseThrow(() -> new ListIsEmptyException("Pedido nao encontrado"));
     }
     /*
     _________________________________________________________________________________________________
