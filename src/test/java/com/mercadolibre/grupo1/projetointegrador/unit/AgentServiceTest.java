@@ -25,6 +25,11 @@ public class AgentServiceTest {
     @InjectMocks
     private AgentService agentService;
 
+    /**
+     * @author Rogério Lambert
+     * Testes unitarios do service de gestão do represante da warehouse
+     */
+
     @Test
     @DisplayName("Testa se a query certa é chamada quando o método findById é chamado retornando um objeto Agent: ")
     public void itShouldCallFindById() {

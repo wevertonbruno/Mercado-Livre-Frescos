@@ -16,6 +16,11 @@ import java.util.Optional;
 
 import static org.mockito.Mockito.when;
 
+/**
+ * @author Rogério Lambert
+ * Testes unitarios do service de gestão da warehouse
+ */
+
 @ExtendWith(MockitoExtension.class)
 public class WarehouseServiceTest {
     @Mock

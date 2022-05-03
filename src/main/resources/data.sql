@@ -12,9 +12,16 @@ INSERT INTO users(id, username, email, password) VALUES
     (4, 'agent2', 'agent2@mercadolibre.com', '123456'),
     (5, 'customer1', 'customer1@mercadolibre.com', '123456'),
     (6, 'customer2', 'customer2@mercadolibre.com', '123456'),
+/**
+  Dado de representante utilizado no teste no requisito 3
+ */
     (7, 'agent3', 'agent3@mercadolibre.com', '123456');
+/**
+  Final do dado de represente no teste requisito 3
+ */
 
 INSERT INTO sellers VALUES (1), (2);
+-- Na linha seguinte foram adicionadas as relações entre agents e warehouses
 INSERT INTO agents(id, warehouse_id) VALUES (3, 1), (4, 2), (7, 3);
 INSERT INTO customers(id, cpf) VALUES (5, '111.111.111-11'), (6, '222.222.222-22');
 
@@ -35,9 +42,12 @@ INSERT INTO sections(id, capacity, category, description, warehouse_id) VALUES
     (5, 500, 'CONGELADO', 'sessao RJ 2', 2),
     (6, 500, 'REFRIGERADO', 'sessao RJ 3', 2),
 
+
+  -- Dados de seção utilizados nos teste do requisito 3
     (7, 500, 'FRESCO', 'sessao SC 1', 3),
     (8, 500, 'CONGELADO', 'sessao SC 2', 3),
     (9, 500, 'REFRIGERADO', 'sessao SC 3', 3);
+  -- Final dos dados de seção de testes de requisito 3
 
 INSERT INTO inbound_orders(id, order_date, section_id) VALUES
     (1, '2022-04-25', 1),
@@ -46,9 +56,12 @@ INSERT INTO inbound_orders(id, order_date, section_id) VALUES
     (4, '2022-04-25', 2),
     (5, '2022-04-25', 2),
 
+  -- Dados de inbound para teste do requisito 3
     (6, '2022-04-25', 7),
     (7, '2022-04-25', 8),
     (8, '2022-04-25', 9);
+  -- Final dos dados de teste de inbound do requisito3
+
 
 INSERT INTO products(id, category, name, price, volume, seller_id) VALUES
     (1, 'FRESCO', 'UVA', 10, 5, 1),
@@ -85,6 +98,7 @@ INSERT INTO batch_stocks (id, current_quantity, current_temperature, due_date, i
     (15, 10, 10, DATEADD(DAY, 15, CURRENT_DATE), 10, '2022-01-01 00:00:00', 5, 5, 6),
 
 
+  -- Dados de Batch para teste da requisito 3, FindProducts
     (16, 20, 20, DATEADD(DAY, 60, CURRENT_DATE), 20, '2022-01-01 00:00:00', 15, 6, 1),
     (17, 10, 20, DATEADD(DAY, 45, CURRENT_DATE), 20, '2022-01-01 00:00:00', 15, 6, 1),
     (18, 15, 20, DATEADD(DAY, 30, CURRENT_DATE), 20, '2022-01-01 00:00:00', 15, 6, 1),
@@ -100,5 +114,5 @@ INSERT INTO batch_stocks (id, current_quantity, current_temperature, due_date, i
     (25, 10, 10, DATEADD(DAY, 15, CURRENT_DATE), 20, '2022-01-01 00:00:00', 3, 8, 4),
     (26, 15, 10, DATEADD(DAY, 10, CURRENT_DATE), 20, '2022-01-01 00:00:00', 3, 8, 4),
     (27, 20, 10, DATEADD(DAY, 10, CURRENT_DATE), 20, '2022-01-01 00:00:00', 3, 8, 4);
-
+  -- final de dados de Batch pra teste do requisito 3
 

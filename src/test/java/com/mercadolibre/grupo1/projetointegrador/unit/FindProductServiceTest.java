@@ -23,6 +23,11 @@ import java.util.Set;
 
 import static org.mockito.Mockito.when;
 
+/**
+ * @author Rogério Lambert
+ * Testes unitarios do service do requisito 3 (FindProducts)
+ */
+
 @ExtendWith(MockitoExtension.class)
 public class FindProductServiceTest {
     @Mock private BatchStockRepository batchStockRepository;

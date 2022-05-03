@@ -19,10 +19,13 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * @author Rogério Lambert
+ * Testes de integração da rota do requisito 3 findProducts
+ */
 
 @SpringBootTest
 @AutoConfigureMockMvc
-//@Transactional
 @ActiveProfiles("test")
 public class FindProductTest {
     @Autowired
