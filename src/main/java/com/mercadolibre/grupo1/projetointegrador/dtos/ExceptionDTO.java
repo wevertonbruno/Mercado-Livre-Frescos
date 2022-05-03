@@ -32,5 +32,4 @@ public class ExceptionDTO {
     public static ExceptionDTO badRequest(String message, String path) {
         return new ExceptionDTO(HttpStatus.BAD_REQUEST.value(), message, Instant.now(), path);
     }
-
 }
