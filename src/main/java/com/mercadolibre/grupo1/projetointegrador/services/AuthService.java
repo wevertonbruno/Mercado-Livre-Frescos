@@ -19,6 +19,10 @@ import javax.servlet.http.HttpServletRequest;
 import java.sql.Date;
 import java.time.Instant;
 
+/**
+ * Classe de servico de autenticacao
+ * @author Weverton Bruno
+ */
 @Service
 public class AuthService {
     @Autowired
@@ -47,15 +51,24 @@ public class AuthService {
         return new TokenDTO(token);
     }
 
+    /**
+     * Pega o usuario logado do contextholder, busca no banco e faz o casting para o tipo escolhido
+     * @param F
+     * @return T
+     * @param <T>
+     * @author Weverton Bruno
+     */
     public <T> T getPrincipalAs(Class<T> F){
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return (T) userService.loadUserByUsername(principal.getUsername());
     }
 
+    /**
+     * Pega o usuario logado do contextholder, busca no banco e faz o casting para AuthenticableUser
+     * @author Weverton Bruno
+     */
     public AuthenticableUser getPrincipal(){
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return (AuthenticableUser) userService.loadUserByUsername(principal.getUsername());
     }
-
-
 }
