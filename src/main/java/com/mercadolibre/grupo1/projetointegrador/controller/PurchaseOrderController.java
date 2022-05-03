@@ -34,7 +34,6 @@ public class PurchaseOrderController {
 
     public ResponseEntity<PurchaseOrderDTO.Response> createPurchaseOrder(@Valid @RequestBody PurchaseOrderDTO purchaseOrder,
                                                           UriComponentsBuilder uriBuilder) {
-        //...
         PurchaseOrder purchaseOrderDTO = purchaseOrderService.createPurchaseOrder(purchaseOrder);
 
         URI uri = uriBuilder

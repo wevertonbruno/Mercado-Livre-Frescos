@@ -12,9 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/*
-* @author Gabriel Essenio
-* Controller de Product ,cria os endpoints e trata o retorno de acordo com cada tipo de endpoint
+/**
+ * @author Gabriel Essenio
+ * Controller de Product ,cria os endpoints e trata o retorno de acordo com cada tipo de endpoint
  */
 @RestController
 @RequestMapping("/api/v1/fresh-products/")
@@ -23,19 +23,15 @@ public class ProductController {
     @Autowired
     private ProductService productService;
 
-    /*
-    @author Gabriel Essenio
-    Endpoint do tipo Get , que faz requisicao de todos os produtos cadastrados
-     */
+
+    // Endpoint do tipo Get , que faz requisicao de todos os produtos cadastrados
     @GetMapping
     public ResponseEntity<List<ProductDTO>> listAllProduct(){
         List<ProductDTO> allProducts = productService.listAllProducts();
         return ResponseEntity.ok().body(allProducts);
     }
-    /*
-    @author Gabriel Essenio
-    Endpoint do tipo Get, que faz requisicao de produtos de acordo com os status passado no parametro
-     */
+
+    // Endpoint do tipo Get, que faz requisicao de produtos de acordo com os status passado no parametro
     @GetMapping("/list")
     public ResponseEntity<List<ProductDTO>> listProductForCategory( @RequestParam(required = false, name = "status") ProductCategory productCategory) {
         List<ProductDTO> productByCategory = productService.listProductByCategory(productCategory);
