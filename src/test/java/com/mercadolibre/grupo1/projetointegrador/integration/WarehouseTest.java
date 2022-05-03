@@ -1,17 +1,16 @@
 package com.mercadolibre.grupo1.projetointegrador.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mercadolibre.grupo1.projetointegrador.dtos.InboundOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.WarehouseProductDTO;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.RequestBuilder;
 import org.springframework.test.web.servlet.ResultMatcher;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
@@ -52,8 +51,19 @@ public class WarehouseTest {
                         .andExpect((ResultMatcher) jsonPath("$.size()", Matchers.is(1)))
                         .andReturn();
 
-        List<WarehouseProductDTO> finalResult = Arrays.asList(objectMapper.readValue(result.getResponse().getContentAsString(), WarehouseProductDTO[].class));
+        List<WarehouseProductDTO> finalResult =
+                Arrays.asList(objectMapper.readValue(result.getResponse().getContentAsString(),
+                        WarehouseProductDTO[].class));
         assertEquals(1, finalResult.size());
         assertEquals(30, finalResult.get(0).getTotalQuantity());
+    }
+
+    @Test
+    public void itShouldReturnAnException() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/warehouse?productId=15").contentType(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(jsonPath("$.message").value("PRODUTO NÃO ENCONTRADO"));
     }
 }
