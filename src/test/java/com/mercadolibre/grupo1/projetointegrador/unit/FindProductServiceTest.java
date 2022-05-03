@@ -36,7 +36,6 @@ public class FindProductServiceTest {
     @InjectMocks
     private FindProductsService findProductsService;
 
-
     /**
      * - teste se as ordenações estão sendo acionadas corretamente
      * - teste se a função validateAgent lança exceção correta
