@@ -11,6 +11,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -30,6 +31,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] AGENT_REQUESTS = {
             BASE_URL + "/inboundorder",
             BASE_URL + "/inboundorder/**"
+    };
+
+    private static final String[] CUSTOMER_REQUESTS = {
+            BASE_URL + "/orders", BASE_URL + "/orders/**",
+    };
+
+    private static final String[] PUBLIC_POST_REQUESTS = {
+            "/api/v1/auth"
+    };
+
+    private static final String[] PUBLIC_GET_REQUESTS = {
+        BASE_URL + "/list",
+        BASE_URL + "/list/**",
+        BASE_URL + "/"
     };
     private final UserDetailsService userDetailsService;
     private final JWTUtils jwtUtils;
@@ -57,10 +72,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                    .antMatchers(HttpMethod.POST, "/api/v1/auth").permitAll()
+                    .antMatchers(HttpMethod.POST, PUBLIC_POST_REQUESTS).permitAll()
+                    .antMatchers(HttpMethod.GET, PUBLIC_GET_REQUESTS).permitAll()
+
+                    .antMatchers(AGENT_REQUESTS).hasRole("AGENT")
+                    .antMatchers(CUSTOMER_REQUESTS).hasRole("CUSTOMER")
+
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
-                    .antMatchers(AGENT_REQUESTS).hasRole("AGENT")
                     .anyRequest().authenticated()
                 .and()
                 .exceptionHandling()
@@ -68,6 +87,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .addFilter(getValidationFilter())
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+    }
+
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("h2-console/**");
     }
 
     private JWTValidationFilter getValidationFilter() throws Exception {

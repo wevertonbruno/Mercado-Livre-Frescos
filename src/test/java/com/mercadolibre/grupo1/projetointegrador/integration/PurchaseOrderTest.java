@@ -10,6 +10,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Profile;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -44,6 +45,7 @@ public class PurchaseOrderTest {
      */
     @Test
     @DisplayName("verifica se os dados estao sendo retornados corretamente")
+    @WithMockUser(username = "customer1", roles = {"CUSTOMER"})
     public void showProductsInOrdersTest() throws Exception {
 
         this.mockMvc.perform(MockMvcRequestBuilders.get("/api/v1/fresh-products/orders/{idOrder}", 1))
@@ -64,6 +66,7 @@ public class PurchaseOrderTest {
      */
     @Test
     @DisplayName("Testa se retorna error 404 se o id informado estiver incorreto")
+    @WithMockUser(username = "customer1", roles = {"CUSTOMER"})
     public void showProductsInOrdersExceptionTest() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders
@@ -79,6 +82,7 @@ public class PurchaseOrderTest {
      */
     @Test
     @DisplayName("Testando endpoint muda o status de OPEN para CLOSE")
+    @WithMockUser(username = "customer1", roles = {"CUSTOMER"})
     public void TestStatusChangeWhen() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/fresh-products/orders/1/close"))
@@ -93,6 +97,7 @@ public class PurchaseOrderTest {
      */
     @Test
     @DisplayName("Testando enpoint quando tenta alterar status de compra qe nao existe retorna um status 404 e uma menssagem de erro")
+    @WithMockUser(username = "customer1", roles = {"CUSTOMER"})
     public void TestReturnStatus404WhenIdProductOrderDontExists() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                         .put("/api/v1/fresh-products/orders/0/close"))
@@ -126,6 +131,7 @@ public class PurchaseOrderTest {
      */
     @Test
     @DisplayName("Testando cadastrar um Purchase Order com sucesso.")
+    @WithMockUser(username = "customer1", roles = {"CUSTOMER"})
     public void testPostPurchaseOrderSuccessful() throws Exception {
         PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
 
@@ -146,6 +152,7 @@ public class PurchaseOrderTest {
      */
     @Test
     @DisplayName("Testando cadastrar um Purchase Order com userId null.")
+    @WithMockUser(username = "customer1", roles = {"CUSTOMER"})
     public void testPostPurchaseOrderExceptionNullUserId() throws Exception {
         PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
         purchaseOrderDTO.getPurchaseOrder().setBuyerId(null);
@@ -167,6 +174,7 @@ public class PurchaseOrderTest {
      */
     @Test
     @DisplayName("Testando cadastrar um Purchase Order com userId não cadastrado.")
+    @WithMockUser(username = "customer1", roles = {"CUSTOMER"})
     public void testPostPurchaseOrderExceptionUserNotRegistred() throws Exception {
         PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
         purchaseOrderDTO.getPurchaseOrder().setBuyerId(0L);
@@ -188,6 +196,7 @@ public class PurchaseOrderTest {
      */
     @Test
     @DisplayName("Testando cadastrar um Purchase Order com productId não cadastrado.")
+    @WithMockUser(username = "customer1", roles = {"CUSTOMER"})
     public void testPostPurchaseOrderExceptionProductNotRegistred() throws Exception {
         PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
         purchaseOrderDTO.getPurchaseOrder().getProducts().get(0).setProductId(0L);
@@ -209,6 +218,7 @@ public class PurchaseOrderTest {
      */
     @Test
     @DisplayName("Testando cadastrar um Purchase Order com productId null.")
+    @WithMockUser(username = "customer1", roles = {"CUSTOMER"})
     public void testPostPurchaseOrderExceptionProductNull() throws Exception {
         PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
         purchaseOrderDTO.getPurchaseOrder().getProducts().get(0).setProductId(null);
@@ -231,6 +241,7 @@ public class PurchaseOrderTest {
      */
     @Test
     @DisplayName("Testando cadastrar um Purchase Order com productId com quantidade zero.")
+    @WithMockUser(username = "customer1", roles = {"CUSTOMER"})
     public void testPostPurchaseOrderExceptionProductQuantityZero() throws Exception {
         PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
         purchaseOrderDTO.getPurchaseOrder().getProducts().get(0).setQuantity(0);
@@ -253,6 +264,7 @@ public class PurchaseOrderTest {
      */
     @Test
     @DisplayName("Testando cadastrar um Purchase Order com productId com quantidade null.")
+    @WithMockUser(username = "customer1", roles = {"CUSTOMER"})
     public void testPostPurchaseOrderExceptionProductQuantityNull() throws Exception {
         PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
         purchaseOrderDTO.getPurchaseOrder().getProducts().get(0).setQuantity(null);

@@ -52,8 +52,8 @@ public class ProductControllerTest {
      */
     @Test
     @DisplayName("Testando se retorna os produtos pela categoria passada pelo parametro")
-    public void testReturnProductsByCategory() throws Exception {
 
+    public void testReturnProductsByCategory() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders
                 .get("/api/v1/fresh-products/list?status=FRESCO"))
                 .andExpect(MockMvcResultMatchers.status().isOk())
