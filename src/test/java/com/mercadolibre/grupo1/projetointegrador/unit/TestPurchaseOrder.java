@@ -53,7 +53,6 @@ public class TestPurchaseOrder {
         List<PurchaseOrderDTO.ProductItemDTO> products = new ArrayList<>(Arrays.asList(
                 PurchaseOrderDTO.ProductItemDTO.builder().productId(1L).quantity(20).build()
         ));
-        purchaseOrder.setBuyerId(1L);
         purchaseOrder.setProducts(products);
 
         PurchaseOrderDTO purchaseOrderDTO = new PurchaseOrderDTO();
@@ -105,35 +104,15 @@ public class TestPurchaseOrder {
     }
 
     @Test
-    @DisplayName("Testa se retorna a mensagem de error: Usuário não cadastrado")
-    public void testandoExcepitionUregistered() {
-
-        // Configuração
-        PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
-
-        Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
-
-        // Action
-        Throwable messageUnregisteredUser = Assertions.assertThrows(UnregisteredUser.class, () ->
-                purchaseOrderService.createPurchaseOrder(purchaseOrderDTO));
-
-        // Verificação
-        Assertions.assertEquals(
-                messageUnregisteredUser.getMessage(), "Usuário não cadastrado!"
-        );
-    }
-
-    @Test
     @DisplayName("Testa se retorna exception de produto nao cadastrado")
     public void testExceptionUregisteredProduct () {
         PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
         Customer customer = createCustomer();
 
-        Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(customer));
         Mockito.when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.empty());
 
         Throwable messageUnregisteredProduct = Assertions.assertThrows(UnregisteredProducts.class, () ->
-                purchaseOrderService.createPurchaseOrder(purchaseOrderDTO));
+                purchaseOrderService.createPurchaseOrder(purchaseOrderDTO, customer));
 
         Assertions.assertEquals(
                 messageUnregisteredProduct.getMessage(), "Produto não cadastrado!"
@@ -147,12 +126,11 @@ public class TestPurchaseOrder {
         Customer customer = createCustomer();
         Product product = createProduct();
 
-        Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(customer));
         Mockito.when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(product));
         Mockito.when(batchStockRepository.findValidDateItems(Mockito.anyLong())).thenReturn(0D);
 
         Throwable messageMissingProduct = Assertions.assertThrows(MissingProductExceptions.class, () ->
-                purchaseOrderService.createPurchaseOrder(purchaseOrderDTO));
+                purchaseOrderService.createPurchaseOrder(purchaseOrderDTO, customer));
 
         Assertions.assertEquals(
                 messageMissingProduct.getMessage(), "Product insuficiente em estoque!"
@@ -167,12 +145,11 @@ public class TestPurchaseOrder {
         Customer customer = createCustomer();
         Product product = createProduct();
 
-        Mockito.when(customerRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(customer));
         Mockito.when(productRepository.findById(Mockito.anyLong())).thenReturn(Optional.of(product));
         Mockito.when(batchStockRepository.findValidDateItems(Mockito.anyLong())).thenReturn(20D);
         Mockito.when(purchaseOrderRepository.save(Mockito.any())).thenReturn(purchaseOrder);
 
-        PurchaseOrder testePurchaseOrderSuccessful = purchaseOrderService.createPurchaseOrder(purchaseOrderDTO);
+        PurchaseOrder testePurchaseOrderSuccessful = purchaseOrderService.createPurchaseOrder(purchaseOrderDTO, customer);
 
         Assertions.assertEquals(
                 testePurchaseOrderSuccessful.getOrderStatus(), OrderStatus.OPENED

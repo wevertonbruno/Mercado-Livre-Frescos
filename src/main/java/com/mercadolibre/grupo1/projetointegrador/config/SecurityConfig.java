@@ -31,7 +31,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String[] AGENT_REQUESTS = {
             BASE_URL + "/inboundorder",
             BASE_URL + "/inboundorder/**",
-
+            BASE_URL + "/list/**",
             BASE_URL + "/due-date",
             BASE_URL + "/due-date/list",
     };
@@ -46,7 +46,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_GET_REQUESTS = {
         BASE_URL + "/list",
-        BASE_URL + "/list/**",
         BASE_URL + "/"
     };
     private final UserDetailsService userDetailsService;
@@ -80,7 +79,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                     .antMatchers(AGENT_REQUESTS).hasRole("AGENT")
                     .antMatchers(CUSTOMER_REQUESTS).hasRole("CUSTOMER")
-
 
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()

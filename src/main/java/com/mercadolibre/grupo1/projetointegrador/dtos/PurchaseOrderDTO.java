@@ -39,8 +39,6 @@ public class PurchaseOrderDTO {
     @Data
     public static class PurchaseOrder {
         private LocalDate date;
-        @NotNull(message = "BuyerId não é permitido valor nulo!")
-        private Long buyerId;
         private PurchaseOrderStatusDTO orderStatus;
         @Valid
         private List<ProductItemDTO> products;
