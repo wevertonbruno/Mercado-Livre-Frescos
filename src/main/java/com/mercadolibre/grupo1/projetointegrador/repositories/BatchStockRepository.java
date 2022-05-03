@@ -11,12 +11,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Set;
 
-/**
- * @author Nayara Coca
- * Criação repositório de batch stock
- */
-@Repository
-public interface BatchStockRepository extends JpaRepository<BatchStock,Long> {
+    @Repository
+    public interface BatchStockRepository extends JpaRepository<BatchStock,Long> {
     /**
      * Listagem do estoque de lotes da sessao
      * @param sectionId Id da sessao de onde se quer buscar o lote

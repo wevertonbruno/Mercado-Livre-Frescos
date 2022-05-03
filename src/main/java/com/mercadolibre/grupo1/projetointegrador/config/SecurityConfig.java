@@ -23,6 +23,10 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.servlet.HandlerExceptionResolver;
 
+/**
+ * Classe de configuracao do spring security
+ * @author Weverton Bruno
+ */
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
@@ -34,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             BASE_URL + "/list/**",
             BASE_URL + "/due-date",
             BASE_URL + "/due-date/list",
+            BASE_URL + "/warehouse"
     };
 
     private static final String[] CUSTOMER_REQUESTS = {
