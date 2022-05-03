@@ -133,8 +133,6 @@ public class PurchaseOrderTest {
 
         purchaseOrderDTO.setPurchaseOrder(purchaseOrder);
 
-        purchaseOrder.setBuyerId(5L);
-
         purchaseOrder.setProducts(products);
 
         return purchaseOrderDTO;
@@ -158,50 +156,6 @@ public class PurchaseOrderTest {
                 .andExpect(MockMvcResultMatchers.status().isCreated())
                 .andExpect(MockMvcResultMatchers.jsonPath(
                         "$.totalPrice", Matchers.is(100.))
-                ).andReturn();
-    }
-
-    /**
-     * @author Ederson Rodrigues
-     */
-    @Test
-    @DisplayName("Testando cadastrar um Purchase Order com userId null.")
-    @WithMockUser(username = "customer1", roles = {"CUSTOMER"})
-    public void testPostPurchaseOrderExceptionNullUserId() throws Exception {
-        PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
-        purchaseOrderDTO.getPurchaseOrder().setBuyerId(null);
-
-        String payloadPurchaseOrder = objectMapper.writeValueAsString(purchaseOrderDTO);
-
-        // Requisição
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v1/fresh-products/orders")
-                        .contentType(MediaType.APPLICATION_JSON).content(payloadPurchaseOrder))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.jsonPath(
-                        "$.message", Matchers.is("BuyerId não é permitido valor nulo!"))
-                ).andReturn();
-    }
-
-    /**
-     * @author Ederson Rodrigues
-     */
-    @Test
-    @DisplayName("Testando cadastrar um Purchase Order com userId não cadastrado.")
-    @WithMockUser(username = "customer1", roles = {"CUSTOMER"})
-    public void testPostPurchaseOrderExceptionUserNotRegistred() throws Exception {
-        PurchaseOrderDTO purchaseOrderDTO = createPurchaseOrderDTO();
-        purchaseOrderDTO.getPurchaseOrder().setBuyerId(0L);
-
-        String payloadPurchaseOrder = objectMapper.writeValueAsString(purchaseOrderDTO);
-
-        // Requisição
-        MvcResult mvcResult = mockMvc.perform(MockMvcRequestBuilders
-                        .post("/api/v1/fresh-products/orders")
-                        .contentType(MediaType.APPLICATION_JSON).content(payloadPurchaseOrder))
-                .andExpect(MockMvcResultMatchers.status().isNotFound())
-                .andExpect(MockMvcResultMatchers.jsonPath(
-                        "$.message", Matchers.is("Usuário não cadastrado!"))
                 ).andReturn();
     }
 

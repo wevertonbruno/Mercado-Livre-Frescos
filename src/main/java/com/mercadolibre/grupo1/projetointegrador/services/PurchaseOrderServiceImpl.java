@@ -95,18 +95,13 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
  */
 
     @Transactional // so salva no banco se nao houver erro
-    public PurchaseOrder createPurchaseOrder(PurchaseOrderDTO purchaseOrderDTO) {
+    public PurchaseOrder createPurchaseOrder(PurchaseOrderDTO purchaseOrderDTO, Customer customer) {
 
         // lista de produtos do purchaseOrderDTO
         List<PurchaseOrderDTO.ProductItemDTO> productsPurchaseOrders = purchaseOrderDTO.getPurchaseOrder().getProducts();
 
         // salvando uma lista de produtos para fazer o purchaseOrderDTO
         List<PurchaseItem> purchaseItemList = new ArrayList<>();
-
-        // se não houver usuário cadastrado ira retornar erro.
-        Customer customer = customerRepository
-                .findById(purchaseOrderDTO.getPurchaseOrder().getBuyerId())
-                .orElseThrow(() -> new UnregisteredUser("Usuário não cadastrado!"));
 
         // percorrer a lista de produtos do purchaseOrderDTO
         for (PurchaseOrderDTO.ProductItemDTO productItemDTO : productsPurchaseOrders) {

@@ -31,14 +31,17 @@ public class PurchaseOrderController {
     @Autowired
     private  AuthService authService;
 
-
     @Autowired
     private PurchaseOrderServiceImpl purchaseOrderServiceIml;
+
 
     @PostMapping("/orders")
     public ResponseEntity<PurchaseOrderDTO.Response> createPurchaseOrder(@Valid @RequestBody PurchaseOrderDTO purchaseOrder,
                                                           UriComponentsBuilder uriBuilder) {
-        PurchaseOrder purchaseOrderDTO = purchaseOrderService.createPurchaseOrder(purchaseOrder);
+        // pega o usuário que esta logado
+        Customer customer = authService.getPrincipalAs(Customer.class);
+
+        PurchaseOrder purchaseOrderDTO = purchaseOrderService.createPurchaseOrder(purchaseOrder, customer);
 
         URI uri = uriBuilder
                 .path("/{idOrder}")
