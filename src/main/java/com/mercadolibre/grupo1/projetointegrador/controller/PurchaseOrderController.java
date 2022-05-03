@@ -1,6 +1,8 @@
 package com.mercadolibre.grupo1.projetointegrador.controller;
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
+import com.mercadolibre.grupo1.projetointegrador.entities.Customer;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
+import com.mercadolibre.grupo1.projetointegrador.services.AuthService;
 import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderService;
 import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,10 @@ public class PurchaseOrderController {
 
     @Autowired
     private PurchaseOrderService purchaseOrderService;
+
+    @Autowired
+    private  AuthService authService;
+
 
     @Autowired
     private PurchaseOrderServiceImpl purchaseOrderServiceIml;
@@ -56,11 +62,15 @@ public class PurchaseOrderController {
      */
     @PutMapping("/orders/{idOrder}/close")
     public ResponseEntity<PurchaseOrder> editStatusExistentOrder(@PathVariable Long idOrder,UriComponentsBuilder uriBuilder) {
-        PurchaseOrder purchaseOrder = purchaseOrderService.editExistentOrder(idOrder);
+
+        Customer customerRole = authService.getPrincipalAs(Customer.class);
+        PurchaseOrder purchaseOrder = purchaseOrderService.editExistentOrder(idOrder, customerRole);
         URI uri = uriBuilder
                 .path("/{idOrder}")
                 .buildAndExpand(idOrder)
                 .toUri();
+
+
         return ResponseEntity.created(uri).body(purchaseOrder);
 
     }
