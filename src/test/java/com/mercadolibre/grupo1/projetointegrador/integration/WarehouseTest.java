@@ -3,6 +3,7 @@ package com.mercadolibre.grupo1.projetointegrador.integration;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.grupo1.projetointegrador.dtos.WarehouseProductDTO;
 import org.hamcrest.Matchers;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -27,7 +28,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 /**
  * Testes de integração para Warehouse
- *
+ * descrição de cada teste no displayName
  * @author Nayara Coca
  */
 @SpringBootTest
@@ -44,6 +45,7 @@ public class WarehouseTest {
     private static final String BASE_URL = "http://localhost:8080/api/v1/fresh-products";
 
     @Test
+    @DisplayName("Testa se retorna a quantidade total de produtos por armazém")
     public void itShouldReturnTheTotalQuantityOfProductOnTheWarehouses() throws Exception {
         MvcResult result =
                 mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/warehouse?productId=1"))
@@ -59,6 +61,7 @@ public class WarehouseTest {
     }
 
     @Test
+    @DisplayName("Testa se retorna mensagem de erro quando o produto não existe em nenhum armazém")
     public void itShouldReturnAnException() throws Exception {
 
         mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/warehouse?productId=15").contentType(MediaType.APPLICATION_JSON)
