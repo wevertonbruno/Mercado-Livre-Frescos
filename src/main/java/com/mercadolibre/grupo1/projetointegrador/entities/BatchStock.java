@@ -34,6 +34,10 @@ public class BatchStock {
     private LocalDateTime manufacturingDateTime;
     private LocalDate dueDate;
 
+    @ManyToOne
+    @JoinColumn(name = "inbound_order_id", referencedColumnName = "id")
+    private InboundOrder inboundOrder;
+
     public Double getVolume() {
         return product.getVolume() * currentQuantity;
     }

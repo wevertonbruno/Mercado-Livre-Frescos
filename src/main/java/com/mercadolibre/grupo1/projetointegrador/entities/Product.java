@@ -20,11 +20,12 @@ import java.util.Set;
 @Getter
 @Setter
 @Builder
+
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private String nome;
+    private String name;
     private Double volume;
     private BigDecimal price;
     @Enumerated(EnumType.STRING)
