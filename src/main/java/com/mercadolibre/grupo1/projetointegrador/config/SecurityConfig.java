@@ -30,7 +30,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String BASE_URL = "/api/v1/fresh-products";
     private static final String[] AGENT_REQUESTS = {
             BASE_URL + "/inboundorder",
-            BASE_URL + "/inboundorder/**"
+            BASE_URL + "/inboundorder/**",
+            BASE_URL + "/list/**"
     };
 
     private static final String[] CUSTOMER_REQUESTS = {
@@ -43,7 +44,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     private static final String[] PUBLIC_GET_REQUESTS = {
         BASE_URL + "/list",
-        BASE_URL + "/list/**",
         BASE_URL + "/"
     };
     private final UserDetailsService userDetailsService;

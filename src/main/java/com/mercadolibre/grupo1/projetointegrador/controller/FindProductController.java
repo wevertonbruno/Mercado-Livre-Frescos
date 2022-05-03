@@ -1,7 +1,9 @@
 package com.mercadolibre.grupo1.projetointegrador.controller;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.FindProductResponseDTO;
+import com.mercadolibre.grupo1.projetointegrador.entities.Agent;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.SortingType;
+import com.mercadolibre.grupo1.projetointegrador.services.AuthService;
 import com.mercadolibre.grupo1.projetointegrador.services.FindProductsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +20,8 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 public class FindProductController {
 
+    private final AuthService authService;
+
     private final FindProductsService findProductsService;
 
     @GetMapping("/{productId}")
@@ -33,11 +37,10 @@ public class FindProductController {
                     break;
             }
         }
-        //Enquanto o serviço de autenticação não esta implementado, o id do representado esta sendo hardcoded
 
-        Long agentId = 7L;
+        Agent agent = authService.getPrincipalAs(Agent.class);
 
-        FindProductResponseDTO findProductResponseDTO = findProductsService.findProducts(productId, sortingType, agentId);
+        FindProductResponseDTO findProductResponseDTO = findProductsService.findProducts(productId, sortingType, agent);
         return ResponseEntity.ok().body(findProductResponseDTO);
     }
 }
