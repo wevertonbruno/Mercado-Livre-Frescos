@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
+
 import java.util.Set;
 
 
@@ -39,6 +40,7 @@ public class DatabaseSeeder {
     private final InboundOrderRepository inboundOrderRepository;
     private final PurchaseOrderRepository purchaseOrderRepository;
     private final PurchaseItemRepository purchaseItemRepository;
+
 
     @Transactional
     public void seed() {
@@ -119,8 +121,6 @@ public class DatabaseSeeder {
                         .build());
 
         purchaseItemRepository.saveAll(purchaseItemList);
-
-
     }
 
     private void seedWarehouse() {
@@ -155,3 +155,4 @@ public class DatabaseSeeder {
 
     }
 }
+

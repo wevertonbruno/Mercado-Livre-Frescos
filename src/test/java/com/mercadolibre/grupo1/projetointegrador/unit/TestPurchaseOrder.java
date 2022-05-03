@@ -119,7 +119,7 @@ public class TestPurchaseOrder {
 
         // Verificação
         Assertions.assertEquals(
-                messageUnregisteredUser.getMessage(), "Usuário não cadastrado"
+                messageUnregisteredUser.getMessage(), "Usuário não cadastrado!"
         );
     }
 

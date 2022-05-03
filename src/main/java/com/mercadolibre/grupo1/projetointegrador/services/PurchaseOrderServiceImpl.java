@@ -97,7 +97,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
         // se não houver usuário cadastrado ira retornar erro.
         Customer customer = customerRepository
                 .findById(purchaseOrderDTO.getPurchaseOrder().getBuyerId())
-                .orElseThrow(() -> new UnregisteredUser("Usuário não cadastrado"));
+                .orElseThrow(() -> new UnregisteredUser("Usuário não cadastrado!"));
 
         // percorrer a lista de produtos do purchaseOrderDTO
         for (PurchaseOrderDTO.ProductItemDTO productItemDTO : productsPurchaseOrders) {

@@ -24,17 +24,18 @@ public class PurchaseOrderDTO {
     @Data
     @Builder
     public static class ProductItemDTO {
-        @NotNull(message = "Não é permitido valor nulo")
+        @NotNull(message = "ProductId não é permitido valor nulo!")
         private Long productId;
-        @NotNull(message = "Não é permitido valor nulo")
-        @Min(value = 1, message = "Quantidade minima permitida: 1")
+
+        @NotNull(message = "Quantidade não é permitido valor nulo!")
+        @Min(value = 1, message = "Quantidade mínima permitida: 1")
         private Integer quantity;
     }
 
     @Data
     public static class PurchaseOrder {
         private LocalDate date;
-        @NotNull(message = "Não é permitido valor nulo")
+        @NotNull(message = "BuyerId não é permitido valor nulo!")
         private Long buyerId;
         private PurchaseOrderStatusDTO orderStatus;
         @Valid
