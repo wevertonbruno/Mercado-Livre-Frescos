@@ -10,7 +10,6 @@ import java.util.Set;
  * Entidade responsável pelo Warehouse
  */
 
-
 @Builder
 @Entity
 @Getter @Setter
@@ -27,4 +26,7 @@ public class Warehouse {
 
     @OneToMany(mappedBy = "warehouse")
     private Set<Section> sections;
+
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "warehouse")
+    private Set<Agent> agents;
 }
