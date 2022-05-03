@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
 
 /**
@@ -34,8 +35,9 @@ public class PurchaseOrderController {
     private PurchaseOrderServiceImpl purchaseOrderServiceIml;
 
     @PostMapping("/orders")
-    public ResponseEntity<PurchaseOrderDTO.Response> createPurchaseOrder(@RequestBody PurchaseOrderDTO purchaseOrder,
-                                                                         UriComponentsBuilder uriBuilder) {
+
+    public ResponseEntity<PurchaseOrderDTO.Response> createPurchaseOrder(@Valid @RequestBody PurchaseOrderDTO purchaseOrder,
+                                                          UriComponentsBuilder uriBuilder) {
         //...
         PurchaseOrder purchaseOrderDTO = purchaseOrderService.createPurchaseOrder(purchaseOrder);
 
