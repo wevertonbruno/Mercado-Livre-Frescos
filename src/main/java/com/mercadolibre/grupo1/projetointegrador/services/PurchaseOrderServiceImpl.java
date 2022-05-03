@@ -18,9 +18,9 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/*
-* @author Gabriel Essenio, Jefferson Botelho, Ederson Rodrigues
-* Camada service que faz validacoes do negocio e alteracoes no BD
+/**
+ * @author Gabriel Essenio, Jefferson Botelho, Ederson Rodrigues
+ * Camada service que faz validacoes do negocio e alteracoes no BD
  */
 @Service
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
@@ -35,22 +35,17 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    // @author Jeffeson Botelho
     // a funcao showProductsInOrders ira retornar todos os produtos em um carrinho pelo id do carrinho
-
     @Override
     public PurchaseOrder showProductsInOrders(Long id) {
 
         return purchaseOrderRepository.findById(id)
                 .orElseThrow(() -> new ListIsEmptyException("Pedido nao encontrado"));
     }
-    /*
-    _________________________________________________________________________________________________
-     */
-    /*
-    * @author Gabriel Essenio
-      funcao editExistentOrder ira atualizar o status de um pedido e diminir quantidade de stock de acordo com cada compra
-    */
+
+   // _________________________________________________________________________________________________
+
+    //  funcao editExistentOrder ira atualizar o status de um pedido e diminir quantidade de stock de acordo com cada compra
     @Transactional
     public PurchaseOrder editExistentOrder(Long id) {
 
@@ -106,7 +101,7 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
             Product prodRepository = productRepository
                     .findById(productItemDTO.getProductId())
                     .orElseThrow(() -> new UnregisteredProducts("Produto não cadastrado!"));
-            /**
+            /*
              * procura no lote se existe o produto solicitado com a data de vencimento superior
              * e retorna a soma de todos os produtos.
              */
