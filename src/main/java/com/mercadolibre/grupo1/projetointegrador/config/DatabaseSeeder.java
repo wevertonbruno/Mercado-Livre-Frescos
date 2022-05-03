@@ -122,6 +122,41 @@ public class DatabaseSeeder {
 
         purchaseItemRepository.saveAll(purchaseItemList);
     }
+//    private void seedProducts() {
+//        productRepository.save(Product.builder().id(1L).nome("Product1").volume(1D).price(BigDecimal.valueOf(100)).category(ProductCategory.FRESCO).build());
+//        productRepository.save(Product.builder().id(2L).nome("Product2").volume(2D).price(BigDecimal.valueOf(200)).category(ProductCategory.CONGELADO).build());
+//        productRepository.save(Product.builder().id(3L).nome("Sorvete").volume(3D).price(BigDecimal.valueOf(300)).category(ProductCategory.REFRIGERADO).build());
+//        productRepository.save(Product.builder().id(4L).nome("Product4").volume(4D).price(BigDecimal.valueOf(400)).category(ProductCategory.FRESCO).build());
+//        productRepository.save(Product.builder().id(5L).nome("Product5").volume(5D).price(BigDecimal.valueOf(500)).category(ProductCategory.REFRIGERADO).build());
+//    }
+//
+//    private void seedPurchaseOrders() {
+//
+//
+//        PurchaseOrder save = purchaseOrderRepository.save(PurchaseOrder.builder()
+//                .id(1L)
+//                .createdDate(LocalDateTime.parse("2015-08-04T10:11:30"))                                // insere DateTime por string
+//                .updatedDate(LocalDateTime.of(2022, 4, 26, 10, 0))  // insere DateTime por int
+//                .orderStatus(OrderStatus.OPENED)
+//                .build());
+//
+//        List<PurchaseItem> purchaseItemList = Arrays.asList(
+//                PurchaseItem.builder()
+//                        .purchaseOrder(save)
+//                        .id(1L).product(productRepository.getById(1L)).quantity(1)
+//                        .build(),
+//                PurchaseItem.builder()
+//                        .purchaseOrder(save)
+//                        .id(2L).product(productRepository.getById(2L)).quantity(2)
+//                        .build(),
+//                PurchaseItem.builder()
+//                        .purchaseOrder(save)
+//                        .id(3L).product(productRepository.getById(3L)).quantity(4)
+//                        .build());
+//
+//        purchaseItemRepository.saveAll(purchaseItemList);
+//
+//    }
 
     private void seedWarehouse() {
         warehouseRepository.save(Warehouse.builder().id(1L).address("Address A").name("WH1").build());
