@@ -5,6 +5,12 @@
 ## Objetivo
 O objetivo deste projeto final é implementar uma API REST e aplicar os conteúdos aprendidos no BootCamping.
 
+[Link do Enunciado do Projeto Integrador](https://drive.google.com/file/d/1bBOM49bxqRR7apxP3sgV7_LRiTq9xQD2/view)
+
+## Swager
+Endpoints do Projeto Integrador
+[Swagger](http://localhost:8080/swagger-ui/)
+
 ## Postman
 
 [Link do Postman](https://www.getpostman.com/collections/a26a80aef9f833ed8132)
@@ -36,7 +42,7 @@ O objetivo deste projeto final é implementar uma API REST e aplicar os conteúd
 - [JUnit](https://junit.org/junit5/docs/5.0.0/api/overview-summary.html)
 - [JWT](https://jwt.io/introduction)
 - [JPA](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/)
-
+- [Swagger](https://swagger.io/)
 
 ## Integrantes:
 - [Ederson Araújo](https://github.com/edersonrodara)
