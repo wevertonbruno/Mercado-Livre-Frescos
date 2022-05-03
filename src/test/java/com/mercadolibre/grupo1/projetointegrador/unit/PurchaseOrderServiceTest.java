@@ -1,5 +1,4 @@
 package com.mercadolibre.grupo1.projetointegrador.unit;
-import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
 import com.mercadolibre.grupo1.projetointegrador.entities.Product;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseItem;

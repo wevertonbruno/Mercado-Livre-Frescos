@@ -30,7 +30,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String BASE_URL = "/api/v1/fresh-products";
     private static final String[] AGENT_REQUESTS = {
             BASE_URL + "/inboundorder",
-            BASE_URL + "/inboundorder/**"
+            BASE_URL + "/inboundorder/**",
+
+            BASE_URL + "/due-date",
+            BASE_URL + "/due-date/list",
     };
 
     private static final String[] CUSTOMER_REQUESTS = {
@@ -77,6 +80,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
                     .antMatchers(AGENT_REQUESTS).hasRole("AGENT")
                     .antMatchers(CUSTOMER_REQUESTS).hasRole("CUSTOMER")
+
 
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()

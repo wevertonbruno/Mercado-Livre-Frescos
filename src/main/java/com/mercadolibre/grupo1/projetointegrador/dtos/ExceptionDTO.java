@@ -1,8 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.dtos;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.http.HttpStatus;
 
 import java.time.Instant;
@@ -11,7 +9,7 @@ import java.time.Instant;
  * @author Nayara Coca, Gabriel Essenio, Ederson Rodrigues
  * trata exceções do controller
  */
-@Data
+@Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class ExceptionDTO {

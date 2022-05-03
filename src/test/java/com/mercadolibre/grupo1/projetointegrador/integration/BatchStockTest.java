@@ -61,4 +61,13 @@ public class BatchStockTest {
         assertTrue(finalResult.stream().allMatch(item -> item.getCategory().equals(ProductCategory.CONGELADO)));
     }
 
+    @Test
+    @WithMockUser(username = "agent1", roles = {"AGENT"})
+    public void itShouldReturnAForbiddenException() throws Exception {
+        mockMvc.perform(
+                        get(BASE_URL + "/due-date?section_code=4&expires_in=15"))
+                .andExpect(status().isForbidden())
+                .andExpect(jsonPath("$.message").value("O representante logado não pertence a esse armazém!"));
+    }
+
 }

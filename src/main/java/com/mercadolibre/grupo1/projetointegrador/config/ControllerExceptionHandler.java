@@ -47,13 +47,6 @@ public class ControllerExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
 
-    @ExceptionHandler(ExceptionMessage.class)
-    public ResponseEntity<ExceptionDTO> exceptionDTOMessage(ExceptionMessage e,
-                                                            HttpServletRequest request) {
-        ExceptionDTO response = ExceptionDTO.badRequest(e.getMessage(), request.getRequestURI());
-        return ResponseEntity.badRequest().body(response);
-    }
-
     @ExceptionHandler(EntityNotFoundException.class)
     public ResponseEntity<ExceptionDTO> entityNotFound(EntityNotFoundException e,
                                                        HttpServletRequest request) {
@@ -140,6 +133,15 @@ public class ControllerExceptionHandler {
                 ExceptionDTO.unauthorized(e.getMessage(),
                         request.getRequestURI());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+    }
+
+    @ExceptionHandler(ForbiddenException.class)
+    public ResponseEntity<ExceptionDTO> authenticationException(ForbiddenException e,
+                                                                HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.forbidden(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
  }
 

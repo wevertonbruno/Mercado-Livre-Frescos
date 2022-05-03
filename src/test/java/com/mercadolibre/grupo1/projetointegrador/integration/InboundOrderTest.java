@@ -52,7 +52,7 @@ public class InboundOrderTest {
     private static final String BASE_URL = "http://localhost:8080/api/v1/fresh-products/inboundorder";
 
     @Test
-    @WithMockUser(username = "agent1", roles = {"AGENT"})
+    @WithMockUser(username = "agent2", roles = {"AGENT"})
     @DisplayName("Testa se uma ordem de entrada é salva com todos os dados validos")
     public void itShouldSaveAInboundOrder() throws Exception {
         InboundOrderDTO order = createFakeOrderInput();
@@ -94,6 +94,14 @@ public class InboundOrderTest {
                 .andExpect(status().isCreated())
                 .andExpect(header().string("Location", "/api/v1/fresh-products/inboundorder/1"))
                 .andExpect(jsonPath("$.length()", is(3)));
+    }
+
+    @Test
+    @WithMockUser(username = "agent1", roles = {"AGENT"})
+    @DisplayName("Testa se uma ordem de entrada existente é buscada pelo ID")
+    public void itShouldGetAINboundOrder() throws Exception {
+        mockMvc.perform(get(BASE_URL + "/1"))
+                .andExpect(status().isOk());
     }
 
     @Test

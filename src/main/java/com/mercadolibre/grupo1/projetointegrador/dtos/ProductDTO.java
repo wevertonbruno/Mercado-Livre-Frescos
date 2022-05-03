@@ -1,9 +1,7 @@
 package com.mercadolibre.grupo1.projetointegrador.dtos;
 
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.Min;
@@ -15,7 +13,7 @@ import java.math.BigDecimal;
  * Classe responsável por filtrar dados dos produtos enviados para o cliente
  */
 
-@Data
+@Getter @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductDTO {

@@ -48,8 +48,14 @@ public class AuthService {
     }
 
     public <T> T getPrincipalAs(Class<T> F){
-        AuthenticableUser principal = (AuthenticableUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return (T) userService.loadUserByUsername(principal.getUsername());
     }
+
+    public AuthenticableUser getPrincipal(){
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return (AuthenticableUser) userService.loadUserByUsername(principal.getUsername());
+    }
+
 
 }
