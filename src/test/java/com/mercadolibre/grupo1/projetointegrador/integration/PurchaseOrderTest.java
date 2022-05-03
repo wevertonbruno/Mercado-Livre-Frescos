@@ -106,6 +106,20 @@ public class PurchaseOrderTest {
     }
 
     /**
+     * @author Gabriel Essenio
+     * Testa se retorna um erro 403 de falta de permissao
+     */
+    @Test
+    @DisplayName("Testando se o tipo de usuario é um Cliente")
+    @WithMockUser(username = "seller1", roles = {"SELLER"})
+    public void TestRoleUserIsntClient() throws Exception{
+        mockMvc.perform(MockMvcRequestBuilders
+                .put("/api/v1/fresh-products/orders/1/close"))
+                .andExpect(MockMvcResultMatchers.status().isForbidden())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.is("Acesso não autorizado!")));
+    }
+
+    /**
      * @author Ederson Rodrigues
      */
     private PurchaseOrderDTO createPurchaseOrderDTO() {

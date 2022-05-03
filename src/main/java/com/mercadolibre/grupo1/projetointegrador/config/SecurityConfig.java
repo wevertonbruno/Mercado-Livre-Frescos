@@ -36,7 +36,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     };
 
     private static final String[] CUSTOMER_REQUESTS = {
-            BASE_URL + "/orders", BASE_URL + "/orders/**",
+            BASE_URL + "/orders", BASE_URL + "/orders/**"
     };
 
     private static final String[] PUBLIC_POST_REQUESTS = {

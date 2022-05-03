@@ -29,7 +29,11 @@ public class PurchaseOrderController {
     private PurchaseOrderService purchaseOrderService;
 
     @Autowired
-    private AuthService authService;
+    private  AuthService authService;
+
+    @Autowired
+    private PurchaseOrderServiceImpl purchaseOrderServiceIml;
+
 
     @PostMapping("/orders")
     public ResponseEntity<PurchaseOrderDTO.Response> createPurchaseOrder(@Valid @RequestBody PurchaseOrderDTO purchaseOrder,
@@ -61,11 +65,15 @@ public class PurchaseOrderController {
      */
     @PutMapping("/orders/{idOrder}/close")
     public ResponseEntity<PurchaseOrder> editStatusExistentOrder(@PathVariable Long idOrder,UriComponentsBuilder uriBuilder) {
-        PurchaseOrder purchaseOrder = purchaseOrderService.editExistentOrder(idOrder);
+
+        Customer customerRole = authService.getPrincipalAs(Customer.class);
+        PurchaseOrder purchaseOrder = purchaseOrderService.editExistentOrder(idOrder, customerRole);
         URI uri = uriBuilder
                 .path("/{idOrder}")
                 .buildAndExpand(idOrder)
                 .toUri();
+
+
         return ResponseEntity.created(uri).body(purchaseOrder);
 
     }
