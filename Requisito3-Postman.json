@@ -1,0 +1,136 @@
+{
+	"info": {
+		"_postman_id": "7b33a798-3209-4ad0-9a3a-986b0be173c6",
+		"name": "Projeto-integrador",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Req3-retorna erro 404 quando produto não disponivel",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/fresh-products/list/4",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"list",
+						"4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Req3-Busca todos lotes do produto 3 de um representate 1 da warehouse 1 ordenado por id de lote (testa filtro de 3 semana de prazo para vencer)",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/fresh-products/list/3",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"list",
+						"3"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Req3-Busca todos lotes do produto 1 de um representate 1 da warehouse 1 ordenado por quantidade",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/fresh-products/list/1?type=C",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"list",
+						"1"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "C"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Req3-Busca todos lotes do produto 1 de um representate 1 da warehouse 1 ordenado por prazo de validade",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/fresh-products/list/1?type=F",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"list",
+						"1"
+					],
+					"query": [
+						{
+							"key": "type",
+							"value": "F"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Req3-Busca todos lotes do produto 1 de um representate 1 da warehouse 1 ordenado por id de lote",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:8080/api/v1/fresh-products/list/1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"fresh-products",
+						"list",
+						"1"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
