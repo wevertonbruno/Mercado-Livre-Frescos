@@ -47,13 +47,13 @@ public class WarehouseTest {
         MvcResult result =
                 mockMvc.perform(MockMvcRequestBuilders.get(BASE_URL + "/warehouse?productId=1"))
                         .andExpect(status().isOk())
-                        .andExpect((ResultMatcher) jsonPath("$.size()", Matchers.is(1)))
+                        .andExpect((ResultMatcher) jsonPath("$.length()", Matchers.is(2)))
                         .andReturn();
 
         List<WarehouseProductDTO> finalResult =
                 Arrays.asList(objectMapper.readValue(result.getResponse().getContentAsString(),
                         WarehouseProductDTO[].class));
-        assertEquals(1, finalResult.size());
+        assertEquals(2, finalResult.size());
         assertEquals(30, finalResult.get(0).getTotalQuantity());
     }
 

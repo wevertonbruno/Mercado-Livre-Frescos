@@ -21,7 +21,7 @@ public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
             "inner join InboundOrder i on s.id = i.section.id " +
             "inner join BatchStock b on i.id = b.inboundOrder.id " +
             "inner join Product p on p.id = b.product.id where p.id = :productsId " +
-            "group by p")
+            "group by w")
     List<WarehouseProductDTO> findProductsInWarehouse(long productsId);
     Optional<Warehouse> findById(Long id);
 }
