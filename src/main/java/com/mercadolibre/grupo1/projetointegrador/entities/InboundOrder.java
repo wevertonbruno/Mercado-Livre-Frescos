@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,6 +28,9 @@ public class InboundOrder {
     @ManyToOne
     @JoinColumn(name = "section_id", referencedColumnName = "id")
     private Section section;
-    @OneToMany(mappedBy = "inboundOrder", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+
+    @OneToMany(mappedBy = "inboundOrder",fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true)
+
     private List<BatchStock> batchStock;
+
 }

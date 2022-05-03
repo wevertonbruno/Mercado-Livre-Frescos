@@ -1,15 +1,15 @@
 package com.mercadolibre.grupo1.projetointegrador.unit;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
-import com.mercadolibre.grupo1.projetointegrador.dtos.SectionDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.Product;
-import com.mercadolibre.grupo1.projetointegrador.entities.Section;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.ListIsEmptyException;
 import com.mercadolibre.grupo1.projetointegrador.repositories.ProductRepository;
 import com.mercadolibre.grupo1.projetointegrador.services.ProductService;
+
 import org.junit.jupiter.api.Assertions;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -40,7 +40,7 @@ class ProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
-/*
+/**
 @author Gabriel Essenio
 metodo que gera uma lista de produtosDTO para teste
  */
@@ -69,9 +69,9 @@ metodo que gera uma lista de produtosDTO para teste
         return Arrays.asList(productDTO1,productDTO2,productDTO3);
     }
 
-    /*
-@author Gabriel Essenio
-metodo que gera uma lista de produtos para teste
+    /**
+ *@author Gabriel Essenio
+*metodo que gera uma lista de produtos para teste
  */
     private List<Product> gerarProduct(){
         Product product1 = new Product();
@@ -97,8 +97,8 @@ metodo que gera uma lista de produtos para teste
 
         return Arrays.asList(product1,product2, product3);
     }
-    /*
-    @author Gabriel Essenio
+    /**
+    * @author Gabriel Essenio
      */
     @Test
     @DisplayName("Teste se a lista retorna todos os produtos cadastrados corretamente")
@@ -109,8 +109,8 @@ metodo que gera uma lista de produtos para teste
         Assertions.assertEquals(allProducts.get(0).getName(), serviceProductDTO.get(0).getName());
         Assertions.assertEquals(allProducts.get(1).getName(), serviceProductDTO.get(1).getName());
     }
-    /*
-    @author Gabriel Essenio
+    /**
+    * @author Gabriel Essenio
      */
     @Test
     @DisplayName("Teste se a lista retorna vazia quando nenhum produto tiver cadastrado")
@@ -119,8 +119,8 @@ metodo que gera uma lista de produtos para teste
         Throwable listIsEmptyException = Assertions.assertThrows(ListIsEmptyException.class, () -> productService.listAllProducts());
         Assertions.assertEquals(listIsEmptyException.getMessage(), "Nenhum produto cadastrado");
     }
-    /*
-    @author Gabriel Essenio
+    /**
+    * @author Gabriel Essenio
      */
     @Test
     @DisplayName("Teste se retorna lista de produtos quando é passado um status de category")
@@ -131,8 +131,8 @@ metodo que gera uma lista de produtos para teste
         List<ProductDTO> serviceProductByCategory = productService.listProductByCategory(ProductCategory.FRESCO);
         Assertions.assertNotNull(serviceProductByCategory);
     }
-    /*
-    @author Gabriel Essenio
+    /**
+    * @author Gabriel Essenio
      */
     @Test
     @DisplayName("Teste e retorna mensagem correta quando passado uma lista vazia")
@@ -142,10 +142,12 @@ metodo que gera uma lista de produtos para teste
         Assertions.assertEquals(listIsEmptyException.getMessage(), "Categoria não encontrada");
     }
 
-
-
+    /**
+     * @author Weverton Bruno
+     */
 
     @Test
+    @DisplayName("Testa se uma exceção de produto nao encontrado é lancado")
     public void itShouldReturnAProductNotFoundException(){
         when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 

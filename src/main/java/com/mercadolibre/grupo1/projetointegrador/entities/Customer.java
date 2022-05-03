@@ -23,6 +23,7 @@ import javax.persistence.*;
 @Table(name = "customers")
 public class Customer extends AuthenticableUser {
     private String cpf;
+
     @JsonIgnore
     @OneToMany(mappedBy = "customer")
     private List<PurchaseOrder> orders = new ArrayList<>();

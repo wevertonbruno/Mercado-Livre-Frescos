@@ -1,7 +1,9 @@
 package com.mercadolibre.grupo1.projetointegrador.dtos;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -23,6 +25,8 @@ public class PurchaseOrderDTO {
 
     @Data
     @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
     public static class ProductItemDTO {
         @NotNull(message = "ProductId não é permitido valor nulo!")
         private Long productId;
