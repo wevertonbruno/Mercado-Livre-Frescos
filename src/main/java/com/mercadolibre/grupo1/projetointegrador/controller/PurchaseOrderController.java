@@ -1,53 +1,69 @@
 package com.mercadolibre.grupo1.projetointegrador.controller;
-
-import com.mercadolibre.grupo1.projetointegrador.dtos.ProductDTO;
-import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
+import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
+import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderService;
+import com.mercadolibre.grupo1.projetointegrador.services.PurchaseOrderServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.validation.Valid;
 import java.net.URI;
-import java.util.List;
+
+/**
+ * Adicionados os EndPoints para realizacao do crud (exceto delete) da API
+ *
+ * @author  Jefferson Botelho, Gabriel Essenio
+ * @since   2022-03-22
+ *
+ */
 
 @RestController
-@RequestMapping("/api/v1/fresh-products/")
+@RequestMapping("/api/v1/fresh-products")
 public class PurchaseOrderController {
 
-    @GetMapping
-    public ResponseEntity<List<ProductDTO>> listAllProduct() {
-        return null;
-    }
+    @Autowired
+    private PurchaseOrderService purchaseOrderService;
 
-    @GetMapping("/list")
-    public ResponseEntity<List<ProductDTO>> listProductForCategory(@RequestParam(required = false, name = "status") PurchaseOrder orderStatus) {
-        return null;
-    }
+    @Autowired
+    private PurchaseOrderServiceImpl purchaseOrderServiceIml;
 
     @PostMapping("/orders")
-    public ResponseEntity<PurchaseOrder> createPurchaseOrder(@RequestBody PurchaseOrder purchaseOrder,
-                                                             UriComponentsBuilder uriBuilder) {
-        //...
 
-        URI uri =  uriBuilder
+
+    public ResponseEntity<PurchaseOrderDTO.Response> createPurchaseOrder(@Valid @RequestBody PurchaseOrderDTO purchaseOrder,
+                                                          UriComponentsBuilder uriBuilder) {
+        PurchaseOrder purchaseOrderDTO = purchaseOrderService.createPurchaseOrder(purchaseOrder);
+
+        URI uri = uriBuilder
                 .path("/{idOrder}")
-                .buildAndExpand(purchaseOrder.getId())
+                .buildAndExpand(purchaseOrderDTO.getId())
                 .toUri();
 
-        //...
-        return null;
+        PurchaseOrderDTO.Response response = PurchaseOrderDTO.Response.builder().totalPrice(purchaseOrderDTO.totalPrice()).build();
+        return ResponseEntity.created(uri).body(response);
     }
 
-    @GetMapping("/{idOrder}")
+    // sera retornado uma lista com todos os produtos contidos no carrinho.
+    @GetMapping("/orders/{idOrder}")
     public ResponseEntity<PurchaseOrder> showProductsOrder(@PathVariable("idOrder") Long idOrder) {
 
-        return null;
+        return ResponseEntity.ok(purchaseOrderService.showProductsInOrders(idOrder));
     }
 
-    @PutMapping("/orders/{idOrder}")
-    public ResponseEntity<PurchaseOrder> modifyOrderStatusByOpenedOrClosed(@PathVariable Long idOrder,
-                                                                           @RequestBody PurchaseOrderStatusDTO statusOrder) {
+    /**
+     * @author Jeffeson ,Gabriel Essenio
+     *Controller para atualizar o status da compra quando concluida
+     */
+    @PutMapping("/orders/{idOrder}/close")
+    public ResponseEntity<PurchaseOrder> editStatusExistentOrder(@PathVariable Long idOrder,UriComponentsBuilder uriBuilder) {
+        PurchaseOrder purchaseOrder = purchaseOrderService.editExistentOrder(idOrder);
+        URI uri = uriBuilder
+                .path("/{idOrder}")
+                .buildAndExpand(idOrder)
+                .toUri();
+        return ResponseEntity.created(uri).body(purchaseOrder);
 
-        return null;
     }
 }

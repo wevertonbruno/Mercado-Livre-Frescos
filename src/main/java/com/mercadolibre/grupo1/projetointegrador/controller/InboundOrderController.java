@@ -14,10 +14,10 @@ import java.net.URI;
 import java.util.List;
 
 /**
- * @author Gabriel Essenio
+@author Gabriel Essenio
+* Controller de Product ,cria os endpoints e trata o retorno de acordo com cada tipo de endpoint
  */
 
-//Fazendo anotaçao do controller e criando endereço do endpoint
 @RestController
 @RequestMapping("api/v1/fresh-products/inboundorder")
 public class InboundOrderController {

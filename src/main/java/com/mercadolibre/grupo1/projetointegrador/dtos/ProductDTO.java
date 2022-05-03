@@ -20,7 +20,7 @@ import java.math.BigDecimal;
 public class ProductDTO {
     private Long productId;
     @NotNull(message = "O nome do produto não pode estar vazio")
-    private String nome;
+    private String name;
     @NotNull(message = "O volume do produto não pode estar vazio")
     private Double volume;
     @NotNull(message = "A preço não pode estar vazio")
@@ -28,4 +28,5 @@ public class ProductDTO {
     private BigDecimal price;
     @NotNull(message = "A categoria não pode estar vazia")
     private ProductCategory category;
+
 }

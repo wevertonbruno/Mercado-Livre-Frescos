@@ -6,6 +6,7 @@ import com.mercadolibre.grupo1.projetointegrador.exceptions.NotFoundException;
 import com.mercadolibre.grupo1.projetointegrador.repositories.WarehouseRepository;
 import com.mercadolibre.grupo1.projetointegrador.services.WarehouseService;
 import org.junit.jupiter.api.Assertions;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,10 +27,15 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  * @author Nayara Coca
  * descrição de cada teste no displayName
  */
+
+import static org.mockito.Mockito.when;
+
+
 @ExtendWith(MockitoExtension.class)
 public class WarehouseServiceTest {
     @Mock
     private WarehouseRepository warehouseRepository;
+
     @InjectMocks
     private WarehouseService warehouseService;
 
@@ -68,5 +74,33 @@ public class WarehouseServiceTest {
 
     }
 
+    /**
+     * @author Rogério Lambert
+     * Testes unitarios do service de gestão da warehouse
+     */
+    @DisplayName("Testa se a query certa é chamada quando o método findById é chamado retornando um objeto Warehouse: ")
+    public void itShouldCallFindById() {
+        //setup do test
+        Warehouse warehouse = Warehouse.builder().id(1L).build();
+        when(warehouseRepository.findById(1L)).thenReturn(Optional.of(warehouse));
 
+        //execução
+        Warehouse warehouseReturned = warehouseService.findById(1L);
+
+        //verificação
+        assertEquals(warehouse.getId(), warehouseReturned.getId());
+    }
+
+    @Test
+    @DisplayName("Testa se uma exceção correta é lançada quando o armazém não é encontrado: ")
+    public void itShouldThrowNotFoundEntity() {
+        //setup do test
+        when(warehouseRepository.findById(1L)).thenReturn(Optional.empty());
+
+        //execução
+        Exception e = assertThrows(EntityNotFoundException.class, () -> warehouseService.findById(1L));
+
+        //verificação
+        assertEquals(e.getMessage(), "A warehouse com ID 1 não está cadastrada");
+    }
 }

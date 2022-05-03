@@ -1,14 +1,13 @@
 package com.mercadolibre.grupo1.projetointegrador.repositories;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.WarehouseProductDTO;
-import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
 import com.mercadolibre.grupo1.projetointegrador.entities.Warehouse;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import java.util.Optional;
 
 import java.util.List;
-import java.util.Set;
 
 /** Repositório da Warehouse
  * @author Ederson Rodrigues Araujo
@@ -24,4 +23,5 @@ public interface WarehouseRepository extends JpaRepository<Warehouse, Long> {
             "inner join Product p on p.id = b.product.id where p.id = :productsId " +
             "group by p")
     List<WarehouseProductDTO> findProductsInWarehouse(long productsId);
+    Optional<Warehouse> findById(Long id);
 }
