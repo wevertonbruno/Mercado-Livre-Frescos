@@ -27,13 +27,4 @@ public class Customer extends AuthenticableUser {
     @JsonIgnore
     @OneToMany(mappedBy = "customer")
     private List<PurchaseOrder> orders = new ArrayList<>();
-
-    public Customer(AuthenticableUser user, String cpf) {
-        super.setId(user.getId());
-        super.setEmail(user.getEmail());
-        super.setUsername(user.getUsername());
-        super.setPassword(user.getUsername());
-        super.setRoles(user.getRoles());
-        this.cpf = cpf;
-    }
 }

@@ -2,6 +2,7 @@ package com.mercadolibre.grupo1.projetointegrador.integration;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mercadolibre.grupo1.projetointegrador.dtos.WarehouseProductDTO;
+import com.mercadolibre.grupo1.projetointegrador.entities.Agent;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -42,6 +44,7 @@ public class WarehouseTest {
     private static final String BASE_URL = "http://localhost:8080/api/v1/fresh-products";
 
     @Test
+    @WithMockUser(username = "agent1", roles = {"AGENT"})
     @DisplayName("Testa se retorna a quantidade total de produtos por armazém")
     public void itShouldReturnTheTotalQuantityOfProductOnTheWarehouses() throws Exception {
         MvcResult result =
@@ -58,6 +61,7 @@ public class WarehouseTest {
     }
 
     @Test
+    @WithMockUser(username = "agent1", roles = {"AGENT"})
     @DisplayName("Testa se retorna mensagem de erro quando o produto não existe em nenhum armazém")
     public void itShouldReturnAnException() throws Exception {
 

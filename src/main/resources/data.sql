@@ -1,10 +1,5 @@
 INSERT INTO roles (id, name) VALUES (1, 'ROLE_AGENT'), (2, 'ROLE_SELLER'), (3, 'ROLE_CUSTOMER');
 
-INSERT INTO warehouses(id, address, name) VALUES
-(1, '11111-000', 'SP'),
-(2, '22222-000', 'RJ'),
-(3, '33333-000', 'SC');
-
 INSERT INTO users(id, username, email, password) VALUES
     (1, 'seller1', 'seller1@mercadolibre.com', '123456'),
     (2, 'seller2', 'seller2@mercadolibre.com', '123456'),
@@ -12,13 +7,12 @@ INSERT INTO users(id, username, email, password) VALUES
     (4, 'agent2', 'agent2@mercadolibre.com', '123456'),
     (5, 'customer1', 'customer1@mercadolibre.com', '123456'),
     (6, 'customer2', 'customer2@mercadolibre.com', '123456'),
-/**
-  Dado de representante utilizado no teste no requisito 3
- */
     (7, 'agent3', 'agent3@mercadolibre.com', '123456');
-/**
-  Final do dado de represente no teste requisito 3
- */
+
+INSERT INTO warehouses(id, address, name) VALUES
+    (1, '11111-000', 'SP'),
+    (2, '22222-000', 'RJ'),
+    (3, '33333-000', 'SC');
 
 INSERT INTO sellers VALUES (1), (2);
 -- Na linha seguinte foram adicionadas as relações entre agents e warehouses

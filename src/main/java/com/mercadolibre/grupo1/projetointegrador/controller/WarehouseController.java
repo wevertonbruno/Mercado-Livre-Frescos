@@ -28,6 +28,7 @@ public class WarehouseController {
     @Autowired
     private WarehouseService warehouseService;
 
+    //método para pesquisar o id de produto e retornar a soma dos produtos por warehouse
     @GetMapping
     public ResponseEntity<List<WarehouseProductDTO>> listProductWarehouse(@RequestParam(required = false,
             name = "productId") Long id) {

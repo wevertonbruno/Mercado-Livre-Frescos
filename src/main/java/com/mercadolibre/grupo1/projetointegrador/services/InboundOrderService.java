@@ -3,14 +3,9 @@ package com.mercadolibre.grupo1.projetointegrador.services;
 import com.mercadolibre.grupo1.projetointegrador.dtos.BatchStockDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.InboundOrderDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.InboundOrderResponseDTO;
-import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
-import com.mercadolibre.grupo1.projetointegrador.entities.InboundOrder;
-import com.mercadolibre.grupo1.projetointegrador.entities.Section;
+import com.mercadolibre.grupo1.projetointegrador.entities.*;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.OvercapacityException;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.InvalidCategoryException;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.InvalidOperationException;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.*;
 import com.mercadolibre.grupo1.projetointegrador.repositories.InboundOrderRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -29,6 +24,7 @@ public class InboundOrderService {
 
     private final SectionService sectionService;
     private final BatchStockService batchStockService;
+    private final AuthService authService;
 
     private final InboundOrderRepository inboundOrderRepository;
 
@@ -42,6 +38,9 @@ public class InboundOrderService {
     public InboundOrderResponseDTO createInboundOrder(InboundOrderDTO inboundOrderDTO) {
         InboundOrder inboundOrder = checkAndCreateInboundOrder(inboundOrderDTO);
         List<BatchStock> batchStocks = createBatchStock(inboundOrderDTO.getBatchStock());
+
+        //verifica se o usuario logado pertence ao armazem
+        checkAgentSection(inboundOrder.getSection());
 
         //verifica se os produtos sáo validos para esta sessao
         checkProductCategory(batchStocks, inboundOrder.getSection().getCategory());
@@ -57,6 +56,13 @@ public class InboundOrderService {
         return InboundOrderResponseDTO.createFromInboundOrder(createdOrder);
     }
 
+    private void checkAgentSection(Section section) {
+        Agent agent = authService.getPrincipalAs(Agent.class);
+        if(!section.getWarehouse().equals(agent.getWarehouse())){
+            throw new ForbiddenException("O representante logado não pertence a esse armazém!");
+        }
+    }
+
     /**
      * Valida e atualiza uma ordem de entrada
      * Uma excecao sera lancada caso a ordem de entrada nao exista
@@ -69,6 +75,9 @@ public class InboundOrderService {
     public InboundOrderResponseDTO updateOrder(Long id, InboundOrderDTO inboundOrderDTO) {
         InboundOrder inboundOrder = findById(id);
         List<BatchStock> batchStocks = updateBatchStock(inboundOrderDTO.getBatchStock(), inboundOrder.getId());
+
+        //Verifica se o representante logado pertence ao armazem
+        checkAgentSection(inboundOrder.getSection());
 
         //verifica se os produtos sáo validos para esta sessao
         checkProductCategory(batchStocks, inboundOrder.getSection().getCategory());
