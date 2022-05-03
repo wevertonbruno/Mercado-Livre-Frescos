@@ -1,6 +1,7 @@
 package com.mercadolibre.grupo1.projetointegrador.services;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
+import com.mercadolibre.grupo1.projetointegrador.entities.*;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.OrderStatus;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.MissingProductExceptions;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredProducts;
@@ -8,31 +9,18 @@ import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredUser;
 import com.mercadolibre.grupo1.projetointegrador.repositories.BatchStockRepository;
 import com.mercadolibre.grupo1.projetointegrador.repositories.CustomerRepository;
 import com.mercadolibre.grupo1.projetointegrador.repositories.ProductRepository;
-import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
-import com.mercadolibre.grupo1.projetointegrador.entities.Customer;
-import com.mercadolibre.grupo1.projetointegrador.entities.Product;
-import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseItem;
-import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
 import com.mercadolibre.grupo1.projetointegrador.repositories.PurchaseOrderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.mercadolibre.grupo1.projetointegrador.repositories.BatchStockRepository;
-import com.mercadolibre.grupo1.projetointegrador.repositories.CustomerRepository;
-import com.mercadolibre.grupo1.projetointegrador.repositories.ProductRepository;
-import org.springframework.transaction.annotation.Transactional;
-
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Adicionado service que sera responsavel pelas regras de negocio do controller
- *
- * @author  Jefferson Botelho
- * @since   2022-03-25
- *
+/*
+* @author Gabriel Essenio, Jefferson Botelho, Ederson Rodrigues
+* Camada service que faz validacoes do negocio e alteracoes no BD
  */
-
 @Service
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
@@ -46,40 +34,47 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    @Override
-    public PurchaseOrder calcFinal(PurchaseOrder purchaseOrder) {
-
-        return null;
-    }
-
-// ------------------------------------------------------------------------------------------------------------------------ //
-
-    /**
-     *
-     * @author  Jefferson Botelho
-     * @since   2022-03-25
-     *
-     */
-
+    // @author Jeffeson Botelho
     // a funcao showProductsInOrders ira retornar todos os produtos em um carrinho pelo id do carrinho
+
     @Override
     public PurchaseOrder showProductsInOrders(Long id) {
-        PurchaseOrder order = purchaseOrderRepository.findById(id)
+
+        return purchaseOrderRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Pedido nao encontrado"));
-
-        return order;
     }
+    /*
+    _________________________________________________________________________________________________
+     */
+    /*
+    * @author Gabriel Essenio
+      funcao editExistentOrder ira atualizar o status de um pedido e diminir quantidade de stock de acordo com cada compra
+    */
+    @Transactional
+    public PurchaseOrder editExistentOrder(Long id) {
 
-    // a funcao editExistentOrder ira atualizar o status de um pedido
-    @Override
-    public PurchaseOrderStatusDTO editExistentOrder(Long id, PurchaseOrderStatusDTO status) {
-
-        // reutilizando o metodo showProductsInOrders, caso o id nao seja encontrado sera retornado a Excecao do metodo
-        PurchaseOrder findId = showProductsInOrders(id);
-        findId.setOrderStatus(status.getStatus());
-        purchaseOrderRepository.save(findId);
-
-        return new PurchaseOrderStatusDTO(status.getStatus());
+        PurchaseOrder purchaseOrder = showProductsInOrders(id);
+        purchaseOrder.setOrderStatus(OrderStatus.CLOSED);
+        List<PurchaseItem> purchaseItems = purchaseOrder.getProducts();
+        purchaseItems.stream().forEach(prod -> {
+        Integer qntyAux = prod.getQuantity();
+        List<BatchStock> batchStock = batchStockRepository.findStockByProductId(prod.getProduct().getId());
+        for (BatchStock stock: batchStock){
+            if(qntyAux <= 0){
+                break;
+            }
+            if(prod.getQuantity() < stock.getCurrentQuantity()){
+                stock.setCurrentQuantity(stock.getCurrentQuantity() - prod.getQuantity());
+                }
+            else{
+                qntyAux -= stock.getCurrentQuantity();
+                stock.setCurrentQuantity(0);
+            }
+            batchStockRepository.save(stock);
+        }
+        });
+        purchaseOrderRepository.save(purchaseOrder);
+        return purchaseOrder;
     }
 
 // ------------------------------------------------------------------------------------------------------------------------ //
@@ -136,5 +131,4 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
         return purchaseOrderWithItemsList;
     }
-
 }
