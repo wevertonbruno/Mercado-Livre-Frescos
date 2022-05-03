@@ -7,6 +7,7 @@ import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
 import com.mercadolibre.grupo1.projetointegrador.repositories.SectionRepository;
 import com.mercadolibre.grupo1.projetointegrador.services.SectionService;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,6 +19,10 @@ import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+/**
+ * Testes unitários da classe SectionService
+ * @author Weverton Bruno
+ */
 @ExtendWith(MockitoExtension.class)
 class SectionServiceTest {
 
@@ -28,6 +33,7 @@ class SectionServiceTest {
     private SectionService sectionService;
 
     @Test
+    @DisplayName("Testa se uma excecao é lancada quando uma sessao não é encontrada")
     public void itShouldReturnASectionNotFoundException(){
         SectionDTO sectionDTO = createFakeSectionDTO();
         when(sectionRepository.findByIdAndWarehouse_Id(anyLong(), anyLong())).thenReturn(Optional.empty());

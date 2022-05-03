@@ -1,6 +1,7 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.ExceptionDTO;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.*;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.ListIsEmptyException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.InvalidCategoryException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.MissingProductExceptions;
@@ -8,10 +9,10 @@ import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredProducts
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnregisteredUser;
 import org.springframework.http.HttpStatus;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
-import com.mercadolibre.grupo1.projetointegrador.exceptions.ExcededCapacityException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.ExceptionMessage;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.MissingServletRequestParameterException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -67,8 +68,9 @@ public class ControllerExceptionHandler {
         return ResponseEntity.badRequest().body(response);
     }
 
-    @ExceptionHandler(ExcededCapacityException.class)
-    public ResponseEntity<ExceptionDTO> excededCapacityException(ExcededCapacityException e,
+
+    @ExceptionHandler(OvercapacityException.class)
+    public ResponseEntity<ExceptionDTO> excededCapacityException(OvercapacityException e,
                                                                  HttpServletRequest request) {
         ExceptionDTO response =
                 ExceptionDTO.badRequest(e.getMessage(),
@@ -84,6 +86,32 @@ public class ControllerExceptionHandler {
                         request.getRequestURI());
         return ResponseEntity.badRequest().body(response);
     }
+    @ExceptionHandler(ProductNotAvailable.class)
+    public ResponseEntity<ExceptionDTO> productNotAvailable(ProductNotAvailable e,
+                                                                 HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.notFound(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.status(404).body(response);
+    }
+    @ExceptionHandler(MissingServletRequestParameterException.class)
+    public ResponseEntity<ExceptionDTO> missingParametersException(MissingServletRequestParameterException e,
+                                                                 HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.badRequest(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.badRequest().body(response);
+    }
+
+
+    @ExceptionHandler(InvalidOperationException.class)
+    public ResponseEntity<ExceptionDTO> missingParametersException(InvalidOperationException e,
+                                                                   HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.badRequest(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.badRequest().body(response);
+    }
 
     //exceçao que trato caso a lista esteja vazia
 
@@ -92,6 +120,5 @@ public class ControllerExceptionHandler {
         ExceptionDTO response = ExceptionDTO.notFound(e.getMessage(), request.getRequestURI());
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
     }
-
  }
 

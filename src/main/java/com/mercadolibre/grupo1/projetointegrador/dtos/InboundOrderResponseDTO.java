@@ -3,12 +3,14 @@ package com.mercadolibre.grupo1.projetointegrador.dtos;
 import com.mercadolibre.grupo1.projetointegrador.entities.InboundOrder;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-@Data
+@Getter
 @AllArgsConstructor
 public class InboundOrderResponseDTO {
     private Long orderNumber;

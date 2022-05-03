@@ -1,7 +1,7 @@
 {
 	"info": {
-		"_postman_id": "2ba6072d-dc5d-47c1-b022-bb69ef3aba84",
-		"name": "PI - Final",
+		"_postman_id": "410e938e-5900-40e6-92ad-a5b2f535a387",
+		"name": "PI - Meli Frescos",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -248,23 +248,19 @@
 						}
 					},
 					"response": []
-				},
+				}
+			]
+		},
+		{
+			"name": "Requisito 3",
+			"item": [
 				{
-					"name": "create purchase order error: nao cadastrado",
+					"name": "Req3-Busca todos lotes do produto 3 de um representate 1 da warehouse 1 ordenado por id de lote (testa filtro de 3 semana de prazo para vencer)",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"purchaseOrder\": {\n        \"buyerId\": 0,\n        \"products\": [\n            {\n                \"productId\": 1,\n                \"quantity\": 10\n            },\n            {\n                \"productId\": 1,\n                \"quantity\": 10\n            }\n        ]\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/fresh-products/orders",
+							"raw": "http://localhost:8080/api/v1/fresh-products/list/3",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -274,28 +270,20 @@
 								"api",
 								"v1",
 								"fresh-products",
-								"orders"
+								"list",
+								"3"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "create purchase order error: id null",
+					"name": "Req3-Busca todos lotes do produto 1 de um representate 1 da warehouse 1 ordenado por quantidade",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"purchaseOrder\": {\n        \"buyerId\": null,\n        \"products\": [\n            {\n                \"productId\": 1,\n                \"quantity\": 10\n            },\n            {\n                \"productId\": 1,\n                \"quantity\": 10\n            }\n        ]\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/fresh-products/orders",
+							"raw": "http://localhost:8080/api/v1/fresh-products/list/1?type=C",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -305,28 +293,26 @@
 								"api",
 								"v1",
 								"fresh-products",
-								"orders"
+								"list",
+								"1"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "C"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "create purchase order error: id produto invalido",
+					"name": "Req3-Busca todos lotes do produto 1 de um representate 1 da warehouse 1 ordenado por id de lote",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"purchaseOrder\": {\n        \"buyerId\": 7,\n        \"products\": [\n            {\n                \"productId\": 0,\n                \"quantity\": 10\n            },\n            {\n                \"productId\": 1,\n                \"quantity\": 10\n            }\n        ]\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/fresh-products/orders",
+							"raw": "http://localhost:8080/api/v1/fresh-products/list/1",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -336,28 +322,20 @@
 								"api",
 								"v1",
 								"fresh-products",
-								"orders"
+								"list",
+								"1"
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "create purchase order error: id produto null",
+					"name": "Req3-Busca todos lotes do produto 1 de um representate 1 da warehouse 1 ordenado por prazo de validade",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"purchaseOrder\": {\n        \"buyerId\": 7,\n        \"products\": [\n            {\n                \"productId\": 0,\n                \"quantity\": 10\n            },\n            {\n                \"productId\": 1,\n                \"quantity\": 10\n            }\n        ]\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/fresh-products/orders",
+							"raw": "http://localhost:8080/api/v1/fresh-products/list/1?type=F",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -367,28 +345,71 @@
 								"api",
 								"v1",
 								"fresh-products",
-								"orders"
+								"list",
+								"1"
+							],
+							"query": [
+								{
+									"key": "type",
+									"value": "F"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Requisito 4",
+			"item": [
+				{
+					"name": "GET - TOTAL DE PRODUTOS",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"method": "GET",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{  \n\"productId\":\"1\",\n\"warehouses\": [\n    {\n        \"warehouseCode\": \"w1\",\n        \"totalQuantity\": \"300\"\n    },\n        {\n        \"warehouseCode\": \"w1\",\n        \"totalQuantity\": \"21\"\n    }\n]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/fresh-products/warehouse?productId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"warehouse"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "1"
+								}
 							]
 						}
 					},
 					"response": []
 				},
 				{
-					"name": "create purchase order error: 0 produto em estoque",
+					"name": "GET - PRODUTO NÃO ENCONTRADO",
 					"request": {
-						"method": "POST",
+						"method": "GET",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n    \"purchaseOrder\": {\n        \"buyerId\": 7,\n        \"products\": [\n            {\n                \"productId\": 1,\n                \"quantity\": 0\n            }\n        ]\n    }\n}",
-							"options": {
-								"raw": {
-									"language": "json"
-								}
-							}
-						},
 						"url": {
-							"raw": "http://localhost:8080/api/v1/fresh-products/orders",
+							"raw": "http://localhost:8080/api/v1/fresh-products/warehouse?productId=15",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -398,7 +419,87 @@
 								"api",
 								"v1",
 								"fresh-products",
-								"orders"
+								"warehouse"
+							],
+							"query": [
+								{
+									"key": "productId",
+									"value": "15"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Requisito 5",
+			"item": [
+				{
+					"name": "Check Batch Stock Due Date By Section",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/fresh-products/due-date?expires_in=15&section_code=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"due-date"
+							],
+							"query": [
+								{
+									"key": "expires_in",
+									"value": "15"
+								},
+								{
+									"key": "section_code",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Check Batch Stock Due Date By Category Copy",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/fresh-products/due-date/list?expires_in=15&category=CONGELADO&direction=ASC",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"fresh-products",
+								"due-date",
+								"list"
+							],
+							"query": [
+								{
+									"key": "expires_in",
+									"value": "15"
+								},
+								{
+									"key": "category",
+									"value": "CONGELADO"
+								},
+								{
+									"key": "direction",
+									"value": "ASC"
+								}
 							]
 						}
 					},

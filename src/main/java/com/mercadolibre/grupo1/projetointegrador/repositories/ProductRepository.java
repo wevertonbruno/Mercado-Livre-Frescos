@@ -14,6 +14,7 @@ import java.util.List;
  */
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long> {
+
     /*
     @author Gabriel Essenio
     Metodos que fazem query de acordo com o nome do metodo
@@ -21,4 +22,5 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
     List<Product> findAll();
 
     List<Product> findAllByCategory(ProductCategory productCategory);
+
 }

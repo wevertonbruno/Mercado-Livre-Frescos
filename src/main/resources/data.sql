@@ -116,6 +116,7 @@ INSERT INTO batch_stocks (id, current_quantity, current_temperature, due_date, i
     (27, 20, 10, DATEADD(DAY, 10, CURRENT_DATE), 20, '2022-01-01 00:00:00', 3, 8, 4);
   -- final de dados de Batch pra teste do requisito 3
 
+
 INSERT INTO purchase_order(id, created_date, updated_date, order_status, customer_id) VALUES
 (1, '2022-05-01 00:00:00', '2022-05-01 00:00:00', 'OPENED', 5),
 (2, '2022-05-01 00:00:00', '2022-05-01 00:00:00', 'OPENED', 6);
@@ -126,3 +127,4 @@ INSERT INTO purchase_items(id, quantity, product_id, purchase_order_id) VALUES
 
 (3, 2, 3, 2),
 (4, 7, 4, 2);
+
