@@ -3,6 +3,7 @@ package com.mercadolibre.grupo1.projetointegrador.entities;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -22,6 +23,8 @@ import javax.persistence.*;
 @Table(name = "customers")
 public class Customer extends AuthenticableUser {
     private String cpf;
+
+    @JsonIgnore
     @OneToMany(mappedBy = "customer")
     private List<PurchaseOrder> orders = new ArrayList<>();
 
@@ -33,5 +36,4 @@ public class Customer extends AuthenticableUser {
         super.setRoles(user.getRoles());
         this.cpf = cpf;
     }
-
 }

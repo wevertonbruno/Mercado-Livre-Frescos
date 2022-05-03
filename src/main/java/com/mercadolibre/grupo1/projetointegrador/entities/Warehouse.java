@@ -10,7 +10,6 @@ import java.util.Set;
  * Entidade responsável pelo Warehouse
  */
 
-
 @Builder
 @Entity
 @Getter @Setter
