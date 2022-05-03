@@ -1,10 +1,10 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
-
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import lombok.*;
 
 import javax.persistence.*;
 
-import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import java.util.Set;
 
 /**
@@ -13,11 +13,11 @@ import java.util.Set;
  */
 
 @Entity
+@Builder
 @Getter @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "sections")
-@Builder
 public class Section {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +30,7 @@ public class Section {
 
     // A section tera um relacionamento de manyToOne com a Warehouse.
     @ManyToOne
+    @JsonIgnore
     @JoinColumn(name = "warehouse_id", referencedColumnName = "id")
     private Warehouse warehouse;
 

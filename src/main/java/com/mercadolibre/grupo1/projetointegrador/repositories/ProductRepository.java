@@ -15,9 +15,9 @@ import java.util.List;
 @Repository
 public interface ProductRepository extends JpaRepository<Product,Long> {
 
-    /*
-    @author Gabriel Essenio
-    Metodos que fazem query de acordo com o nome do metodo
+    /**
+     *@author Gabriel Essenio
+     * Metodos que fazem query de acordo com o nome do metodo
      */
     List<Product> findAll();
 
