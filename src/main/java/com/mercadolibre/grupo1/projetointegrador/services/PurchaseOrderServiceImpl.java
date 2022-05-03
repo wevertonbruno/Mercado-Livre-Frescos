@@ -24,8 +24,6 @@ import java.util.List;
  */
 @Service
 public class PurchaseOrderServiceImpl implements PurchaseOrderService {
-
-    // Faz injeção de dependecia do repositorio de produtos
     @Autowired
     private ProductRepository productRepository;
     @Autowired
@@ -35,6 +33,10 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
     @Autowired
     private CustomerRepository customerRepository;
 
+    /**
+     * @author Jefferson Botelho
+     */
+    // Faz injeção de dependecia do repositorio de produtos
     // a funcao showProductsInOrders ira retornar todos os produtos em um carrinho pelo id do carrinho
     @Override
     public PurchaseOrder showProductsInOrders(Long id) {
@@ -45,11 +47,23 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
 
    // _________________________________________________________________________________________________
 
+    //Valida se o cliente possui autorização para fechar a compra
+    public void validation(PurchaseOrder purchaseOrder,Customer customerRole){
+        if (!customerRole.getId().equals(purchaseOrder.getCustomer().getId())){
+            throw new ListIsEmptyException("Cliente informado nao tem permissao para alterar essa compra");
+        }
+    }
+
+    /**
+     * @author Gabriel Essenio
+     */
+    // Faz injeção de dependecia do repositorio de produtos
     //  funcao editExistentOrder ira atualizar o status de um pedido e diminir quantidade de stock de acordo com cada compra
     @Transactional
-    public PurchaseOrder editExistentOrder(Long id) {
-
+    public PurchaseOrder editExistentOrder(Long id, Customer customerRole) {
         PurchaseOrder purchaseOrder = showProductsInOrders(id);
+
+        validation(purchaseOrder, customerRole);
         purchaseOrder.setOrderStatus(OrderStatus.CLOSED);
         List<PurchaseItem> purchaseItems = purchaseOrder.getProducts();
         purchaseItems.stream().forEach(prod -> {
@@ -81,18 +95,13 @@ public class PurchaseOrderServiceImpl implements PurchaseOrderService {
  */
 
     @Transactional // so salva no banco se nao houver erro
-    public PurchaseOrder createPurchaseOrder(PurchaseOrderDTO purchaseOrderDTO) {
+    public PurchaseOrder createPurchaseOrder(PurchaseOrderDTO purchaseOrderDTO, Customer customer) {
 
         // lista de produtos do purchaseOrderDTO
         List<PurchaseOrderDTO.ProductItemDTO> productsPurchaseOrders = purchaseOrderDTO.getPurchaseOrder().getProducts();
 
         // salvando uma lista de produtos para fazer o purchaseOrderDTO
         List<PurchaseItem> purchaseItemList = new ArrayList<>();
-
-        // se não houver usuário cadastrado ira retornar erro.
-        Customer customer = customerRepository
-                .findById(purchaseOrderDTO.getPurchaseOrder().getBuyerId())
-                .orElseThrow(() -> new UnregisteredUser("Usuário não cadastrado!"));
 
         // percorrer a lista de produtos do purchaseOrderDTO
         for (PurchaseOrderDTO.ProductItemDTO productItemDTO : productsPurchaseOrders) {

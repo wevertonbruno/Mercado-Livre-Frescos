@@ -10,5 +10,6 @@ import java.util.List;
  * Criação repositório de inbound order
  */
 public interface InboundOrderRepository extends JpaRepository<InboundOrder,Long> {
+    List<InboundOrder> findInboundOrderBy();
     List<InboundOrder> findBySection_Id(Long sectionId);
 }

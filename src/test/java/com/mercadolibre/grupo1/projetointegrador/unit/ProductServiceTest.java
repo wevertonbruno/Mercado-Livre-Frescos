@@ -147,7 +147,7 @@ metodo que gera uma lista de produtosDTO para teste
      */
 
     @Test
-    @DisplayName("Testa se uma exceção de produto nao encontrado é lancado")
+    @DisplayName("Testa se uma exceção de produto nao encontrado é lançado")
     public void itShouldReturnAProductNotFoundException(){
         when(productRepository.findById(anyLong())).thenReturn(Optional.empty());
 

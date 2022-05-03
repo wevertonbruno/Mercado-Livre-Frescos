@@ -31,12 +31,10 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class FindProductServiceTest {
     @Mock private BatchStockRepository batchStockRepository;
-    @Mock private AgentService agentService;
     @Mock private WarehouseService warehouseService;
 
     @InjectMocks
     private FindProductsService findProductsService;
-
 
     /**
      * - teste se as ordenações estão sendo acionadas corretamente
@@ -51,7 +49,6 @@ public class FindProductServiceTest {
         Agent agent = new Agent(user, warehouse);
         Product mockProduct = Product.builder().id(1L).build();
         Section mockSection = Section.builder().id(1L).build();
-        when(agentService.findById(agent.getId())).thenReturn(agent);
         when(warehouseService.findById(warehouse.getId())).thenReturn(warehouse);
         Set<BatchStock> mockBatchs= new HashSet<>();
         mockBatchs.add(
@@ -80,7 +77,7 @@ public class FindProductServiceTest {
         }
 
         //execução
-        FindProductResponseDTO response = findProductsService.findProducts(mockProduct.getId(), sortingType, agent.getId());
+        FindProductResponseDTO response = findProductsService.findProducts(mockProduct.getId(), sortingType, agent);
 
         //Testes
         assertEquals(response.getBatchStock().get(0).getBatchNumber(), 1L);
@@ -117,7 +114,6 @@ public class FindProductServiceTest {
         AuthenticableUser user = AuthenticableUser.builder().id(3L).build();
         Agent agent = new Agent(user, warehouse);
         Product mockProduct = Product.builder().id(1L).build();
-        when(agentService.findById(agent.getId())).thenReturn(agent);
         when(warehouseService.findById(warehouse.getId())).thenReturn(warehouse);
         Set<BatchStock> mockBatchs= new HashSet<>();
         when(batchStockRepository.findStockByProductIdAndWarehouseId(mockProduct.getId(), warehouse.getId()))
@@ -126,7 +122,7 @@ public class FindProductServiceTest {
 
         //execução
         Exception exception = assertThrows(ProductNotAvailable.class, () -> findProductsService
-                .findProducts(mockProduct.getId(), sortingType, agent.getId()));
+                .findProducts(mockProduct.getId(), sortingType, agent));
 
         //Testes
         assertEquals(exception.getMessage(), "Produto não disponível");
@@ -140,14 +136,13 @@ public class FindProductServiceTest {
         AuthenticableUser user = AuthenticableUser.builder().id(3L).build();
         Agent agent = new Agent(user, warehouse);
         Product mockProduct = Product.builder().id(1L).build();
-        when(agentService.findById(agent.getId())).thenReturn(agent);
         when(warehouseService.findById(warehouse.getId())).thenThrow(EntityNotFoundException.class);
 
         SortingType sortingType = SortingType.BATH_ID;
 
         //execução
         Exception exception = assertThrows(EntityNotFoundException.class, () -> findProductsService
-                .findProducts(mockProduct.getId(), sortingType, agent.getId()));
+                .findProducts(mockProduct.getId(), sortingType, agent));
 
         //Testes
         assertEquals(exception.getMessage(), "O representante com ID 3 não está cadastrado em nenhuma warehouse");

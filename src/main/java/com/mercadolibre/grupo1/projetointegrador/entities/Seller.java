@@ -20,12 +20,4 @@ import java.util.Set;
 public class Seller extends AuthenticableUser{
     @OneToMany(mappedBy = "seller")
     private Set<Product> products = new HashSet<>();
-
-    public Seller(AuthenticableUser user) {
-        super.setId(user.getId());
-        super.setEmail(user.getEmail());
-        super.setUsername(user.getUsername());
-        super.setPassword(user.getUsername());
-        super.setRoles(user.getRoles());
-    }
 }

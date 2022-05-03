@@ -1,10 +1,13 @@
 package com.mercadolibre.grupo1.projetointegrador.services;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.BatchStockDTO;
+import com.mercadolibre.grupo1.projetointegrador.entities.Agent;
+import com.mercadolibre.grupo1.projetointegrador.entities.AuthenticableUser;
 import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
 import com.mercadolibre.grupo1.projetointegrador.entities.Product;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.ForbiddenException;
 import com.mercadolibre.grupo1.projetointegrador.repositories.BatchStockRepository;
 import com.mercadolibre.grupo1.projetointegrador.services.mappers.BatchStockMapper;
 import lombok.RequiredArgsConstructor;
@@ -26,8 +29,8 @@ import java.util.stream.Collectors;
 public class BatchStockService {
     private final ProductService productService;
     private final BatchStockRepository batchStockRepository;
-
     private final BatchStockMapper batchStockMapper;
+    private final AuthService authService;
 
     /**
      * Inicializacao de uma entidade de lote a partir do DTO
@@ -84,9 +87,18 @@ public class BatchStockService {
      * @author Weverton Bruno
      */
     public List<BatchStockDTO.SimpleBatchStockDTO> findBatchStockBySectionIdAndExpiresIn(Long sectionId, Long expiresIn) {
+        Agent agent = authService.getPrincipalAs(Agent.class);
+        checkAgentWarehouse(agent, sectionId);
+
         return batchStockRepository.findStockBySectionIdAndDueDateBetween(sectionId, LocalDate.now(), LocalDate.now().plusDays(expiresIn))
                 .stream().map(BatchStockDTO::toSimpleBatchDTO)
                 .collect(Collectors.toList());
+    }
+
+    private void checkAgentWarehouse(Agent agent, Long sectionId) {
+        if(!agent.getWarehouse().getSections().stream().anyMatch(section -> section.getId().equals(sectionId))){
+            throw new ForbiddenException("O representante logado não pertence a esse armazém!");
+        }
     }
 
     /**
@@ -97,7 +109,8 @@ public class BatchStockService {
      * @author Weverton Bruno
      */
     public List<BatchStockDTO.SimpleBatchStockDTO> findBatchStockByCategoryAndExpiresIn(ProductCategory productCategory, Long expiresIn, Sort.Direction direction) {
-        return batchStockRepository.findWarehouseStockByCategoryAndDueDateBetween(1L, productCategory, LocalDate.now(), LocalDate.now().plusDays(expiresIn), Sort.by(direction, "dueDate"))
+        Agent agent = authService.getPrincipalAs(Agent.class);
+        return batchStockRepository.findWarehouseStockByCategoryAndDueDateBetween(agent.getWarehouse().getId(), productCategory, LocalDate.now(), LocalDate.now().plusDays(expiresIn), Sort.by(direction, "dueDate"))
                 .stream().map(BatchStockDTO::toSimpleBatchDTO)
                 .collect(Collectors.toList());
     }
