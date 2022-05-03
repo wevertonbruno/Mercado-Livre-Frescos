@@ -19,7 +19,7 @@ import java.net.URI;
  */
 
 @RestController
-@RequestMapping("/api/v1/fresh-products/")
+@RequestMapping("/api/v1/fresh-products")
 public class PurchaseOrderController {
 
     @Autowired
@@ -54,8 +54,13 @@ public class PurchaseOrderController {
      *Controller para atualizar o status da compra quando concluida
      */
     @PutMapping("/orders/{idOrder}/close")
-    public ResponseEntity<PurchaseOrder> editStatusExistentOrder(@PathVariable Long idOrder) {
+    public ResponseEntity<PurchaseOrder> editStatusExistentOrder(@PathVariable Long idOrder,UriComponentsBuilder uriBuilder) {
         PurchaseOrder purchaseOrder = purchaseOrderService.editExistentOrder(idOrder);
-        return ResponseEntity.ok().body(purchaseOrder);
+        URI uri = uriBuilder
+                .path("/{idOrder}")
+                .buildAndExpand(idOrder)
+                .toUri();
+        return ResponseEntity.created(uri).body(purchaseOrder);
+
     }
 }
