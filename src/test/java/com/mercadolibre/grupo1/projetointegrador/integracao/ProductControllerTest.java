@@ -27,7 +27,6 @@ public class ProductControllerTest {
     @author Gabriel Essenio
     Caminho Feliz All Product
      */
-    @Transactional
     @Test
     @DisplayName("Testando endpoint para retornar todos os produtos cadastrados")
     public void testReturnAllProducts() throws Exception {
@@ -44,7 +43,6 @@ public class ProductControllerTest {
     @author Gabriel Essenio
     Caminho Feliz Product By Category
      */
-    @Transactional
     @Test
     @DisplayName("Testando se retorna os produtos pela categoria passada pelo parametro")
     public void testReturnProductsByCategory() throws Exception {
@@ -55,5 +53,19 @@ public class ProductControllerTest {
                 .andExpect(MockMvcResultMatchers.jsonPath("$.length()", Matchers.is(2)))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].nome", Matchers.is("Product1")))
                 .andExpect(MockMvcResultMatchers.jsonPath("$[0].category", Matchers.is("FRESCO")));
+    }
+
+    /**
+     @author Gabriel Essenio
+      * Testa status quando passar uma categoria que nao existe
+     */
+    @Test
+    @DisplayName("Testando se o status retorna 404 apois tentar mudar status quando passada uma categoria que nao existe")
+    public void testStatusReturn404WhenIdCatogyDontExists() throws Exception {
+
+        mockMvc.perform(MockMvcRequestBuilders
+                .get("/api/v1/fresh-products/list?status=FRESCA"))
+                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.message", Matchers.is("Categoria inválida")));
     }
 }

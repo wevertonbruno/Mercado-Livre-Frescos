@@ -14,7 +14,7 @@ import javax.transaction.Transactional;
 
 /**
  * @author Gabriel Essenio
- * teste de integração de products
+ * teste de integração de PurchaseOrder
  */
 @AutoConfigureMockMvc
 @SpringBootTest
@@ -43,7 +43,7 @@ public class PurchaseOrderController {
      * @throws Exception
      * Testa se retorna um erro 404 do controller quando tentar
      */
-    @Transactional
+
     @Test
     @DisplayName("Testando enpoint quando tenta alterar status de compra qe nao existe retorna um status 404 e uma menssagem de erro")
     public void TestReturnStatus404WhenIdProductOrderDontExists() throws Exception {
