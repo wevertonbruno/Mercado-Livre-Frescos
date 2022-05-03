@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -51,6 +52,7 @@ public class InboundOrderTest {
     private static final String BASE_URL = "http://localhost:8080/api/v1/fresh-products/inboundorder";
 
     @Test
+    @WithMockUser(username = "agent1", roles = {"AGENT"})
     @DisplayName("Testa se uma ordem de entrada é salva com todos os dados validos")
     public void itShouldSaveAInboundOrder() throws Exception {
         InboundOrderDTO order = createFakeOrderInput();
@@ -72,6 +74,7 @@ public class InboundOrderTest {
     }
 
     @Test
+    @WithMockUser(username = "agent1", roles = {"AGENT"})
     @DisplayName("Testa se uma ordem de entrada existente é atualizada")
     public void itShouldUpdateAInboundOrder() throws Exception {
         InboundOrderDTO order = createFakeOrderInput();
@@ -94,6 +97,7 @@ public class InboundOrderTest {
     }
 
     @Test
+    @WithMockUser(username = "agent1", roles = {"AGENT"})
     @DisplayName("Testa se um bad request é retornado ao tentar inserir um volume de lotes maior que a capacidade da sessao")
     public void itShouldGetABadRequestOvercapacity() throws Exception {
         InboundOrderDTO order = createFakeOrderInput();
@@ -116,6 +120,7 @@ public class InboundOrderTest {
     }
 
     @Test
+    @WithMockUser(username = "agent1", roles = {"AGENT"})
     @DisplayName("Testa se um bad request é retornado ao tentar inserir um lote cuja categoria seja diferente da categoria aceita na sessão")
     public void itShouldGetABadRequestInvalidCategory() throws Exception {
         InboundOrderDTO order = createFakeOrderInput();
@@ -137,6 +142,7 @@ public class InboundOrderTest {
     }
 
     @Test
+    @WithMockUser(username = "agent1", roles = {"AGENT"})
     @DisplayName("Testa se um bad request é retornado caso se tente atualizar um lote já existente de outra ordem de entrada")
     public void itShouldGetABadRequestInvalidOperation() throws Exception {
         InboundOrderDTO order = createFakeOrderInput();

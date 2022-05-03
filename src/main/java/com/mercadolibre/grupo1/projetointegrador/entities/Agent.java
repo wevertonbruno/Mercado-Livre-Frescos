@@ -1,6 +1,5 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 
-
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
