@@ -1,10 +1,5 @@
 package com.mercadolibre.grupo1.projetointegrador.unit;
-import com.mercadolibre.grupo1.projetointegrador.entities.BatchStock;
-import com.mercadolibre.grupo1.projetointegrador.entities.Product;
-import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseItem;
-import com.mercadolibre.grupo1.projetointegrador.entities.PurchaseOrder;
 
-import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderStatusDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.*;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.OrderStatus;
 import com.mercadolibre.grupo1.projetointegrador.entities.enums.ProductCategory;

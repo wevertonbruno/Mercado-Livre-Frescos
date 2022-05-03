@@ -9,7 +9,7 @@ import com.mercadolibre.grupo1.projetointegrador.dtos.PurchaseOrderDTO;
  */
 
 public interface PurchaseOrderService {
-    PurchaseOrder createPurchaseOrder(PurchaseOrderDTO purchaseOrderDTO);
+    PurchaseOrder createPurchaseOrder(PurchaseOrderDTO purchaseOrderDTO, Customer customer);
     PurchaseOrder editExistentOrder(Long idOrder, Customer customerRole);
     PurchaseOrder showProductsInOrders(Long id); // ira exibir todos os produtos dentro do carrinho pelo id do carrinho
 }
