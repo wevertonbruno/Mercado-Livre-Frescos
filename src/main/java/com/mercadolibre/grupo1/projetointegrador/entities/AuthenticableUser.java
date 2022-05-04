@@ -24,6 +24,14 @@ import java.util.stream.Collectors;
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class AuthenticableUser implements UserDetails {
+    public AuthenticableUser(AuthenticableUser user){
+        this.setId(user.getId());
+        this.setUsername(user.getUsername());
+        this.setEmail(user.getEmail());
+        this.setPassword(user.getPassword());
+        this.setRoles(user.getRoles());
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

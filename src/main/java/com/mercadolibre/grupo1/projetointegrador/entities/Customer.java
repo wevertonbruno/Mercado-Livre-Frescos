@@ -27,4 +27,9 @@ public class Customer extends AuthenticableUser {
     @JsonIgnore
     @OneToMany(mappedBy = "customer")
     private List<PurchaseOrder> orders = new ArrayList<>();
+
+    public Customer(AuthenticableUser user, String cpf){
+        super(user);
+        this.cpf = cpf;
+    }
 }

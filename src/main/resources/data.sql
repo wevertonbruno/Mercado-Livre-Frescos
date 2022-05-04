@@ -1,13 +1,24 @@
-INSERT INTO roles (id, name) VALUES (1, 'ROLE_AGENT'), (2, 'ROLE_SELLER'), (3, 'ROLE_CUSTOMER');
+INSERT INTO roles (id, name) VALUES (1, 'ROLE_CUSTOMER'), (2, 'ROLE_SELLER'), (3, 'ROLE_AGENT'), (4, 'ROLE_ADMIN');
 
 INSERT INTO users(id, username, email, password) VALUES
-    (1, 'seller1', 'seller1@mercadolibre.com', '123456'),
-    (2, 'seller2', 'seller2@mercadolibre.com', '123456'),
-    (3, 'agent1', 'agent1@mercadolibre.com', '123456'),
-    (4, 'agent2', 'agent2@mercadolibre.com', '123456'),
-    (5, 'customer1', 'customer1@mercadolibre.com', '123456'),
-    (6, 'customer2', 'customer2@mercadolibre.com', '123456'),
-    (7, 'agent3', 'agent3@mercadolibre.com', '123456');
+    (1, 'seller1', 'seller1@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
+    (2, 'seller2', 'seller2@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
+    (3, 'agent1', 'agent1@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
+    (4, 'agent2', 'agent2@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
+    (5, 'customer1', 'customer1@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
+    (6, 'customer2', 'customer2@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
+    (7, 'agent3', 'agent3@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
+    (8, 'admin', 'admin@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW');
+
+INSERT INTO customers(id, cpf) VALUES
+    (1, '860.607.870-02'),
+    (2, '049.849.720-84'),
+    (3, '559.808.720-00'),
+    (4, '277.493.700-05'),
+    (5, '657.044.840-42'),
+    (6, '133.262.740-41'),
+    (7, '252.852.660-17'),
+    (8, '041.278.675-31');
 
 INSERT INTO warehouses(id, address, name) VALUES
     (1, '11111-000', 'SP'),
@@ -17,15 +28,25 @@ INSERT INTO warehouses(id, address, name) VALUES
 INSERT INTO sellers VALUES (1), (2);
 -- Na linha seguinte foram adicionadas as relações entre agents e warehouses
 INSERT INTO agents(id, warehouse_id) VALUES (3, 1), (4, 2), (7, 3);
-INSERT INTO customers(id, cpf) VALUES (5, '111.111.111-11'), (6, '222.222.222-22');
 
 INSERT INTO users_roles(user_id, role_id) VALUES
-    (1, 2),
-    (2, 2),
+-- ADMIN
+    (8, 4),
+-- CUSTOMERS
+    (1, 1),
+    (2, 1),
     (3, 1),
     (4, 1),
-    (5, 3),
-    (6, 3);
+    (5, 1),
+    (6, 1),
+    (7, 1),
+-- SELLERS
+    (1, 2),
+    (2, 2),
+--AGENT
+    (3, 3),
+    (4, 3),
+    (7, 3);
 
 INSERT INTO sections(id, capacity, category, description, warehouse_id) VALUES
     (1, 500, 'FRESCO', 'sessao SP 1', 1),

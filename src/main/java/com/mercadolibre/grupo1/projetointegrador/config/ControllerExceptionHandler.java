@@ -156,5 +156,14 @@ public class ControllerExceptionHandler {
                         request.getRequestURI());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
     }
+
+    @ExceptionHandler(UserRegistrationException.class)
+    public ResponseEntity<ExceptionDTO> userRegistrationException(UserRegistrationException e,
+                                                         HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.badRequest(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
  }
 

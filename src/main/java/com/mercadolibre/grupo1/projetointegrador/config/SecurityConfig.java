@@ -1,7 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
 import com.mercadolibre.grupo1.projetointegrador.filters.JWTValidationFilter;
-import com.mercadolibre.grupo1.projetointegrador.services.NoEncoder;
 import com.mercadolibre.grupo1.projetointegrador.util.JWTUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.cors.CorsConfiguration;
@@ -32,6 +32,14 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String BASE_URL = "/api/v1/fresh-products";
+
+    private static final String[] PUBLIC_POST_REQUESTS = {
+            "/api/v1/auth",
+            "/api/v1/refresh-token",
+            "/api/v1/register",
+            "/api/v1/reset-password",
+            "/api/v1/reset-password/verify"
+    };
     private static final String[] AGENT_REQUESTS = {
             BASE_URL + "/inboundorder",
             BASE_URL + "/inboundorder/**",
@@ -45,14 +53,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             BASE_URL + "/orders", BASE_URL + "/orders/**"
     };
 
-    private static final String[] PUBLIC_POST_REQUESTS = {
-            "/api/v1/auth"
-    };
-
     private static final String[] PUBLIC_GET_REQUESTS = {
         BASE_URL + "/list",
         BASE_URL + "/"
     };
+
     private final UserDetailsService userDetailsService;
     private final JWTUtils jwtUtils;
 
@@ -67,7 +72,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new NoEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -97,8 +102,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("h2-console/**");
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/h2-console/**");
     }
 
     private JWTValidationFilter getValidationFilter() throws Exception {
