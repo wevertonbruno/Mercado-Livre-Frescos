@@ -111,7 +111,7 @@ public class PurchaseOrderServiceTest {
         customer.setCpf("023.123.429-09");
         customer.setId(id);
         Role roleCustomer = new Role(1L, "Customer");
-        customer.setRoles(Set.of(roleCustomer));
+        //customer.setRoles(Set.of(roleCustomer));
         return customer;
     }
 

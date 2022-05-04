@@ -2,6 +2,7 @@ package com.mercadolibre.grupo1.projetointegrador.services;
 
 import com.mercadolibre.grupo1.projetointegrador.dtos.auth.ChangePasswordDTO;
 import com.mercadolibre.grupo1.projetointegrador.entities.AuthenticableUser;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.EntityNotFoundException;
 import com.mercadolibre.grupo1.projetointegrador.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,6 +36,10 @@ public class UserService implements UserDetailsService {
 
     public AuthenticableUser findByUsername(String username){
         return userRepository.findByUsername(username).orElseThrow(() -> new UsernameNotFoundException("Usuário não encontrado na base de dados."));
+    }
+
+    public AuthenticableUser findUserById(Long id){
+        return userRepository.findUserById(id).orElseThrow(() -> new EntityNotFoundException("Usuário com ID "+ id +" não encontrado na base de dados."));
     }
 
     public void resetPassword(String username, String password) {

@@ -15,6 +15,11 @@ import javax.persistence.*;
 @Entity
 @Table(name = "roles")
 public class Role {
+    public static final String ROLE_ADMIN = "ROLE_ADMIN";
+    public static final String ROLE_AGENT = "ROLE_AGENT";
+    public static final String ROLE_SELLER = "ROLE_SELLER";
+    public static final String ROLE_CUSTOMER = "ROLE_CUSTOMER";
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

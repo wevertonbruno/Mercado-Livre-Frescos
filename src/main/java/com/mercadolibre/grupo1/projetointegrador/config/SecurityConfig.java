@@ -1,5 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
+import com.mercadolibre.grupo1.projetointegrador.entities.Role;
 import com.mercadolibre.grupo1.projetointegrador.filters.JWTValidationFilter;
 import com.mercadolibre.grupo1.projetointegrador.util.JWTUtils;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -39,6 +42,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             "/api/v1/register",
             "/api/v1/reset-password",
             "/api/v1/reset-password/verify"
+    };
+
+    private static final String[] ADMIN_REQUESTS = {
+            "/api/v1/admin/**"
     };
     private static final String[] AGENT_REQUESTS = {
             BASE_URL + "/inboundorder",
@@ -87,8 +94,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(HttpMethod.POST, PUBLIC_POST_REQUESTS).permitAll()
                     .antMatchers(HttpMethod.GET, PUBLIC_GET_REQUESTS).permitAll()
 
-                    .antMatchers(AGENT_REQUESTS).hasRole("AGENT")
-                    .antMatchers(CUSTOMER_REQUESTS).hasRole("CUSTOMER")
+                    .antMatchers(AGENT_REQUESTS).hasAnyAuthority(Role.ROLE_ADMIN, Role.ROLE_AGENT)
+                    .antMatchers(CUSTOMER_REQUESTS).hasAnyAuthority(Role.ROLE_ADMIN, Role.ROLE_CUSTOMER)
+                    .antMatchers(ADMIN_REQUESTS).hasAuthority(Role.ROLE_ADMIN)
 
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()

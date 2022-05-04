@@ -6,7 +6,9 @@ import com.mercadolibre.grupo1.projetointegrador.entities.Customer;
 import com.mercadolibre.grupo1.projetointegrador.entities.PasswordReset;
 import com.mercadolibre.grupo1.projetointegrador.entities.Role;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.BadCredentialsException;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.UnauthorizedException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UserRegistrationException;
+import com.mercadolibre.grupo1.projetointegrador.repositories.CustomerRepository;
 import com.mercadolibre.grupo1.projetointegrador.repositories.PasswordResetRepository;
 import com.mercadolibre.grupo1.projetointegrador.util.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +44,9 @@ public class AuthService {
     private PasswordResetRepository passwordResetRepository;
 
     @Autowired
+    private CustomerRepository customerRepository;
+
+    @Autowired
     private JWTUtils jwtUtils;
 
     @Value("${security.secret}")
@@ -54,6 +59,10 @@ public class AuthService {
 
         if(!passwordEncoder.matches(login.getPassword(), user.getPassword())){
             throw new BadCredentialsException("Senha inválida!");
+        }
+
+        if(!user.isEnabled()){
+            throw new UnauthorizedException("Usuário inativo!");
         }
 
         String token = jwtUtils.generateToken(user.getUsername());
@@ -107,8 +116,9 @@ public class AuthService {
         Role role = roleService.findByName("ROLE_CUSTOMER");
         user.setRoles(Set.of(role));
         Customer customer = new Customer(user, registerDTO.getCpf());
-
-        return ProfileDTO.fromUser(userService.save(customer));
+        AuthenticableUser save = userService.save(user);
+        customerRepository.save(customer);
+        return ProfileDTO.fromUser(save);
     }
 
     private AuthenticableUser createUser(RegisterDTO registerDTO){

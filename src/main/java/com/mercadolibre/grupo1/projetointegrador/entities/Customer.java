@@ -21,7 +21,15 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "customers")
-public class Customer extends AuthenticableUser {
+public class Customer{
+    @Id
+    @Column(unique = true, nullable = false)
+    private Long id;
+
+    @MapsId
+    @OneToOne
+    @JoinColumn(name = "id")
+    private AuthenticableUser user;
     private String cpf;
 
     @JsonIgnore
@@ -29,7 +37,7 @@ public class Customer extends AuthenticableUser {
     private List<PurchaseOrder> orders = new ArrayList<>();
 
     public Customer(AuthenticableUser user, String cpf){
-        super(user);
+        this.user = user;
         this.cpf = cpf;
     }
 }

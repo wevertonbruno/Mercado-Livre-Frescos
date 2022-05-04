@@ -1,14 +1,14 @@
 INSERT INTO roles (id, name) VALUES (1, 'ROLE_CUSTOMER'), (2, 'ROLE_SELLER'), (3, 'ROLE_AGENT'), (4, 'ROLE_ADMIN');
 
-INSERT INTO users(id, username, email, password) VALUES
-    (1, 'seller1', 'seller1@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
-    (2, 'seller2', 'seller2@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
-    (3, 'agent1', 'agent1@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
-    (4, 'agent2', 'agent2@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
-    (5, 'customer1', 'customer1@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
-    (6, 'customer2', 'customer2@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
-    (7, 'agent3', 'agent3@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW'),
-    (8, 'admin', 'admin@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW');
+INSERT INTO users(id, username, email, password, active) VALUES
+    (1, 'seller1', 'seller1@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW', 1),
+    (2, 'seller2', 'seller2@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW', 1),
+    (3, 'agent1', 'agent1@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW', 1),
+    (4, 'agent2', 'agent2@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW', 1),
+    (5, 'customer1', 'customer1@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW', 1),
+    (6, 'customer2', 'customer2@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW', 1),
+    (7, 'agent3', 'agent3@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW', 1),
+    (8, 'admin', 'admin@mercadolibre.com', '$2a$10$lKLT3/ATyYt79pC53F3vgOqBDWwykqDYdr1R7xYRB3kSff0JWmxxW', 1);
 
 INSERT INTO customers(id, cpf) VALUES
     (1, '860.607.870-02'),

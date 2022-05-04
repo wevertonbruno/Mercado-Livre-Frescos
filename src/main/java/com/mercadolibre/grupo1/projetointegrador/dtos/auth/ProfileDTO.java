@@ -15,6 +15,8 @@ public class ProfileDTO {
     private String email;
     private List<String> roles;
 
+    private Boolean active;
+
     private ProfileDTO(AuthenticableUser user) {
         this.id = user.getId();
         this.username = user.getUsername();
@@ -22,6 +24,7 @@ public class ProfileDTO {
         this.roles = user.getRoles().stream()
                 .map(role -> role.getName())
                 .collect(Collectors.toList());
+        this.active = user.getActive();
     }
 
     public static ProfileDTO fromUser(AuthenticableUser user){

@@ -1,7 +1,10 @@
 package com.mercadolibre.grupo1.projetointegrador.filters;
 
+import com.mercadolibre.grupo1.projetointegrador.exceptions.ForbiddenException;
+import com.mercadolibre.grupo1.projetointegrador.exceptions.UnauthorizedException;
 import com.mercadolibre.grupo1.projetointegrador.util.JWTUtils;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.DisabledException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -45,14 +48,17 @@ public class JWTValidationFilter extends BasicAuthenticationFilter {
                 return;
             }
 
+            if(!authenticatedUser.isEnabled()){
+                throw new DisabledException("Usuário inativo!");
+            }
+
             UsernamePasswordAuthenticationToken authentication = new UsernamePasswordAuthenticationToken(authenticatedUser, null, authenticatedUser.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
             chain.doFilter(request, response);
 
-        }catch (UsernameNotFoundException e){
-            resolver.resolveException(request, response, null, e);
+        }catch (UsernameNotFoundException | DisabledException e){
+            resolver.resolveException(request, response, null, new UnauthorizedException(e.getMessage()));
         }
-
     }
 
         public UserDetails getAuthenticatedUser(HttpServletRequest request){

@@ -30,6 +30,7 @@ public class AuthenticableUser implements UserDetails {
         this.setEmail(user.getEmail());
         this.setPassword(user.getPassword());
         this.setRoles(user.getRoles());
+        this.setActive(user.getActive());
     }
 
     @Id
@@ -48,6 +49,8 @@ public class AuthenticableUser implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    private Boolean active = true;
 
     @Override
     public boolean equals(Object o) {
@@ -88,6 +91,6 @@ public class AuthenticableUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.active;
     }
 }
