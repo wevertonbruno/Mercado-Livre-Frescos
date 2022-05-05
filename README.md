@@ -1,25 +1,49 @@
-### IT BOOTCAMP - Grupo 1
+## IT BOOTCAMP - Grupo 1
 
-### Projeto Integrador
+## Projeto Integrador
 
-## Objetivo
-O objetivo deste projeto final é implementar uma API REST e aplicar os conteúdos aprendidos no BootCamping.
+### Objetivo
+O objetivo deste projeto final é implementar uma API REST no âmbito do slogan e aplicar
+os conteúdos trabalhados durante o BOOTCAMP MELI. (Git, Java, Spring, Banco de Dados,
+Qualidade e Segurança).
 
-[Link do Enunciado do Projeto Integrador](https://drive.google.com/file/d/1bBOM49bxqRR7apxP3sgV7_LRiTq9xQD2/view)
+### Enunciado
 
-## Swager
-Endpoints do Projeto Integrador
-[Swagger](http://localhost:8080/swagger-ui/)
+O Mercado Livre é a empresa líder em comércio eletrônico da LATAM, com operações
+em 18 países. A MELI (como é conhecida por sua sigla na Bolsa de Valores de NY) quer
+expandir seus negócios para incluir em sua listagem (oferta) produtos FRESCOS. Hoje a MELI
+já vende produtos alimentícios, mas quer se aventurar a poder vender produtos que precisam
+de refrigeração; chamados produtos frescos. Implica novos desafios na forma de armazenar,
+transportar e comercializar os produtos, uma vez que é feito de uma forma totalmente
+diferente. O modelo de negócio atualmente implementado em relação à forma como
+tratamos os nossos produtos (armazenamento, transporte e comercialização) é incompatível
+com os produtos frescos da indústria alimentar, portanto temos o desafio de cumprir estes
+novos requisitos de forma a atender às necessidades deste novo mercado.
 
-## Postman
+[Ver mais...](https://drive.google.com/file/d/1bBOM49bxqRR7apxP3sgV7_LRiTq9xQD2/view)
 
-[Link do Postman](https://www.getpostman.com/collections/a26a80aef9f833ed8132)
+### Rodar Aplicacao
 
-## Diagrama de Classe
+Para rodar a aplicação execute o comando no diretorio do projeto:
+```
+mvn spring-boot:run
+```
 
-![DiagramaClassesMercadoLivreFresco (GRUPO 1)](https://user-images.githubusercontent.com/78379011/166461615-35c49514-c2b5-4355-9189-e6a7837bdea0.png)
+### Documentacao
+A API está documentada no Swagger, com a aplicação rodando acesse o endpoint:
+```
+http://localhost:8080/swagger-ui/
+```
 
-## Requisitos
+### Postman
+
+[Link do Postman](PI%20-%20Meli%20Frescos.postman_collection.json)
+
+### Diagrama de Entidade Relacionamento (DER)
+
+![DiagramaClassesMercadoLivreFresco (GRUPO 1)](DER.jpg)
+
+### Requisitos
 
 [X] [Requisito 01](https://drive.google.com/file/d/1rbT3upYAwN-CrOVtze0M2Fq7Cobuj7FD/view)
 
@@ -31,7 +55,9 @@ Endpoints do Projeto Integrador
 
 [X] [Requisito 05](https://drive.google.com/file/d/1yiEzdwI87K7AO9bgPffHbb0DPjVKM-oP/view)
 
-## Ferramentas e Tecnologias
+[X] [Requisito 06](https://docs.google.com/document/d/1nTXKR2jyBP3pvsc_Xc1koTL61NVqABJ9W_JwI-OTGug/edit?usp=sharing)
+
+### Ferramentas e Tecnologias
 - [Java](https://docs.oracle.com/en/java/)
 - [SpringBoot](https://spring.io/projects/spring-boot)
 - [Maven](https://maven.apache.org/guides/)
@@ -44,7 +70,7 @@ Endpoints do Projeto Integrador
 - [JPA](https://docs.spring.io/spring-data/jpa/docs/current/reference/html/)
 - [Swagger](https://swagger.io/)
 
-## Integrantes:
+### Integrantes:
 - [Ederson Araújo](https://github.com/edersonrodara)
 - [Gabriel Essênio](https://github.com/GabrielEssenio)
 - [Jefferson Botelho](https://github.com/jeffbotelho)

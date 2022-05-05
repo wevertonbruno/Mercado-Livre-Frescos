@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "410e938e-5900-40e6-92ad-a5b2f535a387",
+		"_postman_id": "0191a646-c0ab-4b9c-a310-c23a5ff6f3eb",
 		"name": "PI - Meli Frescos",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
@@ -225,7 +225,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n    \"purchaseOrder\": {\n        \"buyerId\": 5,\n        \"products\": [\n            {\n                \"productId\": 1,\n                \"quantity\": 10\n            },\n            {\n                \"productId\": 1,\n                \"quantity\": 10\n            }\n        ]\n    }\n}",
+							"raw": "{\n    \"purchaseOrder\": {\n        \"products\": [\n            {\n                \"productId\": 1,\n                \"quantity\": 10\n            },\n            {\n                \"productId\": 1,\n                \"quantity\": 10\n            }\n        ]\n    }\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -260,7 +260,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/fresh-products/list/3",
+							"raw": "http://localhost:8080/api/v1/fresh-products/list/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -271,7 +271,7 @@
 								"v1",
 								"fresh-products",
 								"list",
-								"3"
+								"5"
 							]
 						}
 					},
@@ -283,7 +283,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/fresh-products/list/1?type=C",
+							"raw": "http://localhost:8080/api/v1/fresh-products/list/5?type=C",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -294,7 +294,7 @@
 								"v1",
 								"fresh-products",
 								"list",
-								"1"
+								"5"
 							],
 							"query": [
 								{
@@ -312,7 +312,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/fresh-products/list/1",
+							"raw": "http://localhost:8080/api/v1/fresh-products/list/5",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -323,7 +323,7 @@
 								"v1",
 								"fresh-products",
 								"list",
-								"1"
+								"5"
 							]
 						}
 					},
@@ -335,7 +335,7 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "http://localhost:8080/api/v1/fresh-products/list/1?type=F",
+							"raw": "http://localhost:8080/api/v1/fresh-products/list/5?type=F",
 							"protocol": "http",
 							"host": [
 								"localhost"
@@ -346,7 +346,7 @@
 								"v1",
 								"fresh-products",
 								"list",
-								"1"
+								"5"
 							],
 							"query": [
 								{
@@ -506,6 +506,294 @@
 					"response": []
 				}
 			]
+		},
+		{
+			"name": "Requisito 6",
+			"item": [
+				{
+					"name": "Profile [U.S. 06 ml-auth-management]",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"me"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register User [U.S. 06 ml-auth-management]",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"oieusouweverton\",\n    \"email\": \"oieusoweverton@mercadolibre.com\",\n    \"password\": \"123456\",\n    \"password_confirm\": \"123456\",\n    \"cpf\": \"749.834.860-89\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Refresh Token [U.S. 06 ml-auth-management]",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/refresh-token?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTg2MTQ4M30.mwNY_-9ym2lsf41lpmkoRoWIHxT9ZhsHWlHvGC_ueP4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"refresh-token"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTg2MTQ4M30.mwNY_-9ym2lsf41lpmkoRoWIHxT9ZhsHWlHvGC_ueP4"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password Request [U.S. 06 ml-auth-management]",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"email\": \"agent1@mercadolibre.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/reset-password",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"reset-password"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Reset Password Verify [U.S. 06 ml-auth-management]",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"password\": \"123456\",\n    \"password_confirm\": \"123456\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/reset-password/verify?token=",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"reset-password",
+								"verify"
+							],
+							"query": [
+								{
+									"key": "token",
+									"value": ""
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Assign Role [U.S. 06 ml-auth-management]",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:8080/api/v1/admin/users/4/assign/ROLE_SELLER",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"users",
+								"4",
+								"assign",
+								"ROLE_SELLER"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Admin Enable / Disable User [U.S. 06 ml-auth-management]",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"active\": false\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:8080/api/v1/admin/users/4/enabled",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "8080",
+							"path": [
+								"api",
+								"v1",
+								"admin",
+								"users",
+								"4",
+								"enabled"
+							]
+						}
+					},
+					"response": []
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "Authentication Request",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"123456\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:8080/api/v1/auth",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "8080",
+					"path": [
+						"api",
+						"v1",
+						"auth"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbiIsImV4cCI6MTY1MTc4MDc2OX0.3iOI2zKn4g2tZb9kETYbhFe_8Mq797fFTfdMNdb578I",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
 		}
 	]
 }
