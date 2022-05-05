@@ -34,7 +34,7 @@ public class PurchaseOrder {
 
     private LocalDateTime createdDate;
     private LocalDateTime updatedDate;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private Customer customer;
     @Enumerated(EnumType.STRING)

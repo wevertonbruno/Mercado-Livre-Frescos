@@ -170,6 +170,27 @@ public class InboundOrderTest {
                 .andExpect(jsonPath("$.message", is("O lote de ID 4 não pertence a esta Ordem de Entrada!")));
     }
 
+    @Test
+    @WithMockUser(username = "agent1", roles = {"AGENT"})
+    @DisplayName("Testa se um bad request é retornado caso se tente atualizar um lote que não existe")
+    public void itShouldGetABadRequestInvalidOperationBatchNotFound() throws Exception {
+        InboundOrderDTO order = createFakeOrderInput();
+        BatchStockDTO batchStock1 = createFakeBatchStockInput(1L, 1L);
+        BatchStockDTO batchStock2 = createFakeBatchStockInput(-1L, 2L);
+
+        order.getSection().setSectionCode(1L);
+        order.getSection().setWarehouseCode(1L);
+        order.getBatchStock().addAll(Arrays.asList(batchStock1, batchStock2));
+
+        String payload = objectMapper.writeValueAsString(order);
+
+        mockMvc.perform(put(BASE_URL + "/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(payload))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message", is("Lote com ID -1 não encontrado.")));
+    }
+
     private InboundOrderDTO createFakeOrderInput(){
         InboundOrderDTO inboundOrderDTO = new InboundOrderDTO();
         SectionDTO sectionDTO = new SectionDTO();

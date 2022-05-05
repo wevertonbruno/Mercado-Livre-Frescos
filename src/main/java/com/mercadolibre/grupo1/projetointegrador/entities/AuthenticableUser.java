@@ -1,5 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,8 +16,7 @@ import java.util.stream.Collectors;
  * @author Weverton Bruno
  */
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +24,15 @@ import java.util.stream.Collectors;
 @Table(name = "users")
 @Inheritance(strategy = InheritanceType.JOINED)
 public class AuthenticableUser implements UserDetails {
+    public AuthenticableUser(AuthenticableUser user){
+        this.setId(user.getId());
+        this.setUsername(user.getUsername());
+        this.setEmail(user.getEmail());
+        this.setPassword(user.getPassword());
+        this.setRoles(user.getRoles());
+        this.setActive(user.getActive());
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -40,6 +49,20 @@ public class AuthenticableUser implements UserDetails {
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+    private Boolean active = true;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Customer customer;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Agent agent;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Seller seller;
 
     @Override
     public boolean equals(Object o) {
@@ -80,6 +103,6 @@ public class AuthenticableUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return this.active;
     }
 }

@@ -18,6 +18,9 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.ConstraintViolationException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 /**
  * @author  Nayara Coca, Gabriel Essenio
@@ -155,6 +158,33 @@ public class ControllerExceptionHandler {
                 ExceptionDTO.forbidden(e.getMessage(),
                         request.getRequestURI());
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+    }
+
+    @ExceptionHandler(UserRegistrationException.class)
+    public ResponseEntity<ExceptionDTO> userRegistrationException(UserRegistrationException e,
+                                                         HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.badRequest(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ExceptionDTO> constraintViolation(ConstraintViolationException e,
+                                                                  HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.badRequest(new ArrayList<>(e.getConstraintViolations()).get(0).getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
+    }
+
+    @ExceptionHandler(UnauthorizedException.class)
+    public ResponseEntity<ExceptionDTO> unauthorizedException(UnauthorizedException e,
+                                                         HttpServletRequest request) {
+        ExceptionDTO response =
+                ExceptionDTO.unauthorized(e.getMessage(),
+                        request.getRequestURI());
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
  }
 

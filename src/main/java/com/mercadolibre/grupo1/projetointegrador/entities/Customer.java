@@ -21,10 +21,24 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "customers")
-public class Customer extends AuthenticableUser {
+public class Customer{
+    @Id
+    @Column(unique = true, nullable = false)
+    private Long id;
+
+    @MapsId
+    @OneToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "id")
+    @JsonIgnore
+    private AuthenticableUser user;
     private String cpf;
 
     @JsonIgnore
     @OneToMany(mappedBy = "customer")
     private List<PurchaseOrder> orders = new ArrayList<>();
+
+    public Customer(AuthenticableUser user, String cpf){
+        this.user = user;
+        this.cpf = cpf;
+    }
 }

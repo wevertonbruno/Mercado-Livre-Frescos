@@ -1,7 +1,7 @@
 package com.mercadolibre.grupo1.projetointegrador.config;
 
+import com.mercadolibre.grupo1.projetointegrador.entities.Role;
 import com.mercadolibre.grupo1.projetointegrador.filters.JWTValidationFilter;
-import com.mercadolibre.grupo1.projetointegrador.services.NoEncoder;
 import com.mercadolibre.grupo1.projetointegrador.util.JWTUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchy;
+import org.springframework.security.access.hierarchicalroles.RoleHierarchyImpl;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -16,6 +18,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.web.cors.CorsConfiguration;
@@ -32,6 +35,18 @@ import org.springframework.web.servlet.HandlerExceptionResolver;
 @RequiredArgsConstructor
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private static final String BASE_URL = "/api/v1/fresh-products";
+
+    private static final String[] PUBLIC_POST_REQUESTS = {
+            "/api/v1/auth",
+            "/api/v1/refresh-token",
+            "/api/v1/register",
+            "/api/v1/reset-password",
+            "/api/v1/reset-password/verify"
+    };
+
+    private static final String[] ADMIN_REQUESTS = {
+            "/api/v1/admin/**"
+    };
     private static final String[] AGENT_REQUESTS = {
             BASE_URL + "/inboundorder",
             BASE_URL + "/inboundorder/**",
@@ -45,14 +60,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             BASE_URL + "/orders", BASE_URL + "/orders/**"
     };
 
-    private static final String[] PUBLIC_POST_REQUESTS = {
-            "/api/v1/auth"
-    };
-
     private static final String[] PUBLIC_GET_REQUESTS = {
         BASE_URL + "/list",
         BASE_URL + "/"
     };
+
+    private static final String[] SWAGGER_REQUESTS = {
+            // -- Swagger UI v2
+            "/v2/api-docs",
+            "/swagger-resources",
+            "/swagger-resources/**",
+            "/configuration/ui",
+            "/configuration/security",
+            "/swagger-ui.html",
+            "/webjars/**",
+            // -- Swagger UI v3 (OpenAPI)
+            "/v3/api-docs/**",
+            "/swagger-ui/**"
+    };
+
     private final UserDetailsService userDetailsService;
     private final JWTUtils jwtUtils;
 
@@ -67,7 +93,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Bean
     public PasswordEncoder passwordEncoder(){
-        return new NoEncoder();
+        return new BCryptPasswordEncoder();
     }
 
     @Bean
@@ -82,9 +108,11 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .antMatchers(HttpMethod.POST, PUBLIC_POST_REQUESTS).permitAll()
                     .antMatchers(HttpMethod.GET, PUBLIC_GET_REQUESTS).permitAll()
 
-                    .antMatchers(AGENT_REQUESTS).hasRole("AGENT")
-                    .antMatchers(CUSTOMER_REQUESTS).hasRole("CUSTOMER")
+                    .antMatchers(AGENT_REQUESTS).hasAnyAuthority(Role.ROLE_ADMIN, Role.ROLE_AGENT)
+                    .antMatchers(CUSTOMER_REQUESTS).hasAnyAuthority(Role.ROLE_ADMIN, Role.ROLE_CUSTOMER)
+                    .antMatchers(ADMIN_REQUESTS).hasAuthority(Role.ROLE_ADMIN)
 
+                    .antMatchers(SWAGGER_REQUESTS).permitAll()
                     .antMatchers("/h2-console/**").permitAll()
                     .antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                     .anyRequest().authenticated()
@@ -97,8 +125,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("h2-console/**");
+    public void configure(WebSecurity web) {
+        web.ignoring().antMatchers("/h2-console/**");
     }
 
     private JWTValidationFilter getValidationFilter() throws Exception {

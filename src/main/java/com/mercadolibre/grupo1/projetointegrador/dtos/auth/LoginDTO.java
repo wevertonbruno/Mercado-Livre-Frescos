@@ -1,4 +1,4 @@
-package com.mercadolibre.grupo1.projetointegrador.dtos;
+package com.mercadolibre.grupo1.projetointegrador.dtos.auth;
 
 import lombok.Data;
 

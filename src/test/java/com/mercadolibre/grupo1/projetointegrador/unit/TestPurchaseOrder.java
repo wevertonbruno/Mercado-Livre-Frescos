@@ -63,9 +63,9 @@ public class TestPurchaseOrder {
     private Customer createCustomer() {
         Customer customer = new Customer();
         customer.setId(1L);
-        customer.setPassword("123456");
+        //customer.setPassword("123456");
         customer.setCpf("111.111.111-01");
-        customer.setEmail("ederson@mercadolivre.com");
+        //customer.setEmail("ederson@mercadolivre.com");
 
         return customer;
     }
