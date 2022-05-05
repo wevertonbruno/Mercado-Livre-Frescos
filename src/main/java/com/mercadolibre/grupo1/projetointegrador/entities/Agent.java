@@ -23,7 +23,7 @@ public class Agent{
     private Long id;
 
     @MapsId
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
     private AuthenticableUser user;
     @ManyToOne

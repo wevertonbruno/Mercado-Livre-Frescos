@@ -37,7 +37,33 @@ public class AdminTest {
     public void itShouldAssignARoleToUser() throws Exception {
         mockMvc.perform(put(ADMIN_URL + "/users/4/assign/ROLE_SELLER"))
                 .andExpect(status().isOk())
+                .andExpect(jsonPath("$.roles", containsInAnyOrder("ROLE_SELLER", "ROLE_AGENT", "ROLE_CUSTOMER")));
+    }
+
+    @Test
+    @DisplayName("Testa se o administrador consegue atribuir todos os cargos a um usuário")
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void itShouldAssignAllRolesToUser() throws Exception {
+        mockMvc.perform(put(ADMIN_URL + "/users/9/assign/ROLE_SELLER"))
+                .andExpect(status().isOk())
                 .andExpect(jsonPath("$.roles", containsInAnyOrder("ROLE_SELLER")));
+
+        mockMvc.perform(put(ADMIN_URL + "/users/9/assign/ROLE_AGENT"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.roles", containsInAnyOrder("ROLE_SELLER", "ROLE_AGENT")));
+
+        mockMvc.perform(put(ADMIN_URL + "/users/9/assign/ROLE_CUSTOMER"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.roles", containsInAnyOrder("ROLE_SELLER", "ROLE_AGENT", "ROLE_CUSTOMER")));
+    }
+
+    @Test
+    @DisplayName("Testa se um erro é retornado ao tentar atribuir uma role inexistente")
+    @WithMockUser(username = "admin", roles = {"ADMIN"})
+    public void itShouldReturnABadRequestInvalidRole() throws Exception {
+        mockMvc.perform(put(ADMIN_URL + "/users/4/assign/ROLE_DELIVERY"))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("O cargo ROLE_DELIVERY não é aceito!"));
     }
 
     @Test

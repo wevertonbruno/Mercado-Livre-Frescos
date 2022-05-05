@@ -135,6 +135,7 @@ public class FindProductServiceTest {
         Warehouse warehouse = Warehouse.builder().id(1L).build();
         AuthenticableUser user = AuthenticableUser.builder().id(3L).build();
         Agent agent = new Agent(user, warehouse);
+        agent.setId(user.getId());
         Product mockProduct = Product.builder().id(1L).build();
         when(warehouseService.findById(warehouse.getId())).thenThrow(EntityNotFoundException.class);
 

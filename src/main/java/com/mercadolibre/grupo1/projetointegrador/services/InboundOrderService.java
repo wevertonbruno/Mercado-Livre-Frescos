@@ -57,7 +57,13 @@ public class InboundOrderService {
     }
 
     private void checkAgentSection(Section section) {
-        Agent agent = authService.getPrincipalAs(Agent.class);
+        Agent agent;
+        try {
+            agent = authService.getPrincipalAs(Agent.class);
+        }catch (EntityNotFoundException e){
+            throw new ForbiddenException("O representante logado não pertence a esse armazém!");
+        }
+
         if(!section.getWarehouse().equals(agent.getWarehouse())){
             throw new ForbiddenException("O representante logado não pertence a esse armazém!");
         }

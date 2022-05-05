@@ -3,6 +3,9 @@ package com.mercadolibre.grupo1.projetointegrador.controller;
 import com.mercadolibre.grupo1.projetointegrador.dtos.StateDTO;
 import com.mercadolibre.grupo1.projetointegrador.dtos.auth.ProfileDTO;
 import com.mercadolibre.grupo1.projetointegrador.services.AdminService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -15,9 +18,11 @@ import javax.validation.constraints.Pattern;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("api/v1/admin/")
+@Api(tags = "Admin Controller")
 public class AdminController {
     private final AdminService adminService;
 
+    @ApiOperation("U.S 06 - Assign User Role")
     @PutMapping("users/{userId}/assign/{roleName}")
     public ResponseEntity<ProfileDTO> assignUserRole(
             @PathVariable Long userId,
@@ -26,6 +31,7 @@ public class AdminController {
         return ResponseEntity.ok(dto);
     }
 
+    @ApiOperation("U.S 06 - Enable / Disable User Access")
     @PutMapping("/users/{userId}/enabled")
     public ResponseEntity<ProfileDTO> enableUser(@PathVariable Long userId, @RequestBody StateDTO stateDTO ){
         ProfileDTO dto = adminService.setUserState(userId, stateDTO);

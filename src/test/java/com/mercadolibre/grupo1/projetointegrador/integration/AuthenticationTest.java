@@ -141,6 +141,23 @@ public class AuthenticationTest {
     }
 
     @Test
+    @DisplayName("Testa se um erro é retornado ao informar senhas incorretas.")
+    public void itShouldReturnABadRequestIncorrectPassword() throws Exception {
+        RegisterDTO register = new RegisterDTO();
+        register.setUsername("usuario1");
+        register.setPassword("654321");
+        register.setPasswordConfirm("654331");
+        register.setEmail("usuario1@mercadolibre.com");
+        register.setCpf("041.278.675-31");
+
+        String payload = objectMapper.writeValueAsString(register);
+
+        mockMvc.perform(post(REGISTER_URL).contentType(MediaType.APPLICATION_JSON).content(payload))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("A senha de confirmação incorreta!"));
+    }
+
+    @Test
     @DisplayName("Testa se com um refresh token é possível buscar outro token válido")
     public void itShouldRefreshAccessToken() throws Exception {
         LoginDTO loginDTO = new LoginDTO();
@@ -156,6 +173,22 @@ public class AuthenticationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.access_token").exists())
                 .andExpect(jsonPath("$.refresh_token").exists());
+    }
+
+    @Test
+    @DisplayName("Testa se com um refresh token é possível buscar outro token válido")
+    public void itShouldNotFoundUserInRefreshToken() throws Exception {
+        mockMvc.perform(post(REFRESH_TOKEN_URL).param("token", "as8d7as8d7q8we7q8we99q8we9q"))
+                .andExpect(status().isUnauthorized())
+                .andExpect(jsonPath("$.message").value("Refresh token inválido!"));
+    }
+
+    @Test
+    @DisplayName("Testa se um erro é retornado ao tentar atualizar um token sem informar o refresh token")
+    public void itShouldReturnBadRequestWithoutRefreshToken() throws Exception {
+        mockMvc.perform(post(REFRESH_TOKEN_URL))
+                .andExpect(status().isBadRequest())
+                .andExpect(jsonPath("$.message").value("Required request parameter 'token' for method parameter type String is not present"));
     }
 
     @Test

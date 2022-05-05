@@ -8,7 +8,6 @@ import com.mercadolibre.grupo1.projetointegrador.entities.Role;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.BadCredentialsException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UnauthorizedException;
 import com.mercadolibre.grupo1.projetointegrador.exceptions.UserRegistrationException;
-import com.mercadolibre.grupo1.projetointegrador.repositories.CustomerRepository;
 import com.mercadolibre.grupo1.projetointegrador.repositories.PasswordResetRepository;
 import com.mercadolibre.grupo1.projetointegrador.util.JWTUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +41,6 @@ public class AuthService {
 
     @Autowired
     private PasswordResetRepository passwordResetRepository;
-
-    @Autowired
-    private CustomerRepository customerRepository;
 
     @Autowired
     private JWTUtils jwtUtils;
@@ -84,15 +80,17 @@ public class AuthService {
 
     /**
      * Pega o usuario logado do contextholder, busca no banco e faz o casting para o tipo escolhido
-     * @param F
+     * @param userType
      * @return T
      * @param <T>
      * @author Weverton Bruno
      */
     @Transactional(readOnly = true)
-    public <T> T getPrincipalAs(Class<T> F){
+    public <T> T getPrincipalAs(Class<T> userType){
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return (T) userService.loadUserByUsername(principal.getUsername());
+        AuthenticableUser user = (AuthenticableUser) userService.loadUserByUsername(principal.getUsername());
+
+        return userService.findUserById(user.getId(), userType);
     }
 
     /**
@@ -117,7 +115,7 @@ public class AuthService {
         user.setRoles(Set.of(role));
         Customer customer = new Customer(user, registerDTO.getCpf());
         AuthenticableUser save = userService.save(user);
-        customerRepository.save(customer);
+        userService.saveCustomer(customer);
         return ProfileDTO.fromUser(save);
     }
 
@@ -133,6 +131,7 @@ public class AuthService {
                 .username(registerDTO.getUsername())
                 .email(registerDTO.getEmail())
                 .password(passwordEncoder.encode(registerDTO.getPassword()))
+                .active(true)
                 .build();
     }
 
@@ -146,12 +145,13 @@ public class AuthService {
         }
     }
 
-    @Transactional(readOnly = true)
+    @Transactional
     public void resetPasswordRequest(PasswordResetDTO resetDTO) {
         AuthenticableUser user = userService.findByEmail(resetDTO.getEmail());
         String token = jwtUtils.generateRefreshToken(user.getUsername());
 
-        PasswordReset passwordReset = PasswordReset.builder().user(user).token(token).build();
+        PasswordReset passwordReset = new PasswordReset(null, user, token);
+
         passwordResetRepository.save(passwordReset);
 
         emailService.sendEmail(

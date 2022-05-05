@@ -15,7 +15,6 @@ import java.math.BigDecimal;
  */
 
 @Entity
-@Builder
 @Data
 @AllArgsConstructor
 @NoArgsConstructor

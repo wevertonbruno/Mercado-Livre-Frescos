@@ -1,5 +1,6 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.springframework.security.core.GrantedAuthority;
@@ -15,8 +16,7 @@ import java.util.stream.Collectors;
  * @author Weverton Bruno
  */
 
-@Getter
-@Setter
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -51,6 +51,18 @@ public class AuthenticableUser implements UserDetails {
     private Set<Role> roles = new HashSet<>();
 
     private Boolean active = true;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Customer customer;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Agent agent;
+
+    @JsonIgnore
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL)
+    private Seller seller;
 
     @Override
     public boolean equals(Object o) {

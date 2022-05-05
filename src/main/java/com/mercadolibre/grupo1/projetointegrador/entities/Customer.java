@@ -27,8 +27,9 @@ public class Customer{
     private Long id;
 
     @MapsId
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
+    @JsonIgnore
     private AuthenticableUser user;
     private String cpf;
 

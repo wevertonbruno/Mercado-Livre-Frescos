@@ -22,7 +22,7 @@ public class Seller{
     private Long id;
 
     @MapsId
-    @OneToOne
+    @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id")
     private AuthenticableUser user;
 

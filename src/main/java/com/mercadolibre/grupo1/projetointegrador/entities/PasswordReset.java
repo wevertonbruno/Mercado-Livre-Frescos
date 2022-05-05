@@ -1,11 +1,14 @@
 package com.mercadolibre.grupo1.projetointegrador.entities;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
-@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "password_reset_tokens")
 public class PasswordReset {
     @Id
